@@ -20,12 +20,12 @@
         "public-constructor",
         "protected-constructor",
         "private-constructor",
-        "public-static-method",
-        "protected-static-method",
-        "private-static-method",
         "public-instance-method",
         "protected-instance-method",
-        "private-instance-method"
+        "private-instance-method",
+        "public-static-method",
+        "protected-static-method",
+        "private-static-method"
       ]
     }],
     "no-any": true,
