@@ -2,10 +2,11 @@ import { createReadStream, readdir, readFile, ReadStream } from 'fs';
 import { ServerResponse } from 'http';
 import { join } from 'path';
 import { Writable } from 'stream';
+import { logger } from '../../debug';
 import { ResponseType } from '../constants/response-types.constant';
 
 export class Response {
-    private _response: ServerResponse;
+    private readonly _response: ServerResponse;
 
     constructor(response: ServerResponse) {
         this._response = response;
@@ -101,7 +102,9 @@ export class Response {
         this._response.end();
     }
 
-    public serverError(error?: Error): void {
+    public serverError(error: Error): void {
+        logger.exception(error);
+
         this.statusCode = 500;
         this._response.write(JSON.stringify(error));
         this._response.end();
