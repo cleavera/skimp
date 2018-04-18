@@ -37,7 +37,15 @@ export class Router implements IRouter {
                 }
 
                 if (stats.isDirectory()) {
-                    console.log('Is directory');
+                    try {
+                        await response.dir(path, 200);
+                    } catch (e) {
+                        reject();
+                    }
+
+                    resolve();
+
+                    return;
                 } else {
                     response.notFound();
                 }
