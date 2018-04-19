@@ -3,6 +3,7 @@ import * as $uuid from 'uuid/v4';
 import { logger } from '../../debug';
 import { Entity } from '../../file-system';
 import { IRouter, Request, Response, ResponseType } from '../../server';
+import { Url } from '../../server/classes/url';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
 
@@ -71,9 +72,9 @@ export class Router implements IRouter {
         const file: Entity = await Entity.fromPath(filePath);
 
         await file.write(request.content.raw);
-        const resourceUri: string = filePath.replace(DATA_PATH, '').replace('.json', '').replace(/\\/g, '/');
+        const resourceUrl: Url = Url.fromEntity(file);
 
-        response.setHeader('location', resourceUri);
+        response.setHeader('location', resourceUrl.toString());
 
         await response.file(file, 201, ResponseType.JSON);
     }

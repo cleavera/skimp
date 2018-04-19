@@ -1,3 +1,7 @@
+import { Entity } from '../../file-system';
+
+const DATA_PATH: string = require('../../../data/path');
+
 export class Url {
     public parts: Array<string>;
     public dirName: string;
@@ -23,5 +27,9 @@ export class Url {
         }
 
         return;
+    }
+
+    public static fromEntity(entity: Entity): Url {
+        return new Url(entity.path.replace(DATA_PATH, '').replace('.json', '').replace(/\\/g, '/'));
     }
 }
