@@ -5,10 +5,14 @@ import { EntityDoesNotExistException } from '../exceptions/entity-does-not-exist
 import { EntityNotADirectoryException } from '../exceptions/entity-not-a-directory.exception';
 import { EntityNotAFileException } from '../exceptions/entity-not-a-file.exception';
 import { EntityNotValidJsonException } from '../exceptions/entity-not-valid-json.exception';
+import { fileSystem } from './file-system';
 
 export class Entity {
     public readonly path: string;
     private _stats: Stats | void;
+    private get _absolutePath(): string {
+        return Entity.getAbsolutePath(this.path);
+    }
 
     private constructor(path: string, stats?: Stats) {
         this.path = path;
@@ -33,7 +37,7 @@ export class Entity {
 
     public async write(content: string): Promise<void> {
         return new Promise<void>((resolve: () => void, reject: (reason: Error) => void): void => {
-            writeFile(this.path, content, 'utf-8', async(writeError: Error) => {
+            writeFile(this._absolutePath, content, 'utf-8', async(writeError: Error) => {
                 if (writeError) {
                     reject(writeError);
 
@@ -41,7 +45,7 @@ export class Entity {
                 }
 
                 if (!this.exists()) {
-                    this._stats = await Entity.getStats(this.path);
+                    this._stats = await Entity.getStats(this._absolutePath);
                 }
 
                 resolve();
@@ -53,7 +57,7 @@ export class Entity {
         this.assertExists();
 
         return new Promise<void>((resolve: () => void, reject: (reason: Error) => void): void => {
-            unlink(this.path, (error: Error) => {
+            unlink(this._absolutePath, (error: Error) => {
                 if (error) {
                     reject(error);
 
@@ -71,7 +75,7 @@ export class Entity {
         try {
             return JSON.parse(content);
         } catch (e) {
-            throw new EntityNotValidJsonException(this.path, content);
+            throw new EntityNotValidJsonException(this._absolutePath, content);
         }
     }
 
@@ -79,11 +83,11 @@ export class Entity {
         this.assertExists();
 
         if (!this.isFile()) {
-            throw new EntityNotAFileException(this.path);
+            throw new EntityNotAFileException(this._absolutePath);
         }
 
         return new Promise((resolve: (contents: string) => void, reject: (reason: Error) => void): void => {
-            readFile(this.path, 'utf-8', (err: Error, data: string): void => {
+            readFile(this._absolutePath, 'utf-8', (err: Error, data: string): void => {
                 if (err) {
                     reject(err);
                 }
@@ -97,11 +101,11 @@ export class Entity {
         this.assertExists();
 
         if (!this.isDirectory()) {
-            throw new EntityNotADirectoryException(this.path);
+            throw new EntityNotADirectoryException(this._absolutePath);
         }
 
         return new Promise((resolve: (children: Array<string>) => void, reject: (reason: Error) => void): void => {
-            readdir(this.path, async(err: Error, files: Array<string>) => {
+            readdir(this._absolutePath, async(err: Error, files: Array<string>) => {
                 if (err) {
                     reject(err);
                 }
@@ -117,7 +121,7 @@ export class Entity {
         this.assertExists();
 
         return new Promise<void>((resolve: () => void, reject: (error: Error) => void): void => {
-            const readStream: ReadStream = createReadStream(this.path);
+            const readStream: ReadStream = createReadStream(this._absolutePath);
 
             readStream.on('open', () => {
                 readStream.pipe(stream);
@@ -135,16 +139,20 @@ export class Entity {
 
     private assertExists(): void {
         if (!this.exists()) {
-            throw new EntityDoesNotExistException(this.path);
+            throw new EntityDoesNotExistException(this._absolutePath);
         }
     }
 
     public static async fromPath(path: string): Promise<Entity> {
         try {
-            return new Entity(path, await this.getStats(path));
+            return new Entity(path, await this.getStats(this.getAbsolutePath(path)));
         } catch (e) {
             return new Entity(path);
         }
+    }
+
+    private static getAbsolutePath(path: string): string {
+        return join(fileSystem.path, path);
     }
 
     private static async getStats(path: string): Promise<Stats> {

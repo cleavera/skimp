@@ -6,8 +6,6 @@ import { IRouter, Request, Response, ResponseType } from '../../server';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
 
-const DATA_PATH: string = require('../../../data/path');
-
 export class Router implements IRouter {
     public async route(request: Request, response: Response): Promise<void> {
         try {
@@ -36,7 +34,7 @@ export class Router implements IRouter {
     }
 
     private async _get(request: Request, response: Response): Promise<void> {
-        const path: string = join(DATA_PATH, request.url.toString());
+        const path: string = request.url.toString();
 
         const entity: Entity = await Entity.fromPath(path);
 
@@ -59,7 +57,7 @@ export class Router implements IRouter {
     }
 
     private async _post(request: Request, response: Response): Promise<void> {
-        const path: string = join(DATA_PATH, request.url.toString());
+        const path: string = request.url.toString();
         const entity: Entity = await Entity.fromPath(path);
 
         if ((!entity.exists()) || (!entity.isDirectory())) {
@@ -74,7 +72,7 @@ export class Router implements IRouter {
     }
 
     private async _put(request: Request, response: Response): Promise<void> {
-        const path: string = join(DATA_PATH, request.url.toString());
+        const path: string = request.url.toString();
 
         const entity: Entity = await Entity.fromPath(path);
 
@@ -82,8 +80,8 @@ export class Router implements IRouter {
             throw new MethodNotAllowedException(request);
         }
 
-        const parentPath: string = join(DATA_PATH, request.url.dirName);
-        const filePath: string = join(DATA_PATH, request.url.toString() + '.json');
+        const parentPath: string = request.url.dirName;
+        const filePath: string = request.url.toString() + '.json';
         const directory: Entity = await Entity.fromPath(parentPath);
 
         if ((!directory.exists()) || (!directory.isDirectory())) {
@@ -97,7 +95,7 @@ export class Router implements IRouter {
     }
 
     private async _delete(request: Request, response: Response): Promise<void> {
-        const filePath: string = join(DATA_PATH, request.url.toString() + '.json');
+        const filePath: string = request.url.toString() + '.json';
         const entity: Entity = await Entity.fromPath(filePath);
 
         if (!entity.exists()) {
