@@ -20,5 +20,3 @@ export class FileSystem {
         this._path = path;
     }
 }
-
-export const fileSystem: FileSystem = new FileSystem();

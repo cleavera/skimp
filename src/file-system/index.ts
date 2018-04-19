@@ -1,2 +1,2 @@
-export { fileSystem } from './classes/file-system';
+export { FILE_SYSTEM } from './constants/file-system.constant';
 export { Entity } from './classes/entity';

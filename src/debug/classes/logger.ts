@@ -40,5 +40,3 @@ export class Logger implements ILogger {
         this._logger.exception(exception);
     }
 }
-
-export const logger: Logger = new Logger();

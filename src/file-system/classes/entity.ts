@@ -1,11 +1,11 @@
 import { createReadStream, lstat, readdir, readFile, ReadStream, Stats, unlink, writeFile } from 'fs';
 import { join } from 'path';
 import { Writable } from 'stream';
+import { FILE_SYSTEM } from '../constants/file-system.constant';
 import { EntityDoesNotExistException } from '../exceptions/entity-does-not-exist.exception';
 import { EntityNotADirectoryException } from '../exceptions/entity-not-a-directory.exception';
 import { EntityNotAFileException } from '../exceptions/entity-not-a-file.exception';
 import { EntityNotValidJsonException } from '../exceptions/entity-not-valid-json.exception';
-import { fileSystem } from './file-system';
 
 export class Entity {
     public readonly path: string;
@@ -154,7 +154,7 @@ export class Entity {
     }
 
     private static getAbsolutePath(path: string): string {
-        return join(fileSystem.path, path);
+        return join(FILE_SYSTEM.path, path);
     }
 
     private static async getStats(path: string): Promise<Stats> {

@@ -1,6 +1,6 @@
 import { ServerResponse } from 'http';
 import { Writable } from 'stream';
-import { logger } from '../../debug';
+import { LOGGER } from '../../debug';
 import { Entity } from '../../file-system';
 import { ResponseType } from '../constants/response-types.constant';
 import { Url } from './url';
@@ -75,7 +75,7 @@ export class Response {
     }
 
     public serverError(error: Error): void {
-        logger.exception(error);
+        LOGGER.exception(error);
 
         this.statusCode = 500;
         this._response.write(JSON.stringify(error));

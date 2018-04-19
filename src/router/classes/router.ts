@@ -1,6 +1,6 @@
 import { join } from 'path';
 import * as $uuid from 'uuid/v4';
-import { logger } from '../../debug';
+import { LOGGER } from '../../debug';
 import { Entity } from '../../file-system';
 import { IRouter, Request, Response, ResponseType } from '../../server';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
@@ -22,10 +22,10 @@ export class Router implements IRouter {
             }
         } catch (e) {
             if (e instanceof ResourceDoesNotExistException) {
-                logger.warn(e.message);
+                LOGGER.warn(e.message);
                 response.notFound();
             } else if (e instanceof MethodNotAllowedException) {
-                logger.warn(e.message);
+                LOGGER.warn(e.message);
                 response.methodNotAllowed();
             } else {
                 throw e;
