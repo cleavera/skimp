@@ -110,7 +110,9 @@ export class Entity {
                     reject(err);
                 }
 
-                resolve(files.map((filePath: string): string => {
+                resolve(files.filter((filePath: string) => {
+                    return filePath.indexOf('.json') === filePath.length - 5;
+                }).map((filePath: string): string => {
                     return join(this.path, filePath);
                 }));
             });

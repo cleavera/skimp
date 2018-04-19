@@ -1,5 +1,4 @@
 import { init } from '../dist';
-
-const DATA_PATH: string = require('./data/path.js');
+import * as DATA_PATH from './data/path';
 
 init(1337, DATA_PATH);
