@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "example": "npm run build && ts-node ./example/run",
-    "test": "alsatian ./src/**/*.spec.ts"
+    "test": "tsc -p \"./tsconfig-test.json\" && alsatian ./.test/**/*.spec.js"
   },
   "author": "Anthony Cleaver",
   "license": "ISC",

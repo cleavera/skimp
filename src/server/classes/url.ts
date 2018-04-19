@@ -1,8 +1,8 @@
 import { Entity } from '../../file-system';
 
 export class Url {
-    public parts: Array<string>;
-    public dirName: string;
+    public readonly parts: Array<string>;
+    public readonly dirName: string;
     private readonly _url: string;
 
     constructor(url: string) {

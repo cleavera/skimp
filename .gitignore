@@ -1,6 +1,7 @@
 .idea
 node_modules
-dist
+.dist
+.test
 example/data
 !/example/data/path.ts
 !/example/data/person/.keep
