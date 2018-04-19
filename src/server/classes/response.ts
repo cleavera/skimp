@@ -11,6 +11,10 @@ export class Response {
         this._response = response;
     }
 
+    public setHeader(key: string, value: number | string | Array<string>): void {
+        this._response.setHeader(key, value);
+    }
+
     public get statusCode(): number {
         return this._response.statusCode;
     }

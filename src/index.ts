@@ -1,2 +1,3 @@
 export { ConsoleLogger, ILogger } from './debug';
-export { Uuid } from './id';
+import * as $uuid from 'uuid/v4';
+export { $uuid };

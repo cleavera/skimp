@@ -14,5 +14,9 @@
     "alsatian": "^2.2.1",
     "tslint": "^5.9.1",
     "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "@types/uuid": "^3.4.3",
+    "uuid": "^3.2.1"
   }
 }

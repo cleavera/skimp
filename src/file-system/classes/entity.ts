@@ -8,7 +8,7 @@ import { EntityNotValidJsonException } from '../exceptions/entity-not-valid-json
 
 export class Entity {
     public readonly path: string;
-    private readonly _stats: Stats | void;
+    private _stats: Stats | void;
 
     private constructor(path: string, stats?: Stats) {
         this.path = path;
@@ -38,6 +38,10 @@ export class Entity {
                     reject(writeError);
 
                     return;
+                }
+
+                if (!this.exists()) {
+                    this._stats = await Entity.getStats(this.path);
                 }
 
                 resolve();
@@ -136,15 +140,23 @@ export class Entity {
     }
 
     public static async fromPath(path: string): Promise<Entity> {
-        return new Promise((resolve: (entity: Entity) => void): void => {
+        try {
+            return new Entity(path, await this.getStats(path));
+        } catch (e) {
+            return new Entity(path);
+        }
+    }
+
+    private static async getStats(path: string): Promise<Stats> {
+        return new Promise((resolve: (entity: Stats) => void, reject: (reason: Error) => void): void => {
             lstat(path, async(err: Error, stats: Stats): Promise<void> => {
                 if (err) {
-                    resolve(new Entity(path));
+                    reject(err);
 
                     return;
                 }
 
-                resolve(new Entity(path, stats));
+                resolve(stats);
             });
         });
     }
