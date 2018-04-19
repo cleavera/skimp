@@ -1,125 +1,81 @@
-import { accessSync, constants as ACCESS_CONSTANTS, lstat, Stats, unlink, writeFile } from 'fs';
 import { join } from 'path';
+import { logger } from '../../debug';
+import { Entity } from '../../file-system';
 import { IRouter, Request, Response, ResponseType } from '../../server';
+import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
 
 const DATA_PATH: string = require('../../../data/path');
 
 export class Router implements IRouter {
     public async route(request: Request, response: Response): Promise<void> {
-        if (request.isGet) {
-            return this._get(request, response);
-        } else if (request.isPut) {
-            return this._put(request, response);
-        } else if (request.isDelete) {
-            return this._delete(request, response);
-        } else {
-            response.methodNotAllowed();
+        try {
+            if (request.isGet) {
+                return await this._get(request, response);
+            } else if (request.isPut) {
+                return await this._put(request, response);
+            } else if (request.isDelete) {
+                return await this._delete(request, response);
+            } else {
+                response.methodNotAllowed();
+            }
+        } catch (e) {
+            if (e instanceof ResourceDoesNotExistException) {
+                logger.warn(e.message);
+                response.notFound();
+            } else {
+                throw e;
+            }
         }
     }
 
     private async _get(request: Request, response: Response): Promise<void> {
         const path: string = join(DATA_PATH, request.url.toString());
 
-        return new Promise<void>( async(resolve: () => void, reject: () => void): Promise<void> => {
-            lstat(path, async(err: Error, stats: Stats): Promise<void> => {
-                if (err) {
-                    const filePath: string = path + '.json';
+        const entity: Entity = await Entity.fromPath(path);
 
-                    try {
-                        await response.file(filePath, 200, ResponseType.JSON);
-                    } catch (e) {
-                        reject();
-                    }
+        if (!entity.exists()) {
+            const filePath: string = path + '.json';
+            const file: Entity = await Entity.fromPath(filePath);
 
-                    resolve();
+            if (!file.exists()) {
+                throw new ResourceDoesNotExistException(request);
+            }
 
-                    return;
-                }
+            return await response.file(file, 200, ResponseType.JSON);
+        }
 
-                if (stats.isDirectory()) {
-                    try {
-                        await response.dir(path, 200);
-                    } catch (e) {
-                        reject();
-                    }
+        if (entity.isDirectory()) {
+            return await response.dir(entity, 200);
+        }
 
-                    resolve();
-
-                    return;
-                } else {
-                    response.notFound();
-                }
-            });
-        });
+        throw new ResourceDoesNotExistException(request);
     }
 
     private async _put(request: Request, response: Response): Promise<void> {
         const path: string = join(DATA_PATH, request.url.dirName);
         const filePath: string = join(DATA_PATH, request.url.toString() + '.json');
+        const directory: Entity = await Entity.fromPath(path);
 
-        return new Promise<void>( async(resolve: () => void, reject: () => void): Promise<void> => {
-            lstat(path, async(err: Error, stats: Stats): Promise<void> => {
-                if (err || !stats.isDirectory()) {
-                    response.notFound();
-                    reject();
+        if ((!directory.exists()) || (!directory.isDirectory())) {
+            throw new ResourceDoesNotExistException(request);
+        }
 
-                    return;
-                }
+        const file: Entity = await Entity.fromPath(filePath);
 
-                let exists: boolean = true;
-
-                try {
-                    accessSync(path, ACCESS_CONSTANTS.F_OK);
-                } catch (e) {
-                    exists = false;
-                }
-
-                writeFile(filePath, request.content.raw, 'utf-8', async(writeError: Error) => {
-                    if (writeError) {
-                        response.serverError(writeError);
-                        reject();
-
-                        return;
-                    }
-
-                    try {
-                        await response.file(filePath, exists ? 200 : 201, ResponseType.JSON);
-                    } catch (e) {
-                        reject();
-                    }
-
-                    resolve();
-                });
-
-                resolve();
-            });
-        });
+        await file.write(request.content.raw);
+        await response.file(file, file.exists() ? 200 : 201, ResponseType.JSON);
     }
 
     private async _delete(request: Request, response: Response): Promise<void> {
-        return new Promise<void>( async(resolve: () => void, reject: () => void): Promise<void> => {
-            const filePath: string = join(DATA_PATH, request.url.toString() + '.json');
+        const filePath: string = join(DATA_PATH, request.url.toString() + '.json');
+        const entity: Entity = await Entity.fromPath(filePath);
 
-            lstat(filePath, async(err: Error, stats: Stats): Promise<void> => {
-                if (err || !stats.isFile()) {
-                    response.notFound();
-                    reject();
+        if (!entity.exists()) {
+            throw new ResourceDoesNotExistException(request);
+        }
 
-                    return;
-                }
+        await entity.delete();
 
-                unlink(filePath, (error: Error) => {
-                    if (error) {
-                        response.serverError(error);
-                        reject();
-
-                        return;
-                    }
-
-                    response.noContent();
-                    resolve();
-                });
-            });
-        });
+        response.noContent();
     }
 }

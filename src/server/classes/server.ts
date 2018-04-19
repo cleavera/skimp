@@ -10,10 +10,15 @@ export class Server {
     constructor(port: number, router: IRouter) {
         this.port = port;
 
-        createServer(async(requestMessage: IncomingMessage, response: ServerResponse) => {
+        createServer(async(requestMessage: IncomingMessage, serverResponse: ServerResponse) => {
             const request: Request = await Request.fromIncomingMessage(requestMessage);
+            const response: Response = new Response(serverResponse);
 
-            router.route(request, new Response(response)).then(() => void 0, () => void 0);
+            try {
+                await router.route(request, response);
+            } catch (e) {
+                response.serverError(e);
+            }
         }).listen(port);
     }
 }

@@ -4,8 +4,8 @@ import { NoLoggerException } from '../exceptions/no-logger.exception';
 export class Logger implements ILogger {
     private _logger: ILogger;
 
-    public configure(logger: ILogger): void {
-        this._logger = logger;
+    public configure(loggerClass: ILogger): void {
+        this._logger = loggerClass;
     }
 
     public debug(...messages: Array<any>): void { // tslint:disable-line no-any
