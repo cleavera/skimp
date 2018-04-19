@@ -3,16 +3,13 @@ import { Writable } from 'stream';
 import { logger } from '../../debug';
 import { Entity } from '../../file-system';
 import { ResponseType } from '../constants/response-types.constant';
+import { Url } from './url';
 
 export class Response {
     private readonly _response: ServerResponse;
 
     constructor(response: ServerResponse) {
         this._response = response;
-    }
-
-    public setHeader(key: string, value: number | string | Array<string>): void {
-        this._response.setHeader(key, value);
     }
 
     public get statusCode(): number {
@@ -30,6 +27,12 @@ export class Response {
     public async file(file: Entity, statusCode: number = 200, contentType: ResponseType = ResponseType.TEXT): Promise<void> {
         this.statusCode = statusCode;
         this._response.setHeader('Content-Type', contentType);
+
+        if (statusCode === 201) {
+            const resourceUrl: Url = Url.fromEntity(file);
+
+            this._response.setHeader('location', resourceUrl.toString());
+        }
 
         await file.streamTo(this.stream);
         this._response.end();
