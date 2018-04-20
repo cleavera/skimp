@@ -19,4 +19,8 @@ export class FileSystem {
 
         this._path = path;
     }
+
+    public reset(): void {
+        delete this._path;
+    }
 }

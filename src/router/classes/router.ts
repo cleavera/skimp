@@ -89,9 +89,10 @@ export class Router implements IRouter {
         }
 
         const file: Entity = await Entity.fromPath(filePath);
+        const isCreate: boolean = file.exists();
 
         await file.write(request.content.raw);
-        await response.file(file, file.exists() ? 200 : 201, ResponseType.JSON);
+        await response.file(file, isCreate ? 200 : 201, ResponseType.JSON);
     }
 
     private async _delete(request: Request, response: Response): Promise<void> {
