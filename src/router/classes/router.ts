@@ -95,14 +95,20 @@ export class Router implements IRouter {
     }
 
     private async _delete(request: Request, response: Response): Promise<void> {
-        const filePath: string = request.url.toString() + '.json';
-        const entity: Entity = await Entity.fromPath(filePath);
+        const entity: Entity = await Entity.fromPath(request.url.toString());
 
-        if (!entity.exists()) {
+        if (entity.exists() && entity.isDirectory()) {
+            throw new MethodNotAllowedException(request);
+        }
+
+        const filePath: string = request.url.toString() + '.json';
+        const file: Entity = await Entity.fromPath(filePath);
+
+        if (!file.exists()) {
             throw new ResourceDoesNotExistException(request);
         }
 
-        await entity.delete();
+        await file.delete();
 
         response.noContent();
     }

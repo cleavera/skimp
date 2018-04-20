@@ -9,4 +9,5 @@ export function init(port: number, dataPath: string, loggerClass: ILogger = new 
     const server: Server = new Server(port, new Router());
 
     LOGGER.debug(`Server started on port ${server.port}`);
+    LOGGER.debug(`Loading data from  ${FILE_SYSTEM.path}`);
 }
