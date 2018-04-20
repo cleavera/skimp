@@ -1,7 +1,7 @@
 import { createReadStream, lstat, readdir, readFile, ReadStream, Stats, unlink, writeFile } from 'fs';
 import { join } from 'path';
 import { Writable } from 'stream';
-import { FILE_SYSTEM } from '../constants/file-system.constant';
+import { FILE_SYSTEM } from '../';
 import { EntityDoesNotExistException } from '../exceptions/entity-does-not-exist.exception';
 import { EntityNotADirectoryException } from '../exceptions/entity-not-a-directory.exception';
 import { EntityNotAFileException } from '../exceptions/entity-not-a-file.exception';
@@ -34,6 +34,8 @@ export class Entity {
 
         return (this._stats as Stats).isFile();
     }
+
+
 
     public async write(content: string): Promise<void> {
         return new Promise<void>((resolve: () => void, reject: (reason: Error) => void): void => {

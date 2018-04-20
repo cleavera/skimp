@@ -1,11 +1,12 @@
 import { ConsoleLogger, ILogger, LOGGER } from './debug';
 import { FILE_SYSTEM } from './file-system';
 import { Router } from './router';
+import { ISchema } from './schema';
 import { Server } from './server';
 
-export function init(port: number, dataPath: string, loggerClass: ILogger = new ConsoleLogger()): Server {
+export async function init(port: number, dataPath: string, _schemas: Array<ISchema>, loggerClass: ILogger = new ConsoleLogger()): Promise<Server> {
     LOGGER.configure(loggerClass);
-    FILE_SYSTEM.path = dataPath;
+    await FILE_SYSTEM.configure(dataPath);
     const server: Server = new Server(port, new Router());
 
     LOGGER.debug(`Server started on port ${server.port}`);

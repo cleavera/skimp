@@ -1,5 +1,9 @@
+import { mkdir } from 'fs';
+import { join } from 'path';
+import { InvalidSchemaResourceNameException, SCHEMA_REGISTER, SchemaRegistrationException } from '../../schema';
 import { FileSystemCannotBeReconfiguredException } from '../exceptions/file-system-cannot-be-reconfigured.exception';
 import { FileSystemNotConfiguredException } from '../exceptions/file-system-not-configured.exception';
+import ErrnoException = NodeJS.ErrnoException;
 
 export class FileSystem {
     private _path: string;
@@ -18,6 +22,42 @@ export class FileSystem {
         }
 
         this._path = path;
+    }
+
+    public async configure(path: string): Promise<void> {
+        if (this._path) {
+            throw new FileSystemCannotBeReconfiguredException();
+        }
+
+        this._path = path;
+
+        for (const schema of SCHEMA_REGISTER.schemas) {
+            const schemaId: string | void = SCHEMA_REGISTER.getSchemaId(schema);
+
+            if (!schemaId) {
+                throw new SchemaRegistrationException(schema);
+            }
+
+            const resourceName: string = SCHEMA_REGISTER.getMeta(schemaId, 'resourceName');
+
+            if (!resourceName) {
+                throw new InvalidSchemaResourceNameException(schema);
+            }
+
+            const resourcePath: string = join(this.path, resourceName);
+
+            await new Promise((resolve: () => void, reject: (reason: Error) => void): void => {
+                mkdir(resourcePath, (err: ErrnoException) => {
+                    if (err && err.code !== 'EEXIST') {
+                        reject(err);
+
+                        return;
+                    }
+
+                    resolve();
+                });
+            });
+        }
     }
 
     public reset(): void {

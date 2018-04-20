@@ -5,6 +5,7 @@ import * as request from 'request-promise-native';
 import { init, Server } from '../src';
 import { Entity } from '../src/file-system';
 import * as DATA_PATH from './data/path';
+import { PersonSchema } from './schemas/person';
 
 @TestFixture('Post')
 export class PostSpec {
@@ -12,7 +13,7 @@ export class PostSpec {
 
     @AsyncSetupFixture
     public async setup(): Promise<void> {
-        this._server = init(1338, DATA_PATH);
+        this._server = await init(1338, DATA_PATH, [PersonSchema]);
     }
 
     @AsyncTeardownFixture

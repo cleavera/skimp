@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "example": "npm run build && ts-node ./example/run",
-    "test": "tsc -p \"./tsconfig-test.json\" && alsatian ./.test/**/*.spec.js"
+    "test": "del-cli \"./.test/**/*.*\" && tsc -p \"./tsconfig-test.json\" && alsatian ./.test/**/*.spec.js"
   },
   "author": "Anthony Cleaver",
   "license": "ISC",
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@types/uuid": "^3.4.3",
+    "del-cli": "^1.1.0",
     "uuid": "^3.2.1"
   }
 }
