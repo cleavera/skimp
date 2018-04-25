@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "example": "npm run build && ts-node ./example/run",
-    "test": "del-cli \"./.test/**/*.*\" && tsc -p \"./tsconfig-test.json\" && alsatian ./.test/**/*.spec.js"
+    "test": "del-cli \"./.test/**/*.*\" && tsc -p \"./tsconfig-test.json\" && alsatian ./.test/**/*.spec.js --tap"
   },
   "author": "Anthony Cleaver",
   "license": "ISC",

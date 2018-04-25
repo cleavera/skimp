@@ -1,4 +1,11 @@
-import { AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestFixture } from 'alsatian';
+import {
+    AsyncSetupFixture,
+    AsyncTeardown,
+    AsyncTeardownFixture,
+    AsyncTest,
+    Expect,
+    TestFixture
+} from 'alsatian';
 import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
 import * as request from 'request-promise-native';

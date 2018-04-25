@@ -2,24 +2,30 @@ import { IMeta } from '../interfaces/meta.interface';
 import { ISchema } from '../interfaces/schema.interface';
 
 export class SchemaRegister {
-    private readonly _schemas: Array<ISchema>;
+    private readonly _schemas: { [key: string]: ISchema };
     private readonly _meta: IMeta;
 
     constructor(meta: IMeta) {
         this._meta = meta;
-        this._schemas = [];
+        this._schemas = {};
     }
 
     public get schemas(): Array<ISchema> {
-        return this._schemas.slice();
+        return Object.keys(this._schemas).map((key: string) => {
+            return this._schemas[key];
+        });
     }
 
     public register(schema: ISchema, resourceName: string): void {
-        if (this._schemas.indexOf(schema) === -1) {
-            this._schemas.push(schema);
+        if (!this._schemas[resourceName]) {
+            this._schemas[resourceName] = schema;
         }
 
         this._meta.set(schema, 'resourceName', resourceName);
+    }
+
+    public getSchema(resourceName: string): ISchema | void {
+        return this._schemas[resourceName];
     }
 
     public addField(schema: ISchema, propertyName: string, fieldName: string): void {

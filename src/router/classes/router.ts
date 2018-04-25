@@ -2,6 +2,7 @@ import { join } from 'path';
 import * as $uuid from 'uuid/v4';
 import { LOGGER } from '../../debug';
 import { Entity } from '../../file-system';
+import { SCHEMA_REGISTER } from '../../schema';
 import { IRouter, Request, Response, ResponseType } from '../../server';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
@@ -9,6 +10,10 @@ import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-e
 export class Router implements IRouter {
     public async route(request: Request, response: Response): Promise<void> {
         try {
+            if (!SCHEMA_REGISTER.getSchema(request.url.resourceName)) {
+                throw new ResourceDoesNotExistException(request);
+            }
+
             if (request.isGet) {
                 return await this._get(request, response);
             } else if (request.isPut) {

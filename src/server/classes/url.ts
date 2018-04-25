@@ -3,11 +3,13 @@ import { Entity } from '../../file-system';
 export class Url {
     public readonly parts: Array<string>;
     public readonly dirName: string;
+    public readonly resourceName: string;
     private readonly _url: string;
 
     constructor(url: string) {
         this._url = url;
-        this.parts = url.split('/');
+        this.parts = url.substring(1).split('/');
+        this.resourceName = this.parts[0];
         this.dirName = url.substr(0, url.lastIndexOf('/'));
     }
 
