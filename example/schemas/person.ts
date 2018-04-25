@@ -1,4 +1,7 @@
-import { Schema } from '../../.dist';
+import { Field, Schema } from '../../.dist';
 
 @Schema('person')
-export class PersonSchema {}
+export class PersonSchema {
+    @Field('fullName')
+    public name: string;
+}
