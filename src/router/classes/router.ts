@@ -2,12 +2,21 @@ import { join } from 'path';
 import * as $uuid from 'uuid/v4';
 import { LOGGER } from '../../debug';
 import { Entity } from '../../file-system';
-import { SCHEMA_REGISTER } from '../../schema';
-import { IRouter, Request, Response, ResponseType } from '../../server';
+import { Api } from '../../json-api/classes/api';
+import { ISchema, SCHEMA_REGISTER } from '../../schema';
+import { Serialiser } from '../../serialiser/classes/serialiser';
+import { ISerialisationResult } from '../../serialiser/interfaces/serialisation-result.interface';
+import { IRouter, Request, Response, Url } from '../../server';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
 
 export class Router implements IRouter {
+    private _api: Api;
+
+    constructor() {
+        this._api = new Api();
+    }
+
     public async route(request: Request, response: Response): Promise<void> {
         try {
             if (!SCHEMA_REGISTER.getSchema(request.url.resourceName)) {
@@ -40,6 +49,11 @@ export class Router implements IRouter {
 
     private async _get(request: Request, response: Response): Promise<void> {
         const path: string = request.url.toString();
+        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(request.url.resourceName);
+
+        if (!schema) {
+            throw new ResourceDoesNotExistException(request);
+        }
 
         const entity: Entity = await Entity.fromPath(path);
 
@@ -51,17 +65,33 @@ export class Router implements IRouter {
                 throw new ResourceDoesNotExistException(request);
             }
 
-            return await response.file(file, 200, ResponseType.JSON);
+            const deserialised: ISerialisationResult = Serialiser.jsonFile().deserialise(await file.readContent());
+
+            return this._api.respond(response, deserialised, Url.fromEntity(file));
         }
 
         if (entity.isDirectory()) {
-            return await response.dir(entity, 200);
+            const files: Array<string> = await entity.listChildren();
+
+            const models: Array<any> = files.map(async(filePath: string) => {
+                const file: Entity = await Entity.fromPath(filePath);
+
+                return Serialiser.jsonFile().deserialise(await file.readContent());
+            });
+
+            return this._api.respond(response, await Promise.all(models), Url.fromEntity(entity));
         }
 
         throw new ResourceDoesNotExistException(request);
     }
 
     private async _post(request: Request, response: Response): Promise<void> {
+        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(request.url.resourceName);
+
+        if (!schema) {
+            throw new ResourceDoesNotExistException(request);
+        }
+
         const path: string = request.url.toString();
         const entity: Entity = await Entity.fromPath(path);
 
@@ -72,11 +102,18 @@ export class Router implements IRouter {
         const filePath: string = join(path, $uuid() + '.json');
         const file: Entity = await Entity.fromPath(filePath);
 
-        await file.write(request.content.raw);
-        await response.file(file, 201, ResponseType.JSON);
+        await file.write(Serialiser.jsonFile().serialise(this._api.deserialise(request.content.json()), Url.fromEntity(file)));
+
+        this._api.respond(response, Serialiser.jsonFile().deserialise(await file.readContent()), Url.fromEntity(file), true);
     }
 
     private async _put(request: Request, response: Response): Promise<void> {
+        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(request.url.resourceName);
+
+        if (!schema) {
+            throw new ResourceDoesNotExistException(request);
+        }
+
         const path: string = request.url.toString();
 
         const entity: Entity = await Entity.fromPath(path);
@@ -96,11 +133,18 @@ export class Router implements IRouter {
         const file: Entity = await Entity.fromPath(filePath);
         const isCreate: boolean = file.exists();
 
-        await file.write(request.content.raw);
-        await response.file(file, isCreate ? 200 : 201, ResponseType.JSON);
+        await file.write(Serialiser.jsonFile().serialise(this._api.deserialise(request.content.json), Url.fromEntity(file)));
+
+        this._api.respond(response, Serialiser.jsonFile().deserialise(await file.readContent()), Url.fromEntity(file), isCreate);
     }
 
     private async _delete(request: Request, response: Response): Promise<void> {
+        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(request.url.resourceName);
+
+        if (!schema) {
+            throw new ResourceDoesNotExistException(request);
+        }
+
         const entity: Entity = await Entity.fromPath(request.url.toString());
 
         if (entity.exists() && entity.isDirectory()) {

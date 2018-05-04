@@ -12,6 +12,7 @@ import { RequestPromiseOptions } from 'request-promise-native';
 import * as request from 'request-promise-native';
 import { init, Server } from '../src';
 import { Entity } from '../src/file-system';
+import { IJsonApi } from '../src/json-api/interfaces/json-api.interface';
 import * as DATA_PATH from './data/path';
 import { PersonSchema } from './schemas/person';
 
@@ -41,23 +42,39 @@ export class UpdateSpec {
         const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
             method: 'POST',
             body: {
-                name: 'Anthony Cleaver'
-            }
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver'
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
         });
 
         const postResponse: Response = await request('/person', postOptions);
+        this.location = postResponse.headers.location || '';
 
         Expect(postResponse.body).toEqual({
-            name: 'Anthony Cleaver'
-        });
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi);
 
         const getResponse: Response = await request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            name: 'Anthony Cleaver'
-        }]);
-
-        this.location = postResponse.headers.location || '';
+        Expect(getResponse.body).toEqual({
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi);
     }
 
     @AsyncTeardown
@@ -82,31 +99,53 @@ export class UpdateSpec {
         const putOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
             method: 'PUT',
             body: {
-                name: 'Anthony Cleaver2'
-            }
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver2'
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
         });
 
         const putResponse: Response = await request(this.location, putOptions);
 
         Expect(putResponse.body).toEqual({
-            name: 'Anthony Cleaver2'
-        });
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver2'
+                },
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi);
 
         Expect(putResponse.statusCode).toBe(200);
 
         const getResponse: Response = await request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([
-            {
-                name: 'Anthony Cleaver2'
+        Expect(getResponse.body).toEqual([{
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver2'
+                },
+                id: this.location,
+                type: 'person'
             }
-        ]);
+        } as IJsonApi]);
 
         const getSingleResponse: Response = await request(this.location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
-            name: 'Anthony Cleaver2'
-        });
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver2'
+                },
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi);
     }
 
     @AsyncTest('When putting a new resource')
@@ -132,15 +171,28 @@ export class UpdateSpec {
         const putOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
             method: 'PUT',
             body: {
-                name: 'Anthony Cleaver'
-            }
+                data: {
+                    attributes: {
+                        name: 'Anthony Cleaver2'
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
         });
 
-        const putResponse: Response = await request('/person/123', putOptions);
+        const location = '/person/123';
+
+        const putResponse: Response = await request(location, putOptions);
 
         Expect(putResponse.body).toEqual({
-            name: 'Anthony Cleaver'
-        });
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver2'
+                },
+                id: location,
+                type: 'person'
+            }
+        } as IJsonApi);
 
         Expect(putResponse.statusCode).toBe(201);
 
@@ -148,18 +200,36 @@ export class UpdateSpec {
 
         Expect(getResponse.body).toEqual([
             {
-                name: 'Anthony Cleaver'
-            },
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver'
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi,
             {
-                name: 'Anthony Cleaver'
-            }
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver2'
+                    },
+                    id: location,
+                    type: 'person'
+                }
+            } as IJsonApi
         ]);
 
-        const getSingleResponse: Response = await request('/person/123', baseOptions);
+        const getSingleResponse: Response = await request(location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
-            name: 'Anthony Cleaver'
-        });
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: location,
+                type: 'person'
+            }
+        } as IJsonApi);
     }
 
     @AsyncTest('When putting to a schema that does not exist')
@@ -173,8 +243,13 @@ export class UpdateSpec {
         const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
             method: 'PUT',
             body: {
-                name: 'Anthony Cleaver'
-            }
+                data: {
+                    attributes: {
+                        name: 'Anthony Cleaver'
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
         });
 
         let success: boolean = false;
@@ -191,10 +266,14 @@ export class UpdateSpec {
 
         const getResponse: Response = await request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([
-            {
-                name: 'Anthony Cleaver'
+        Expect(getResponse.body).toEqual({
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.location,
+                type: 'person'
             }
-        ]);
+        } as IJsonApi);
     }
 }

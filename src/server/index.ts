@@ -1,3 +1,4 @@
+export { Url } from './classes/url';
 export { Request } from './classes/request';
 export { Response } from './classes/response';
 export { Server } from './classes/server';

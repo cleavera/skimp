@@ -4,6 +4,7 @@ import { RequestPromiseOptions } from 'request-promise-native';
 import * as request from 'request-promise-native';
 import { init, Server } from '../src';
 import { Entity } from '../src/file-system';
+import { IJsonApi } from '../src/json-api/interfaces/json-api.interface';
 import * as DATA_PATH from './data/path';
 import { PersonSchema } from './schemas/person';
 
@@ -33,23 +34,39 @@ export class DeleteSpec {
         const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
             method: 'POST',
             body: {
-                name: 'Anthony Cleaver'
-            }
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver'
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
         });
 
         const postResponse: Response = await request('/person', postOptions);
+        this.location = postResponse.headers.location || '';
 
         Expect(postResponse.body).toEqual({
-            name: 'Anthony Cleaver'
-        });
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi);
 
         const getResponse: Response = await request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([{
-            name: 'Anthony Cleaver'
-        }]);
-
-        this.location = postResponse.headers.location || '';
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi]);
     }
 
     @AsyncTeardown

@@ -1,10 +1,11 @@
 import { IFieldMapping, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
-import { ISerialisationResult, ISerialiser } from '../../serialiser';
+import { ISerialisationResult } from '../../serialiser';
+import { Url } from '../../server';
 import { IAttributes } from '../interfaces/attributes.interface';
 import { IJsonApi } from '../interfaces/json-api.interface';
 
-export class Serialiser implements ISerialiser {
-    public serialise(model: any, location: string): string { // tslint:disable-line no-any
+export class Serialiser {
+    public serialise(model: any, location: Url): IJsonApi { // tslint:disable-line no-any
         const schema: ISchema = model.constructor;
         const fields: Array<IFieldMapping> | void = SCHEMA_REGISTER.getFields(schema);
         const type: string | void = SCHEMA_REGISTER.getSchemaResourceName(schema);
@@ -17,10 +18,10 @@ export class Serialiser implements ISerialiser {
             throw new SchemaHasNoFieldsException(schema);
         }
 
-        const out: IJsonApi = {
+        return {
             data: {
                 type,
-                id: location,
+                id: location.toString(),
                 attributes: fields.reduce((result: IAttributes, field: IFieldMapping): IAttributes => {
                     result[field.fieldName] = model[field.propertyName];
 
@@ -28,12 +29,9 @@ export class Serialiser implements ISerialiser {
                 }, {})
             }
         };
-
-        return JSON.stringify(out, null, '\t');
     }
 
-    public deserialise(body: string): ISerialisationResult {
-        const json: IJsonApi = JSON.parse(body);
+    public deserialise(json: IJsonApi): ISerialisationResult {
         const schema: ISchema | void = SCHEMA_REGISTER.getSchema(json.data.type);
 
         if (!schema) {

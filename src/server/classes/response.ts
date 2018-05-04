@@ -20,8 +20,32 @@ export class Response {
         this._response.statusCode = code;
     }
 
+    public get location(): string {
+        return this._response.getHeader('location') as string || '';
+    }
+
+    public set location(location: string) {
+        this._response.setHeader('location', location);
+    }
+
     public get stream(): Writable {
         return this._response;
+    }
+
+    public commit(): void {
+        this._response.end();
+    }
+
+    public json(obj: any, contentType: ResponseType = ResponseType.JSON): void {
+        this._response.setHeader('Content-Type', contentType);
+        this._response.write(JSON.stringify(obj));
+    }
+
+    public async text(text: string, statusCode: number = 200, contentType: ResponseType = ResponseType.TEXT): Promise<void> {
+        this.statusCode = statusCode;
+        this._response.setHeader('Content-Type', contentType);
+        this._response.write(text);
+        this._response.end();
     }
 
     public async file(file: Entity, statusCode: number = 200, contentType: ResponseType = ResponseType.TEXT): Promise<void> {

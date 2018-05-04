@@ -4,7 +4,7 @@ import { ILinks } from './links.interface';
 export interface IJsonApi {
     data: {
         attributes: IAttributes;
-        id: string;
+        id?: string;
         type: string;
         relationships?: Array<ILinks | IJsonApi>
     };
