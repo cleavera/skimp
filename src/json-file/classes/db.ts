@@ -9,6 +9,13 @@ export class Db {
         this.serialiser = new Serialiser();
     }
 
+    public async exists(location: Location): Promise<boolean> {
+        const filePath: string = location.toString() + '.json';
+        const file: Entity = await Entity.fromPath(filePath);
+
+        return file.exists();
+    }
+
     public async get(location: Location): Promise<any> {
         const filePath: string = location.toString() + '.json';
         const file: Entity = await Entity.fromPath(filePath);

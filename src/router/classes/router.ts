@@ -1,6 +1,5 @@
 import * as $uuid from 'uuid/v4';
 import { LOGGER } from '../../debug';
-import { Entity } from '../../file-system';
 import { Api } from '../../json-api/classes/api';
 import { Db } from '../../json-file/classes/db';
 import { ISchema, SCHEMA_REGISTER } from '../../schema';
@@ -25,7 +24,7 @@ export class Router implements IRouter {
             }
 
             const location: Location = Location.fromUrl(request.url);
-            let model: any = null; // tslint:disable-line no-any
+            let model: any = null;
 
             if (request.content) {
                 model = this._api.deserialise(request.content.json());
@@ -44,10 +43,10 @@ export class Router implements IRouter {
             }
         } catch (e) {
             if (e instanceof ResourceDoesNotExistException) {
-                LOGGER.warn(e.message);
+                LOGGER.warn(e);
                 response.notFound();
             } else if (e instanceof MethodNotAllowedException) {
-                LOGGER.warn(e.message);
+                LOGGER.warn(e);
                 response.methodNotAllowed();
             } else {
                 throw e;
@@ -69,7 +68,7 @@ export class Router implements IRouter {
         return this._api.respond(response, await this._db.list(location), location);
     }
 
-    private async _post(location: Location, model: any, response: Response): Promise<void> { // tslint:disable-line no-any
+    private async _post(location: Location, model: any, response: Response): Promise<void> {
         const schema: ISchema | void = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
@@ -87,7 +86,7 @@ export class Router implements IRouter {
         this._api.respond(response, await this._db.get(createdLocation), createdLocation, true);
     }
 
-    private async _put(location: Location, model: any, response: Response): Promise<void> { // tslint:disable-line no-any
+    private async _put(location: Location, model: any, response: Response): Promise<void> {
         const schema: ISchema | void = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
@@ -98,10 +97,7 @@ export class Router implements IRouter {
             throw new MethodNotAllowedException(ResponseMethod.PUT, location.toUrl());
         }
 
-        const filePath: string = location.toString() + '.json';
-
-        const file: Entity = await Entity.fromPath(filePath);
-        const isCreate: boolean = !file.exists();
+        const isCreate: boolean = !await this._db.exists(location);
 
         await this._db.set(location, model);
 

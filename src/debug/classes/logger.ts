@@ -8,7 +8,7 @@ export class Logger implements ILogger {
         this._logger = loggerClass;
     }
 
-    public debug(...messages: Array<any>): void { // tslint:disable-line no-any
+    public debug(...messages: Array<any>): void {
         if (!this._logger) {
             throw new NoLoggerException();
         }
@@ -16,12 +16,14 @@ export class Logger implements ILogger {
         this._logger.debug(...messages);
     }
 
-    public warn(...messages: Array<any>): void { // tslint:disable-line no-any
+    public warn(...exceptions: Array<Error>): void {
         if (!this._logger) {
             throw new NoLoggerException();
         }
 
-        this._logger.warn(...messages);
+        this._logger.warn(...exceptions.map((exception: Error) => {
+            return exception.message;
+        }));
     }
 
     public error(...messages: Array<any>): void { // tslint:disable-line no-any
