@@ -63,10 +63,10 @@ export class Router implements IRouter {
         }
 
         if (location.resourceId) {
-            return this._api.respond(response, await this._db.get(location.toUrl()), location.toUrl());
+            return this._api.respond(response, await this._db.get(location), location);
         }
 
-        return this._api.respond(response, await this._db.list(location.toUrl()), location.toUrl());
+        return this._api.respond(response, await this._db.list(location), location);
     }
 
     private async _post(location: Location, model: any, response: Response): Promise<void> { // tslint:disable-line no-any
@@ -82,9 +82,9 @@ export class Router implements IRouter {
 
         const createdLocation: Location = new Location(location.resourceName, $uuid());
 
-        await this._db.set(createdLocation.toUrl(), model);
+        await this._db.set(createdLocation, model);
 
-        this._api.respond(response, await this._db.get(createdLocation.toUrl()), createdLocation.toUrl(), true);
+        this._api.respond(response, await this._db.get(createdLocation), createdLocation, true);
     }
 
     private async _put(location: Location, model: any, response: Response): Promise<void> { // tslint:disable-line no-any
@@ -103,9 +103,9 @@ export class Router implements IRouter {
         const file: Entity = await Entity.fromPath(filePath);
         const isCreate: boolean = !file.exists();
 
-        await this._db.set(location.toUrl(), model);
+        await this._db.set(location, model);
 
-        this._api.respond(response, await this._db.get(location.toUrl()), location.toUrl(), isCreate);
+        this._api.respond(response, await this._db.get(location), location, isCreate);
     }
 
     private async _delete(location: Location, response: Response): Promise<void> {
@@ -119,7 +119,7 @@ export class Router implements IRouter {
             throw new MethodNotAllowedException(ResponseMethod.DELETE, location.toUrl());
         }
 
-        await this._db.delete(location.toUrl());
+        await this._db.delete(location);
 
         response.noContent();
     }

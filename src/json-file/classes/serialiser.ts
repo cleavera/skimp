@@ -5,13 +5,12 @@ import {
     SchemaHasNoFieldsException,
     SchemaNotRegisteredException
 } from '../../schema';
-import { ISerialisationResult, ISerialiser } from '../../serialiser';
-import { Url } from '../../server';
+import { ISerialisationResult } from '../../serialiser';
 import { IData } from '../interfaces/data.interface';
 import { IJsonFile } from '../interfaces/json-file.interface';
 
-export class Serialiser implements ISerialiser {
-    public serialise(model: any, _location: Url): string { // tslint:disable-line no-any
+export class Serialiser {
+    public serialise(model: any): string { // tslint:disable-line no-any
         const schema: ISchema = model.constructor;
         const fields: Array<IFieldMapping> | void = SCHEMA_REGISTER.getFields(schema);
         const type: string | void = SCHEMA_REGISTER.getSchemaResourceName(schema);

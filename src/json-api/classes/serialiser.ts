@@ -1,11 +1,11 @@
+import { Location } from '../../router';
 import { IFieldMapping, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
 import { ISerialisationResult } from '../../serialiser';
-import { Url } from '../../server';
 import { IAttributes } from '../interfaces/attributes.interface';
 import { IJsonApi } from '../interfaces/json-api.interface';
 
 export class Serialiser {
-    public serialise(model: any, location: Url): IJsonApi { // tslint:disable-line no-any
+    public serialise(model: any, location: Location): IJsonApi { // tslint:disable-line no-any
         const schema: ISchema = model.constructor;
         const fields: Array<IFieldMapping> | void = SCHEMA_REGISTER.getFields(schema);
         const type: string | void = SCHEMA_REGISTER.getSchemaResourceName(schema);

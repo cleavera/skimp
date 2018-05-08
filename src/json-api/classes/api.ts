@@ -1,4 +1,5 @@
-import { Response, Url } from '../../server';
+import { Location } from '../../router';
+import { Response } from '../../server';
 import { Serialiser } from './serialiser';
 
 export class Api {
@@ -8,7 +9,7 @@ export class Api {
         this.serialiser = new Serialiser();
     }
 
-    public respond(response: Response, model: any, location: Url, created?: boolean): void {
+    public respond(response: Response, model: any, location: Location, created?: boolean): void {
         if (created) {
             response.statusCode = 201;
 

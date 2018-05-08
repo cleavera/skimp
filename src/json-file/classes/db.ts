@@ -1,46 +1,51 @@
 import { Entity } from '../../file-system';
-import { ResourceDoesNotExistException } from '../../router/exceptions/resource-does-not-exist.exception';
-import { Serialiser } from '../../serialiser/classes/serialiser';
-import { Url } from '../../server';
+import { Location, ResourceDoesNotExistException } from '../../router';
+import { Serialiser } from './serialiser';
 
 export class Db {
-    public async get(location: Url): Promise<any> {
+    public serialiser: Serialiser;
+
+    constructor() {
+        this.serialiser = new Serialiser();
+    }
+
+    public async get(location: Location): Promise<any> {
         const filePath: string = location.toString() + '.json';
         const file: Entity = await Entity.fromPath(filePath);
 
         if (!file.exists()) {
-            throw new ResourceDoesNotExistException(location);
+            throw new ResourceDoesNotExistException(location.toUrl());
         }
 
-        return Serialiser.jsonFile().deserialise(await file.readContent());
+        return this.serialiser.deserialise(await file.readContent());
     }
 
-    public async list(location: Url): Promise<Array<any>> {
+    public async list(location: Location): Promise<Array<any>> {
         const entity: Entity = await Entity.fromPath(location.toString());
         const files: Array<string> = await entity.listChildren();
 
         return Promise.all(files.map(async(filePath: string) => {
             const file: Entity = await Entity.fromPath(filePath);
 
-            return Serialiser.jsonFile().deserialise(await file.readContent());
+            return this.serialiser.deserialise(await file.readContent());
         }));
     }
 
-    public async delete(location: Url): Promise<void> {
+    public async delete(location: Location): Promise<void> {
         const filePath: string = location.toString() + '.json';
         const file: Entity = await Entity.fromPath(filePath);
 
         if (!file.exists()) {
-            throw new ResourceDoesNotExistException(location);
+            throw new ResourceDoesNotExistException(location.toUrl());
         }
 
         await file.delete();
     }
 
-    public async set(location: Url, resource: any): Promise<void> {
+    public async set(location: Location, resource: any): Promise<void> {
         const filePath: string = location.toString() + '.json';
         const file: Entity = await Entity.fromPath(filePath);
 
-        await file.write(Serialiser.jsonFile().serialise(resource, Url.fromEntity(file)));
+        await file.write(this.serialiser.serialise(resource));
     }
 }
