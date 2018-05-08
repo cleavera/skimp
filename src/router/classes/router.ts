@@ -1,13 +1,13 @@
-import { join } from 'path';
 import * as $uuid from 'uuid/v4';
 import { LOGGER } from '../../debug';
 import { Entity } from '../../file-system';
 import { Api } from '../../json-api/classes/api';
 import { Db } from '../../json-file/classes/db';
 import { ISchema, SCHEMA_REGISTER } from '../../schema';
-import { IRouter, Request, Response, Url } from '../../server';
+import { IRouter, Request, Response, ResponseMethod } from '../../server';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
+import { Location } from './location';
 
 export class Router implements IRouter {
     private _api: Api;
@@ -24,16 +24,23 @@ export class Router implements IRouter {
                 throw new ResourceDoesNotExistException(request.url);
             }
 
+            const location: Location = Location.fromUrl(request.url);
+            let model: any = null; // tslint:disable-line no-any
+
+            if (request.content) {
+                model = this._api.deserialise(request.content.json());
+            }
+
             if (request.isGet) {
-                return await this._get(request, response);
+                return await this._get(location, response);
             } else if (request.isPut) {
-                return await this._put(request, response);
+                return await this._put(location, model, response);
             } else if (request.isPost) {
-                return await this._post(request, response);
+                return await this._post(location, model, response);
             } else if (request.isDelete) {
-                return await this._delete(request, response);
+                return await this._delete(location, response);
             } else {
-                throw new MethodNotAllowedException(request);
+                throw new MethodNotAllowedException(request.method as ResponseMethod, request.url);
             }
         } catch (e) {
             if (e instanceof ResourceDoesNotExistException) {
@@ -48,77 +55,71 @@ export class Router implements IRouter {
         }
     }
 
-    private async _get(request: Request, response: Response): Promise<void> {
-        const path: string = request.url.toString();
-        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(request.url.resourceName);
+    private async _get(location: Location, response: Response): Promise<void> {
+        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
-            throw new ResourceDoesNotExistException(request.url);
+            throw new ResourceDoesNotExistException(location.toUrl());
         }
 
-        const entity: Entity = await Entity.fromPath(path);
-
-        if (request.url.resourceId) {
-            return this._api.respond(response, await this._db.get(request.url), request.url);
+        if (location.resourceId) {
+            return this._api.respond(response, await this._db.get(location.toUrl()), location.toUrl());
         }
 
-        return this._api.respond(response, await this._db.list(request.url), Url.fromEntity(entity));
+        return this._api.respond(response, await this._db.list(location.toUrl()), location.toUrl());
     }
 
-    private async _post(request: Request, response: Response): Promise<void> {
-        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(request.url.resourceName);
+    private async _post(location: Location, model: any, response: Response): Promise<void> { // tslint:disable-line no-any
+        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
-            throw new ResourceDoesNotExistException(request.url);
+            throw new ResourceDoesNotExistException(location.toUrl());
         }
 
-        if (request.url.resourceId) {
-            throw new MethodNotAllowedException(request);
+        if (location.resourceId) {
+            throw new MethodNotAllowedException(ResponseMethod.POST, location.toUrl());
         }
 
-        const path: string = request.url.toString();
-        const resourcePath: string = join(path, $uuid());
-        const filePath: string = resourcePath + '.json';
-        const file: Entity = await Entity.fromPath(filePath);
+        const createdLocation: Location = new Location(location.resourceName, $uuid());
 
-        await this._db.set(Url.fromEntity(file), this._api.deserialise(request.content.json()));
+        await this._db.set(createdLocation.toUrl(), model);
 
-        this._api.respond(response, await this._db.get(new Url(resourcePath)), Url.fromEntity(file), true);
+        this._api.respond(response, await this._db.get(createdLocation.toUrl()), createdLocation.toUrl(), true);
     }
 
-    private async _put(request: Request, response: Response): Promise<void> {
-        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(request.url.resourceName);
+    private async _put(location: Location, model: any, response: Response): Promise<void> { // tslint:disable-line no-any
+        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
-            throw new ResourceDoesNotExistException(request.url);
+            throw new ResourceDoesNotExistException(location.toUrl());
         }
 
-        if (!request.url.resourceId) {
-            throw new MethodNotAllowedException(request);
+        if (!location.resourceId) {
+            throw new MethodNotAllowedException(ResponseMethod.PUT, location.toUrl());
         }
 
-        const filePath: string = request.url.toString() + '.json';
+        const filePath: string = location.toString() + '.json';
 
         const file: Entity = await Entity.fromPath(filePath);
         const isCreate: boolean = !file.exists();
 
-        await this._db.set(Url.fromEntity(file), this._api.deserialise(request.content.json()));
+        await this._db.set(location.toUrl(), model);
 
-        this._api.respond(response, await this._db.get(request.url), Url.fromEntity(file), isCreate);
+        this._api.respond(response, await this._db.get(location.toUrl()), location.toUrl(), isCreate);
     }
 
-    private async _delete(request: Request, response: Response): Promise<void> {
-        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(request.url.resourceName);
+    private async _delete(location: Location, response: Response): Promise<void> {
+        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
-            throw new ResourceDoesNotExistException(request.url);
+            throw new ResourceDoesNotExistException(location.toUrl());
         }
 
-        if (!request.url.resourceId) {
-            throw new MethodNotAllowedException(request);
+        if (!location.resourceId) {
+            throw new MethodNotAllowedException(ResponseMethod.DELETE, location.toUrl());
         }
 
-        await this._db.delete(request.url);
+        await this._db.delete(location.toUrl());
 
         response.noContent();
     }

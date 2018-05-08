@@ -1,3 +1,4 @@
+export { ResponseMethod } from './constants/response-methods.constant';
 export { Url } from './classes/url';
 export { Request } from './classes/request';
 export { Response } from './classes/response';

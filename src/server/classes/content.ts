@@ -11,8 +11,8 @@ export class Content {
         return JSON.parse(this.raw);
     }
 
-    public static async fromStream(stream: Readable): Promise<Content> {
-        return new Promise<Content>((resolve: (content: Content) => void, reject: (bodyReadError: Error) => void): void => {
+    public static async fromStream(stream: Readable): Promise<Content | void> {
+        return new Promise<Content | void>((resolve: (content: Content | void) => void, reject: (bodyReadError: Error) => void): void => {
             let body: string = '';
 
             stream.on('readable', () => {
@@ -24,7 +24,11 @@ export class Content {
             });
 
             stream.on('end', () => {
-                resolve(new Content(body));
+                if (body) {
+                    resolve(new Content(body));
+                }
+
+                resolve(void 0);
             });
 
             stream.on('error', (bodyReadError: Error) => {

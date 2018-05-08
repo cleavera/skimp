@@ -27,7 +27,7 @@ export class Api {
         response.commit();
     }
 
-    public deserialise(json: any): void {
+    public deserialise(json: any): any {
         return this.serialiser.deserialise(json);
     }
 }

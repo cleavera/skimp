@@ -1,7 +1,7 @@
-import { Request } from '../../server/';
+import { ResponseMethod, Url } from '../../server/';
 
 export class MethodNotAllowedException extends Error {
-    constructor(request: Request) {
-        super(`"${request.method}" not allowed at "${request.url.toString()}"`);
+    constructor(method: ResponseMethod, url: Url) {
+        super(`"${method}" not allowed at "${url.toString()}"`);
     }
 }

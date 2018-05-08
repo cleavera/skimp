@@ -1,14 +1,15 @@
 import { IncomingMessage } from 'http';
+import { ResponseMethod } from '../constants/response-methods.constant';
 import { Content } from './content';
 import { Url } from './url';
 
 export class Request {
     public url: Url;
-    public content: Content;
+    public content: Content | void;
     public readonly method: string;
     private _message: IncomingMessage;
 
-    constructor(message: IncomingMessage, content: Content) {
+    constructor(message: IncomingMessage, content?: Content) {
         this._message = message;
         this.content = content;
         this.method = (this._message.method || '').toUpperCase();
@@ -21,7 +22,7 @@ export class Request {
             return true;
         }
 
-        return this.method === 'GET';
+        return this.method === ResponseMethod.GET;
     }
 
     public get isPut(): boolean {
@@ -29,7 +30,7 @@ export class Request {
             return false;
         }
 
-        return this.method === 'PUT';
+        return this.method === ResponseMethod.PUT;
     }
 
     public get isPost(): boolean {
@@ -37,7 +38,7 @@ export class Request {
             return false;
         }
 
-        return this.method === 'POST';
+        return this.method === ResponseMethod.POST;
     }
 
     public get isDelete(): boolean {
@@ -45,12 +46,16 @@ export class Request {
             return false;
         }
 
-        return this.method === 'DELETE';
+        return this.method === ResponseMethod.DELETE;
     }
 
     public static async fromIncomingMessage(message: IncomingMessage): Promise<Request> {
-        const content: Content = await Content.fromStream(message);
+        const content: Content | void = await Content.fromStream(message);
 
-        return new Request(message, content);
+        if (content) {
+            return new Request(message, content);
+        }
+
+        return new Request(message);
     }
 }
