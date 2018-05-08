@@ -17,6 +17,7 @@ import { PersonSchema } from './schemas/person';
 
 @TestFixture('Post')
 export class PostSpec {
+    public location: string;
     private _server: Server;
 
     @AsyncSetupFixture
@@ -38,8 +39,7 @@ export class PostSpec {
         }));
     }
 
-    @AsyncTest('Happy path')
-    public async happyPath(): Promise<void> {
+    public async create(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
@@ -59,41 +59,46 @@ export class PostSpec {
         });
 
         const postResponse: Response = await request('/person', postOptions);
-        const location: string = postResponse.headers.location || '';
+        this.location = postResponse.headers.location || '';
 
         Expect(postResponse.body).toEqual({
             data: {
                 attributes: {
                     fullName: 'Anthony Cleaver'
                 },
-                id: location,
+                id: this.location,
                 type: 'person'
             }
         } as IJsonApi);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        // const getResponse: Response = await request('/person', baseOptions);
+        //
+        // Expect(getResponse.body).toEqual([{
+        //     data: {
+        //         attributes: {
+        //             fullName: 'Anthony Cleaver'
+        //         },
+        //         id: this.location,
+        //         type: 'person'
+        //     }
+        // } as IJsonApi]);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver'
-                },
-                id: location,
-                type: 'person'
-            }
-        } as IJsonApi]);
-
-        const getSingleResponse: Response = await request(location, baseOptions);
+        const getSingleResponse: Response = await request(this.location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
                 attributes: {
                     fullName: 'Anthony Cleaver'
                 },
-                id: location,
+                id: this.location,
                 type: 'person'
             }
         } as IJsonApi);
+    }
+
+    @AsyncTest('Happy path')
+    public async happyPath(): Promise<void> {
+        await this.create();
     }
 
     @AsyncTest('When posting to a schema that does not exist')
@@ -131,5 +136,89 @@ export class PostSpec {
         const getResponse: Response = await request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
+    }
+
+    @AsyncTest('When posting to a resource that does not exist')
+    public async postToNonExistentResource(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver'
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request('/person/123', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(404);
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
+    }
+
+    @AsyncTest('When posting to a resource that exists')
+    public async postToExistingResource(): Promise<void> {
+        await this.create();
+
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver'
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request(this.location, postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(405);
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([{
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi]);
     }
 }

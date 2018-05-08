@@ -1,4 +1,12 @@
-import { AsyncSetup, AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestFixture } from 'alsatian';
+import {
+    AsyncSetup,
+    AsyncSetupFixture,
+    AsyncTeardown,
+    AsyncTeardownFixture,
+    AsyncTest,
+    Expect,
+    TestFixture
+} from 'alsatian';
 import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
 import * as request from 'request-promise-native';
@@ -56,17 +64,17 @@ export class DeleteSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        // const getResponse: Response = await request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver'
-                },
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
+        // Expect(getResponse.body).toEqual([{
+        //     data: {
+        //         attributes: {
+        //             fullName: 'Anthony Cleaver'
+        //         },
+        //         id: this.location,
+        //         type: 'person'
+        //     }
+        // } as IJsonApi]);
     }
 
     @AsyncTeardown
@@ -124,8 +132,14 @@ export class DeleteSpec {
         const getResponse: Response = await request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([{
-            name: 'Anthony Cleaver'
-        }]);
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi]);
     }
 
     @AsyncTest('When trying to delete a resource that does not exist should 404')
@@ -156,7 +170,13 @@ export class DeleteSpec {
         const getResponse: Response = await request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([{
-            name: 'Anthony Cleaver'
-        }]);
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi]);
     }
 }
