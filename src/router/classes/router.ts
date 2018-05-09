@@ -28,7 +28,7 @@ export class Router implements IRouter {
             let model: any = null;
 
             if (request.content) {
-                model = this._api.deserialise(request.content.json());
+                model = this._api.deserialise(request.content.json(), location);
             }
 
             if (request.isGet) {
@@ -63,10 +63,10 @@ export class Router implements IRouter {
         }
 
         if (location.resourceId) {
-            return this._api.respond(response, await this._db.get(location), location);
+            return this._api.respond(response, await this._db.get(location));
         }
 
-        return this._api.respond(response, await this._db.list(location), location);
+        return this._api.respond(response, await this._db.list(location));
     }
 
     private async _post(location: Location, model: any, response: Response): Promise<void> {
@@ -84,7 +84,7 @@ export class Router implements IRouter {
 
         await this._db.set(createdLocation, model);
 
-        this._api.respond(response, await this._db.get(createdLocation), createdLocation, true);
+        this._api.respond(response, await this._db.get(createdLocation), true);
     }
 
     private async _put(location: Location, model: any, response: Response): Promise<void> {
@@ -102,7 +102,7 @@ export class Router implements IRouter {
 
         await this._db.set(location, model);
 
-        this._api.respond(response, await this._db.get(location), location, isCreate);
+        this._api.respond(response, await this._db.get(location), isCreate);
     }
 
     private async _delete(location: Location, response: Response): Promise<void> {

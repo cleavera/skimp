@@ -71,17 +71,17 @@ export class PostSpec {
             }
         } as IJsonApi);
 
-        // const getResponse: Response = await request('/person', baseOptions);
-        //
-        // Expect(getResponse.body).toEqual([{
-        //     data: {
-        //         attributes: {
-        //             fullName: 'Anthony Cleaver'
-        //         },
-        //         id: this.location,
-        //         type: 'person'
-        //     }
-        // } as IJsonApi]);
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([{
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi]);
 
         const getSingleResponse: Response = await request(this.location, baseOptions);
 

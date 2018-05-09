@@ -64,17 +64,17 @@ export class DeleteSpec {
             }
         } as IJsonApi);
 
-        // const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await request('/person', baseOptions);
 
-        // Expect(getResponse.body).toEqual([{
-        //     data: {
-        //         attributes: {
-        //             fullName: 'Anthony Cleaver'
-        //         },
-        //         id: this.location,
-        //         type: 'person'
-        //     }
-        // } as IJsonApi]);
+        Expect(getResponse.body).toEqual([{
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi]);
     }
 
     @AsyncTeardown

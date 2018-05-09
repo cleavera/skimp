@@ -64,17 +64,17 @@ export class UpdateSpec {
             }
         } as IJsonApi);
 
-        // const getResponse: Response = await request('/person', baseOptions);
-        //
-        // Expect(getResponse.body).toEqual([{
-        //     data: {
-        //         attributes: {
-        //             fullName: 'Anthony Cleaver'
-        //         },
-        //         id: this.location,
-        //         type: 'person'
-        //     }
-        // } as IJsonApi]);
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([{
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi]);
     }
 
     @AsyncTeardown
@@ -214,18 +214,18 @@ export class UpdateSpec {
             {
                 data: {
                     attributes: {
-                        fullName: 'Anthony Cleaver'
+                        fullName: 'Anthony Cleaver2'
                     },
-                    id: this.location,
+                    id: location,
                     type: 'person'
                 }
             } as IJsonApi,
             {
                 data: {
                     attributes: {
-                        fullName: 'Anthony Cleaver2'
+                        fullName: 'Anthony Cleaver'
                     },
-                    id: location,
+                    id: this.location,
                     type: 'person'
                 }
             } as IJsonApi

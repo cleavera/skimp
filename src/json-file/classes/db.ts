@@ -1,5 +1,6 @@
 import { Entity } from '../../file-system';
-import { Location, ResourceDoesNotExistException } from '../../router';
+import { Location, LOCATION_REGISTER, ResourceDoesNotExistException } from '../../router';
+import { InvalidDatabaseFilePathException } from '../exceptions/invalid-database-file-path.exception';
 import { Serialiser } from './serialiser';
 
 export class Db {
@@ -24,7 +25,11 @@ export class Db {
             throw new ResourceDoesNotExistException(location.toUrl());
         }
 
-        return this.serialiser.deserialise(await file.readContent());
+        const model: any = this.serialiser.deserialise(await file.readContent());
+
+        LOCATION_REGISTER.register(model, location);
+
+        return model;
     }
 
     public async list(location: Location): Promise<Array<any>> {
@@ -32,9 +37,15 @@ export class Db {
         const files: Array<string> = await entity.listChildren();
 
         return Promise.all(files.map(async(filePath: string) => {
-            const file: Entity = await Entity.fromPath(filePath);
+            const pathParts: Array<string> = filePath.substring(1, filePath.lastIndexOf('.')).split('\\');
 
-            return this.serialiser.deserialise(await file.readContent());
+            if (pathParts.length !== 2) {
+                throw new InvalidDatabaseFilePathException(filePath);
+            }
+
+            const fileLocation: Location = new Location(pathParts[0], pathParts[1]);
+
+            return this.get(fileLocation);
         }));
     }
 
@@ -49,10 +60,12 @@ export class Db {
         await file.delete();
     }
 
-    public async set(location: Location, resource: any): Promise<void> {
+    public async set(location: Location, model: any): Promise<void> {
         const filePath: string = location.toString() + '.json';
         const file: Entity = await Entity.fromPath(filePath);
 
-        await file.write(this.serialiser.serialise(resource));
+        LOCATION_REGISTER.register(model, location);
+
+        await file.write(this.serialiser.serialise(model));
     }
 }

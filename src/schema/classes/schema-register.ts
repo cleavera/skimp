@@ -1,7 +1,5 @@
-import { Nullable } from '../../shared';
-import * as MetaKey from '../constants/meta-field-names.constant';
+import { IMeta, MetaKey, Nullable } from '../../shared';
 import { IFieldMapping } from '../interfaces/field-mapping.interface';
-import { IMeta } from '../interfaces/meta.interface';
 import { ISchema } from '../interfaces/schema.interface';
 
 export class SchemaRegister {

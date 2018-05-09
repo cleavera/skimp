@@ -16,7 +16,7 @@ export class Content {
         return new Promise<Nullable<Content>>((resolve: (content: Nullable<Content>) => void, reject: (bodyReadError: Error) => void): void => {
             let body: string = '';
 
-            stream.on('readable', () => {
+            stream.on('readable', (): void => {
                 const content: string = stream.read();
 
                 if (content) {
@@ -24,7 +24,7 @@ export class Content {
                 }
             });
 
-            stream.on('end', () => {
+            stream.on('end', (): void => {
                 if (body) {
                     resolve(new Content(body));
                 }
@@ -32,7 +32,7 @@ export class Content {
                 resolve(void 0);
             });
 
-            stream.on('error', (bodyReadError: Error) => {
+            stream.on('error', (bodyReadError: Error): void => {
                 reject(bodyReadError);
             });
         });

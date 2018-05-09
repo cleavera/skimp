@@ -1,6 +1,6 @@
 import uuid = require('uuid');
-import { Nullable } from '../../shared';
 import { IMeta } from '../interfaces/meta.interface';
+import { Nullable } from '../interfaces/nullable.interface';
 
 export class MetaData implements IMeta {
     private readonly _objects: { [key: string]: any }; // tslint:disable-line no-any
