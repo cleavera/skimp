@@ -1,14 +1,14 @@
 import { Location } from '../../router';
 import { IFieldMapping, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
-import { ISerialisationResult } from '../../serialiser';
+import { Nullable } from '../../shared';
 import { IAttributes } from '../interfaces/attributes.interface';
 import { IJsonApi } from '../interfaces/json-api.interface';
 
 export class Serialiser {
     public serialise(model: any, location: Location): IJsonApi { // tslint:disable-line no-any
         const schema: ISchema = model.constructor;
-        const fields: Array<IFieldMapping> | void = SCHEMA_REGISTER.getFields(schema);
-        const type: string | void = SCHEMA_REGISTER.getSchemaResourceName(schema);
+        const fields: Nullable<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
+        const type: Nullable<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
 
         if (!type) {
             throw new SchemaNotRegisteredException(schema);
@@ -31,14 +31,14 @@ export class Serialiser {
         };
     }
 
-    public deserialise(json: IJsonApi): ISerialisationResult {
-        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(json.data.type);
+    public deserialise(json: IJsonApi): any {
+        const schema: Nullable<ISchema> = SCHEMA_REGISTER.getSchema(json.data.type);
 
         if (!schema) {
             throw new ResourceNotRegisteredException(json.data.type);
         }
 
-        const fields: Array<IFieldMapping> | void = SCHEMA_REGISTER.getFields(schema);
+        const fields: Nullable<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
 
         if (!fields || !fields.length) {
             throw new SchemaHasNoFieldsException(schema);

@@ -5,15 +5,15 @@ import {
     SchemaHasNoFieldsException,
     SchemaNotRegisteredException
 } from '../../schema';
-import { ISerialisationResult } from '../../serialiser';
+import { Nullable } from '../../shared';
 import { IData } from '../interfaces/data.interface';
 import { IJsonFile } from '../interfaces/json-file.interface';
 
 export class Serialiser {
     public serialise(model: any): string { // tslint:disable-line no-any
         const schema: ISchema = model.constructor;
-        const fields: Array<IFieldMapping> | void = SCHEMA_REGISTER.getFields(schema);
-        const type: string | void = SCHEMA_REGISTER.getSchemaResourceName(schema);
+        const fields: Nullable<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
+        const type: Nullable<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
 
         if (!type) {
             throw new SchemaNotRegisteredException(schema);
@@ -35,15 +35,15 @@ export class Serialiser {
         return JSON.stringify(out, null, '\t');
     }
 
-    public deserialise(body: string): ISerialisationResult {
+    public deserialise(body: string): any {
         const json: IJsonFile = JSON.parse(body);
-        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(json.type);
+        const schema: Nullable<ISchema> = SCHEMA_REGISTER.getSchema(json.type);
 
         if (!schema) {
             throw new ResourceNotRegisteredException(json.type);
         }
 
-        const fields: Array<IFieldMapping> | void = SCHEMA_REGISTER.getFields(schema);
+        const fields: Nullable<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
 
         if (!fields || !fields.length) {
             throw new SchemaHasNoFieldsException(schema);

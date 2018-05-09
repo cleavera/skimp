@@ -1,4 +1,5 @@
 import { Readable } from 'stream';
+import { Nullable } from '../../shared';
 
 export class Content {
     public readonly raw: string;
@@ -11,8 +12,8 @@ export class Content {
         return JSON.parse(this.raw);
     }
 
-    public static async fromStream(stream: Readable): Promise<Content | void> {
-        return new Promise<Content | void>((resolve: (content: Content | void) => void, reject: (bodyReadError: Error) => void): void => {
+    public static async fromStream(stream: Readable): Promise<Nullable<Content>> {
+        return new Promise<Nullable<Content>>((resolve: (content: Nullable<Content>) => void, reject: (bodyReadError: Error) => void): void => {
             let body: string = '';
 
             stream.on('readable', () => {

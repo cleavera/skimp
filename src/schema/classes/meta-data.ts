@@ -1,4 +1,5 @@
 import uuid = require('uuid');
+import { Nullable } from '../../shared';
 import { IMeta } from '../interfaces/meta.interface';
 
 export class MetaData implements IMeta {
@@ -20,7 +21,7 @@ export class MetaData implements IMeta {
         this._metaData[objectId][metaKey] = value;
     }
 
-    public get<T = any>(object: any, metaKey: string): T | void { // tslint:disable-line no-any
+    public get<T = any>(object: any, metaKey: string): Nullable<T> { // tslint:disable-line no-any
         const objectId: string = this._getObjectId(object);
 
         if (!this._metaData[objectId]) {

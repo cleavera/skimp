@@ -1,3 +1,4 @@
+import { Nullable } from '../../shared';
 import * as MetaKey from '../constants/meta-field-names.constant';
 import { IFieldMapping } from '../interfaces/field-mapping.interface';
 import { IMeta } from '../interfaces/meta.interface';
@@ -26,7 +27,7 @@ export class SchemaRegister {
         this._meta.set(schema, MetaKey.RESOURCE_NAME, resourceName);
     }
 
-    public getSchema(resourceName: string): ISchema | void {
+    public getSchema(resourceName: string): Nullable<ISchema> {
         return this._schemas[resourceName];
     }
 
@@ -38,11 +39,11 @@ export class SchemaRegister {
         this._meta.set(schema, MetaKey.FIELDS, fields);
     }
 
-    public getFields(schema: ISchema): Array<IFieldMapping> | void {
+    public getFields(schema: ISchema): Nullable<Array<IFieldMapping>> {
         return this._meta.get(schema, MetaKey.FIELDS);
     }
 
-    public getSchemaResourceName(schema: ISchema): string | void {
+    public getSchemaResourceName(schema: ISchema): Nullable<string> {
         return this._meta.get(schema, MetaKey.RESOURCE_NAME);
     }
 }

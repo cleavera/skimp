@@ -1,9 +1,10 @@
 import * as $uuid from 'uuid/v4';
 import { LOGGER } from '../../debug';
-import { Api } from '../../json-api/classes/api';
-import { Db } from '../../json-file/classes/db';
+import { Api } from '../../json-api';
+import { Db } from '../../json-file';
 import { ISchema, SCHEMA_REGISTER } from '../../schema';
 import { IRouter, Request, Response, ResponseMethod } from '../../server';
+import { Nullable } from '../../shared';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
 import { Location } from './location';
@@ -55,7 +56,7 @@ export class Router implements IRouter {
     }
 
     private async _get(location: Location, response: Response): Promise<void> {
-        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(location.resourceName);
+        const schema: Nullable<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
             throw new ResourceDoesNotExistException(location.toUrl());
@@ -69,7 +70,7 @@ export class Router implements IRouter {
     }
 
     private async _post(location: Location, model: any, response: Response): Promise<void> {
-        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(location.resourceName);
+        const schema: Nullable<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
             throw new ResourceDoesNotExistException(location.toUrl());
@@ -87,7 +88,7 @@ export class Router implements IRouter {
     }
 
     private async _put(location: Location, model: any, response: Response): Promise<void> {
-        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(location.resourceName);
+        const schema: Nullable<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
             throw new ResourceDoesNotExistException(location.toUrl());
@@ -105,7 +106,7 @@ export class Router implements IRouter {
     }
 
     private async _delete(location: Location, response: Response): Promise<void> {
-        const schema: ISchema | void = SCHEMA_REGISTER.getSchema(location.resourceName);
+        const schema: Nullable<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
             throw new ResourceDoesNotExistException(location.toUrl());

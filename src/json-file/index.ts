@@ -1,1 +1,1 @@
-export { Serialiser } from './classes/serialiser';
+export { Db } from './classes/db';

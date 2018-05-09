@@ -1,11 +1,12 @@
 import { IncomingMessage } from 'http';
+import { Nullable } from '../../shared';
 import { ResponseMethod } from '../constants/response-methods.constant';
 import { Content } from './content';
 import { Url } from './url';
 
 export class Request {
     public url: Url;
-    public content: Content | void;
+    public content: Nullable<Content>;
     public readonly method: string;
     private _message: IncomingMessage;
 
@@ -50,7 +51,7 @@ export class Request {
     }
 
     public static async fromIncomingMessage(message: IncomingMessage): Promise<Request> {
-        const content: Content | void = await Content.fromStream(message);
+        const content: Nullable<Content> = await Content.fromStream(message);
 
         if (content) {
             return new Request(message, content);

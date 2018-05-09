@@ -1,9 +1,10 @@
 import { Url } from '../../server';
+import { Nullable } from '../../shared';
 import { InvalidLocationException } from '../exceptions/invalid-location.exception';
 
 export class Location {
     public readonly resourceName: string;
-    public readonly resourceId: string | void;
+    public readonly resourceId: Nullable<string>;
 
     constructor(resourceName: string, resourceId?: string) {
         this.resourceName = resourceName;

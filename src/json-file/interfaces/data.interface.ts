@@ -1,4 +1,4 @@
-import { IJsonValue } from '../../serialiser/interfaces/json-value.interface';
+import { IJsonValue } from '../../shared';
 
 export interface IData {
     [attribute: string]: IJsonValue;
