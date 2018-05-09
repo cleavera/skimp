@@ -77,7 +77,11 @@ export class Router implements IRouter {
         }
 
         if (location.resourceId) {
-            throw new MethodNotAllowedException(ResponseMethod.POST, location.toUrl());
+            if (await this._db.exists(location)) {
+                throw new MethodNotAllowedException(ResponseMethod.POST, location.toUrl());
+            } else {
+                throw new ResourceDoesNotExistException(location.toUrl());
+            }
         }
 
         const createdLocation: Location = new Location(location.resourceName, $uuid());
