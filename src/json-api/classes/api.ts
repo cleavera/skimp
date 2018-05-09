@@ -1,17 +1,17 @@
-import { Location, LOCATION_REGISTER, NoLocationRegisteredException } from '../../router';
+import { IApi, Location, LOCATION_REGISTER, NoLocationRegisteredException } from '../../router';
 import { Response } from '../../server';
 import { Nullable } from '../../shared';
 import { IJsonApi } from '../interfaces/json-api.interface';
 import { Serialiser } from './serialiser';
 
-export class Api {
+export class Api implements IApi {
     public serialiser: Serialiser;
 
     constructor() {
         this.serialiser = new Serialiser();
     }
 
-    public respond(response: Response, model: any, created?: boolean): void {
+    public respond(response: Response, model: Array<any> | any, created?: boolean): void {
         if (Array.isArray(model)) {
             model = model.map((item: any) => {
                 const location: Nullable<Location> = LOCATION_REGISTER.getLocation(item);

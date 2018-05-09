@@ -1,21 +1,21 @@
 import * as $uuid from 'uuid/v4';
 import { LOGGER } from '../../debug';
-import { Api } from '../../json-api';
-import { Db } from '../../json-file';
 import { ISchema, SCHEMA_REGISTER } from '../../schema';
 import { IRouter, Request, Response, ResponseMethod } from '../../server';
 import { Nullable } from '../../shared';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
+import { IApi } from '../interfaces/api.interface';
+import { IDb } from '../interfaces/db.interface';
 import { Location } from './location';
 
 export class Router implements IRouter {
-    private _api: Api;
-    private _db: Db;
+    private _api: IApi;
+    private _db: IDb;
 
-    constructor() {
-        this._api = new Api();
-        this._db = new Db();
+    constructor(api: IApi, db: IDb) {
+        this._api = api;
+        this._db = db;
     }
 
     public async route(request: Request, response: Response): Promise<void> {

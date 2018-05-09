@@ -1,9 +1,9 @@
 import { Entity } from '../../file-system';
-import { Location, LOCATION_REGISTER, ResourceDoesNotExistException } from '../../router';
+import { IDb, Location, LOCATION_REGISTER, ResourceDoesNotExistException } from '../../router';
 import { InvalidDatabaseFilePathException } from '../exceptions/invalid-database-file-path.exception';
 import { Serialiser } from './serialiser';
 
-export class Db {
+export class Db implements IDb {
     public serialiser: Serialiser;
 
     constructor() {
