@@ -1,7 +1,7 @@
 import { ValidationExceptionCode } from '../constants/validation-exception-code.constant';
-import { ValidationException } from './validation.exception';
+import { ModelValidationException } from './model-validation.exception';
 
-export class ValidationMissingRequiredFieldException extends ValidationException {
+export class ValidationMissingRequiredFieldException extends ModelValidationException {
     constructor(field: string) {
         super([field], ValidationExceptionCode.REQUIRED);
     }

@@ -1,3 +1,5 @@
+export { ModelValidationException } from './exceptions/model-validation.exception';
+export { ModelValidationExceptions } from './exceptions/model-validation.exceptions';
 export { Required } from './decorators/required.decorator';
 export { ResourceNotRegisteredException } from './exceptions/resource-not-registered.exception';
 export { SchemaNotRegisteredException } from './exceptions/schema-not-registered.exception';

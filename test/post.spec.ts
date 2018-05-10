@@ -101,6 +101,48 @@ export class PostSpec {
         await this.create();
     }
 
+    @AsyncTest('When sending invalid json data')
+    public async invalidJsonData(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                errors: []
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request('/person', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(400);
+            Expect(e.error).toEqual({
+                error: [
+                    {
+                        code: 'invalidJsonData',
+                        source: {
+                            pointer: ''
+                        }
+                    }
+                ]
+            });
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
+    }
+
     @AsyncTest('When omitting a required field')
     public async missingRequiredField(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
@@ -129,6 +171,16 @@ export class PostSpec {
             success = true;
         } catch (e) {
             Expect(e.statusCode).toEqual(400);
+            Expect(e.error).toEqual({
+                error: [
+                    {
+                        code: 'required',
+                        source: {
+                            pointer: '/data/attributes/fullName'
+                        }
+                    }
+                ]
+            });
         }
 
         Expect(success).toBe(false);

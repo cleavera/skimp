@@ -1,9 +1,8 @@
 import { ServerResponse } from 'http';
 import { Writable } from 'stream';
 import { LOGGER } from '../../debug';
-import { Entity } from '../../file-system';
+import { ResponseCode } from '../constants/response-code.constant';
 import { ResponseType } from '../constants/response-types.constant';
-import { Url } from './url';
 
 export class Response {
     private readonly _response: ServerResponse;
@@ -41,73 +40,22 @@ export class Response {
         this._response.write(JSON.stringify(obj));
     }
 
-    public async text(text: string, statusCode: number = 200, contentType: ResponseType = ResponseType.TEXT): Promise<void> {
+    public async text(text: string, statusCode: ResponseCode = ResponseCode.OKAY, contentType: ResponseType = ResponseType.TEXT): Promise<void> {
         this.statusCode = statusCode;
         this._response.setHeader('Content-Type', contentType);
         this._response.write(text);
         this._response.end();
     }
 
-    public async file(file: Entity, statusCode: number = 200, contentType: ResponseType = ResponseType.TEXT): Promise<void> {
-        this.statusCode = statusCode;
-        this._response.setHeader('Content-Type', contentType);
-
-        if (statusCode === 201) {
-            const resourceUrl: Url = Url.fromEntity(file);
-
-            this._response.setHeader('location', resourceUrl.toString());
-        }
-
-        await file.streamTo(this.stream);
-        this._response.end();
-    }
-
-    public async dir(directory: Entity, statusCode: number = 200): Promise<void> {
-        this.statusCode = statusCode;
-        this._response.setHeader('Content-Type', ResponseType.JSON);
-
-        const files: Array<string> = await directory.listChildren();
-        const promises: Array<Promise<any>> = []; // tslint:disable-line no-any
-
-        files.forEach((filePath: string) => {
-            promises.push((async() => {
-                const file: Entity = await Entity.fromPath(filePath);
-
-                return await file.readJSON();
-            })());
-        });
-
-        this._response.write(JSON.stringify(await Promise.all(promises)));
-        this._response.end();
-    }
-
-    public notFound(): void {
-        this.statusCode = 404;
-        this._response.write('');
-        this._response.end();
-    }
-
-    public methodNotAllowed(): void {
-        this.statusCode = 405;
-        this._response.write('');
-        this._response.end();
-    }
-
-    public badRequest(): void {
-        this.statusCode = 400;
-        this._response.write('');
-        this._response.end();
-    }
-
     public noContent(): void {
-        this.statusCode = 204;
+        this.statusCode = ResponseCode.NO_CONTENT;
         this._response.end();
     }
 
     public serverError(error: Error): void {
         LOGGER.exception(error);
 
-        this.statusCode = 500;
+        this.statusCode = ResponseCode.SERVER_ERROR;
         this._response.write(JSON.stringify(error));
         this._response.end();
     }

@@ -1,11 +1,4 @@
-import { IAttributes } from './attributes.interface';
-import { ILinks } from './links.interface';
+import { IJsonData } from './json-data.interface';
+import { IJsonErrors } from './json-errors.interface';
 
-export interface IJsonApi {
-    data: {
-        attributes: IAttributes;
-        id?: string;
-        type: string;
-        relationships?: Array<ILinks | IJsonApi>
-    };
-}
+export type IJsonApi = IJsonData | IJsonErrors;

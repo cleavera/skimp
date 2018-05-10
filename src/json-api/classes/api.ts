@@ -1,7 +1,9 @@
-import { IApi, Location, LOCATION_REGISTER, NoLocationRegisteredException } from '../../router';
-import { Response } from '../../server';
+import { IApi, Location, LOCATION_REGISTER, NoLocationRegisteredException, ValidationException } from '../../router';
+import { Response, ResponseCode } from '../../server';
 import { Nullable } from '../../shared';
+import { RequestNotValidDataException } from '../exception/request-not-valid-data.exception';
 import { IJsonApi } from '../interfaces/json-api.interface';
+import { IJsonData } from '../interfaces/json-data.interface';
 import { Serialiser } from './serialiser';
 
 export class Api implements IApi {
@@ -32,7 +34,7 @@ export class Api implements IApi {
             model = this.serialiser.serialise(model, location);
 
             if (created) {
-                response.statusCode = 201;
+                response.statusCode = ResponseCode.CREATED;
 
                 response.location = location.toString();
             }
@@ -42,11 +44,29 @@ export class Api implements IApi {
         response.commit();
     }
 
+    public error(response: Response, code: ResponseCode, errors?: Array<ValidationException>): void {
+        response.statusCode = code;
+
+        if (errors && errors.length) {
+            response.json(this.serialiser.error(errors));
+        }
+
+        response.commit();
+    }
+
     public deserialise(json: IJsonApi, location: Location): any {
-        const model: any = this.serialiser.deserialise(json);
+        if (!this.isData(json)) {
+            throw new RequestNotValidDataException(json);
+        }
+
+        const model: any = this.serialiser.deserialise(json as IJsonData);
 
         LOCATION_REGISTER.register(model, location);
 
         return model;
+    }
+
+    private isData(json: IJsonApi): json is IJsonData {
+        return 'data' in json && 'attributes' in json.data && 'type' in json.data;
     }
 }

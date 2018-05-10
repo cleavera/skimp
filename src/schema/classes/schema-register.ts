@@ -1,7 +1,7 @@
 import { LOGGER } from '../../debug';
 import { IMeta, MetaKey, Nullable } from '../../shared';
-import { ValidationIssuesException } from '../exceptions/validation-issues.exception';
-import { ValidationException } from '../exceptions/validation.exception';
+import { ModelValidationException } from '../exceptions/model-validation.exception';
+import { ModelValidationExceptions } from '../exceptions/model-validation.exceptions';
 import { IFieldMapping } from '../interfaces/field-mapping.interface';
 import { ISchema } from '../interfaces/schema.interface';
 import { IValidation } from '../interfaces/validation.interface';
@@ -41,15 +41,15 @@ export class SchemaRegister {
         this._meta.set(schema, MetaKey.VALIDATION, validations);
     }
 
-    public validate(model: any): ValidationIssuesException {
+    public validate(model: any): ModelValidationExceptions {
         const validations: Array<IValidation> = this._meta.get(model.constructor, MetaKey.VALIDATION) || [];
-        const errors: ValidationIssuesException = new ValidationIssuesException();
+        const errors: ModelValidationExceptions = new ModelValidationExceptions();
 
         validations.forEach((validate: IValidation) => {
             try {
                 validate(model);
             } catch (e) {
-                if (e instanceof ValidationException) {
+                if (e instanceof ModelValidationException) {
                     LOGGER.warn(e);
                     errors.push(e);
                 } else {

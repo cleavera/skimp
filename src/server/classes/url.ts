@@ -1,5 +1,3 @@
-import { Entity } from '../../file-system';
-
 export class Url {
     public readonly parts: Array<string>;
     public readonly dirName: string;
@@ -29,9 +27,5 @@ export class Url {
         }
 
         return;
-    }
-
-    public static fromEntity(entity: Entity): Url {
-        return new Url(entity.path.replace('.json', '').replace(/\\/g, '/'));
     }
 }

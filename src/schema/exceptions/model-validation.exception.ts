@@ -1,6 +1,7 @@
+import { ValidationException } from '../../router';
 import { ValidationExceptionCode } from '../constants/validation-exception-code.constant';
 
-export class ValidationException extends Error {
+export class ModelValidationException extends ValidationException {
     public fields: Array<string>;
     public code: ValidationExceptionCode;
 

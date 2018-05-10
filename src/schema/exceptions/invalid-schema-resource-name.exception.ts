@@ -1,4 +1,4 @@
-import { ISchema } from '..';
+import { ISchema } from '../interfaces/schema.interface';
 
 export class InvalidSchemaResourceNameException extends Error {
     constructor(schema: ISchema) {

@@ -1,11 +1,38 @@
-import { Location } from '../../router';
-import { IFieldMapping, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
+import { Location, ValidationException } from '../../router';
+import {
+    IFieldMapping,
+    ISchema,
+    ModelValidationException,
+    ResourceNotRegisteredException,
+    SCHEMA_REGISTER,
+    SchemaHasNoFieldsException,
+    SchemaNotRegisteredException
+} from '../../schema';
 import { Nullable } from '../../shared';
 import { IAttributes } from '../interfaces/attributes.interface';
-import { IJsonApi } from '../interfaces/json-api.interface';
+import { IJsonData } from '../interfaces/json-data.interface';
+import { IJsonError } from '../interfaces/json-error.interface';
+import { IJsonErrors } from '../interfaces/json-errors.interface';
 
 export class Serialiser {
-    public serialise(model: any, location: Location): IJsonApi {
+    public error(errors: Array<ValidationException>): IJsonErrors {
+        return {
+            errors: errors.reduce((acc: Array<IJsonError>, exception: ValidationException) => {
+                const fields: Array<string> = (exception as ModelValidationException).fields || [''];
+
+                return acc.concat((fields).map((field: string): IJsonError => {
+                    return {
+                        code: exception.code,
+                        source: {
+                            pointer: field ? `/data/attributes/${field}` : '/'
+                        }
+                    };
+                }));
+            }, [])
+        };
+    }
+
+    public serialise(model: any, location: Location): IJsonData {
         const schema: ISchema = model.constructor;
         const fields: Nullable<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
         const type: Nullable<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
@@ -31,7 +58,7 @@ export class Serialiser {
         };
     }
 
-    public deserialise(json: IJsonApi): any {
+    public deserialise(json: IJsonData): any {
         const schema: Nullable<ISchema> = SCHEMA_REGISTER.getSchema(json.data.type);
 
         if (!schema) {

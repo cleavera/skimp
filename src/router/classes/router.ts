@@ -1,8 +1,7 @@
 import * as $uuid from 'uuid/v4';
 import { LOGGER } from '../../debug';
-import { ISchema, SCHEMA_REGISTER } from '../../schema';
-import { ValidationIssuesException } from '../../schema/exceptions/validation-issues.exception';
-import { IRouter, Request, Response, ResponseMethod } from '../../server';
+import { ISchema, ModelValidationExceptions, SCHEMA_REGISTER } from '../../schema';
+import { IRouter, Request, Response, ResponseCode, ResponseMethod } from '../../server';
 import { Nullable } from '../../shared';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
@@ -31,7 +30,7 @@ export class Router implements IRouter {
             if (request.content) {
                 model = this._api.deserialise(request.content.json(), location);
 
-                const validationIssues: ValidationIssuesException = SCHEMA_REGISTER.validate(model);
+                const validationIssues: ModelValidationExceptions = SCHEMA_REGISTER.validate(model);
 
                 if (validationIssues.length) {
                     throw validationIssues;
@@ -52,13 +51,13 @@ export class Router implements IRouter {
         } catch (e) {
             if (e instanceof ResourceDoesNotExistException) {
                 LOGGER.warn(e);
-                response.notFound();
+                this._api.error(response, ResponseCode.NOT_FOUND);
             } else if (e instanceof MethodNotAllowedException) {
                 LOGGER.warn(e);
-                response.methodNotAllowed();
-            } else if (e instanceof ValidationIssuesException) {
+                this._api.error(response, ResponseCode.METHOD_NOT_ALLOWED);
+            } else if (e instanceof ModelValidationExceptions) {
                 LOGGER.warn(...e);
-                response.badRequest();
+                this._api.error(response, ResponseCode.BAD_REQUEST, e);
             } else {
                 throw e;
             }
