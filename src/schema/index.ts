@@ -1,3 +1,4 @@
+export { ModelPointer } from './classes/model-pointer';
 export { ModelValidationException } from './exceptions/model-validation.exception';
 export { ModelValidationExceptions } from './exceptions/model-validation.exceptions';
 export { Required } from './decorators/required.decorator';

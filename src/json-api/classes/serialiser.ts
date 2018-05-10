@@ -2,6 +2,7 @@ import { Location, ValidationException } from '../../router';
 import {
     IFieldMapping,
     ISchema,
+    ModelPointer,
     ModelValidationException,
     ResourceNotRegisteredException,
     SCHEMA_REGISTER,
@@ -18,13 +19,13 @@ export class Serialiser {
     public error(errors: Array<ValidationException>): IJsonErrors {
         return {
             errors: errors.reduce((acc: Array<IJsonError>, exception: ValidationException) => {
-                const fields: Array<string> = (exception as ModelValidationException).fields || [''];
+                const fields: Array<ModelPointer> = (exception as ModelValidationException).fields || [null];
 
-                return acc.concat((fields).map((field: string): IJsonError => {
+                return acc.concat((fields).map((pointer: ModelPointer): IJsonError => {
                     return {
                         code: exception.code,
                         source: {
-                            pointer: field ? `/data/attributes/${field}` : ''
+                            pointer: pointer ? `/data/attributes/${pointer.field}` : ''
                         }
                     };
                 }));

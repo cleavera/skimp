@@ -73,6 +73,24 @@ export class SchemaRegister {
         return this._meta.get(schema, MetaKey.FIELDS);
     }
 
+    public mapToField(schema: ISchema, property: string): Nullable<string> {
+        const fields: Nullable<Array<IFieldMapping>> = this._meta.get(schema, MetaKey.FIELDS);
+
+        if (!fields || !fields.length) {
+            return;
+        }
+
+        const matchedField: Nullable<IFieldMapping> = fields.find((field: IFieldMapping) => {
+            return field.propertyName === property;
+        });
+
+        if (!matchedField) {
+            return;
+        }
+
+        return matchedField.fieldName;
+    }
+
     public getSchemaResourceName(schema: ISchema): Nullable<string> {
         return this._meta.get(schema, MetaKey.RESOURCE_NAME);
     }
