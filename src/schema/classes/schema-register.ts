@@ -1,6 +1,10 @@
+import { LOGGER } from '../../debug';
 import { IMeta, MetaKey, Nullable } from '../../shared';
+import { ValidationIssuesException } from '../exceptions/validation-issues.exception';
+import { ValidationException } from '../exceptions/validation.exception';
 import { IFieldMapping } from '../interfaces/field-mapping.interface';
 import { ISchema } from '../interfaces/schema.interface';
+import { IValidation } from '../interfaces/validation.interface';
 
 export class SchemaRegister {
     private readonly _schemas: { [key: string]: ISchema };
@@ -27,6 +31,34 @@ export class SchemaRegister {
 
     public getSchema(resourceName: string): Nullable<ISchema> {
         return this._schemas[resourceName];
+    }
+
+    public addValidation(schema: ISchema, validation: IValidation): void {
+        const validations: Array<IValidation> = this._meta.get(schema, MetaKey.VALIDATION) || [];
+
+        validations.push(validation);
+
+        this._meta.set(schema, MetaKey.VALIDATION, validations);
+    }
+
+    public validate(model: any): ValidationIssuesException {
+        const validations: Array<IValidation> = this._meta.get(model.constructor, MetaKey.VALIDATION) || [];
+        const errors: ValidationIssuesException = new ValidationIssuesException();
+
+        validations.forEach((validate: IValidation) => {
+            try {
+                validate(model);
+            } catch (e) {
+                if (e instanceof ValidationException) {
+                    LOGGER.warn(e);
+                    errors.push(e);
+                } else {
+                    throw e;
+                }
+            }
+        });
+
+        return errors;
     }
 
     public addField(schema: ISchema, propertyName: string, fieldName: string): void {

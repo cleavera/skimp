@@ -232,6 +232,136 @@ export class UpdateSpec {
         ]);
     }
 
+    @AsyncTest('When putting a resource with unknown fields')
+    public async unknownFields(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        let success: boolean = false;
+
+        try {
+            await request('/person/123', baseOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(404);
+        }
+
+        Expect(success).toBe(false);
+
+        const putOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'PUT',
+            body: {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver2',
+                        unknownField: 123
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
+        });
+
+        const location: string = '/person/123';
+
+        const putResponse: Response = await request(location, putOptions);
+
+        Expect(putResponse.body).toEqual({
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver2'
+                },
+                id: location,
+                type: 'person'
+            }
+        } as IJsonApi);
+
+        Expect(putResponse.statusCode).toBe(201);
+
+        const getSingleResponse: Response = await request(location, baseOptions);
+
+        Expect(getSingleResponse.body).toEqual({
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver2'
+                },
+                id: location,
+                type: 'person'
+            }
+        } as IJsonApi);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver2'
+                    },
+                    id: location,
+                    type: 'person'
+                }
+            } as IJsonApi,
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver'
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
+    }
+
+    @AsyncTest('When putting a model missing required fields')
+    public async modelMissingRequiredFields(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'PUT',
+            body: {
+                data: {
+                    attributes: {
+                        dateOfBirth: '1990-05-04'
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request('/person/123', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(400);
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([{
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi]);
+    }
+
     @AsyncTest('When putting to a schema that does not exist')
     public async schemaDoesNotExist(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {

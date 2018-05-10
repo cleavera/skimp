@@ -101,6 +101,43 @@ export class PostSpec {
         await this.create();
     }
 
+    @AsyncTest('When omitting a required field')
+    public async missingRequiredField(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        dateOfBirth: '1990-05-04'
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request('/person', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(400);
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
+    }
+
     @AsyncTest('When posting to a schema that does not exist')
     public async schemaDoesNotExist(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {

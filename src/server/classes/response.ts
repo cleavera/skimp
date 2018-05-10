@@ -93,6 +93,12 @@ export class Response {
         this._response.end();
     }
 
+    public badRequest(): void {
+        this.statusCode = 400;
+        this._response.write('');
+        this._response.end();
+    }
+
     public noContent(): void {
         this.statusCode = 204;
         this._response.end();

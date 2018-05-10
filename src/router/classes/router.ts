@@ -1,6 +1,7 @@
 import * as $uuid from 'uuid/v4';
 import { LOGGER } from '../../debug';
 import { ISchema, SCHEMA_REGISTER } from '../../schema';
+import { ValidationIssuesException } from '../../schema/exceptions/validation-issues.exception';
 import { IRouter, Request, Response, ResponseMethod } from '../../server';
 import { Nullable } from '../../shared';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
@@ -29,6 +30,12 @@ export class Router implements IRouter {
 
             if (request.content) {
                 model = this._api.deserialise(request.content.json(), location);
+
+                const validationIssues: ValidationIssuesException = SCHEMA_REGISTER.validate(model);
+
+                if (validationIssues.length) {
+                    throw validationIssues;
+                }
             }
 
             if (request.isGet) {
@@ -49,6 +56,9 @@ export class Router implements IRouter {
             } else if (e instanceof MethodNotAllowedException) {
                 LOGGER.warn(e);
                 response.methodNotAllowed();
+            } else if (e instanceof ValidationIssuesException) {
+                LOGGER.warn(...e);
+                response.badRequest();
             } else {
                 throw e;
             }

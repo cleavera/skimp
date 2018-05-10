@@ -5,7 +5,7 @@ import { IAttributes } from '../interfaces/attributes.interface';
 import { IJsonApi } from '../interfaces/json-api.interface';
 
 export class Serialiser {
-    public serialise(model: any, location: Location): IJsonApi { // tslint:disable-line no-any
+    public serialise(model: any, location: Location): IJsonApi {
         const schema: ISchema = model.constructor;
         const fields: Nullable<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
         const type: Nullable<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
