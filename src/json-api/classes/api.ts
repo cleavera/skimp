@@ -1,4 +1,4 @@
-import { IApi, Location, LOCATION_REGISTER, NoLocationRegisteredException, ValidationException } from '../../router';
+import { IApi, Location, MODEL_REGISTER, NoLocationRegisteredException, ValidationException } from '../../router';
 import { Response, ResponseCode } from '../../server';
 import { Nullable } from '../../shared';
 import { RequestNotValidDataException } from '../exception/request-not-valid-data.exception';
@@ -16,7 +16,7 @@ export class Api implements IApi {
     public respond(response: Response, model: Array<any> | any, created?: boolean): void {
         if (Array.isArray(model)) {
             model = model.map((item: any) => {
-                const location: Nullable<Location> = LOCATION_REGISTER.getLocation(item);
+                const location: Nullable<Location> = MODEL_REGISTER.getLocation(item);
 
                 if (!location) {
                     throw new NoLocationRegisteredException(item);
@@ -25,7 +25,7 @@ export class Api implements IApi {
                 return this.serialiser.serialise(item, location);
             });
         } else {
-            const location: Nullable<Location> = LOCATION_REGISTER.getLocation(model);
+            const location: Nullable<Location> = MODEL_REGISTER.getLocation(model);
 
             if (!location) {
                 throw new NoLocationRegisteredException(model);
@@ -61,7 +61,7 @@ export class Api implements IApi {
 
         const model: any = this.serialiser.deserialise(json as IJsonData);
 
-        LOCATION_REGISTER.register(model, location);
+        MODEL_REGISTER.setLocation(model, location);
 
         return model;
     }

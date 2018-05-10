@@ -1,5 +1,5 @@
 import { Entity } from '../../file-system';
-import { IDb, Location, LOCATION_REGISTER, ResourceDoesNotExistException } from '../../router';
+import { IDb, Location, MODEL_REGISTER, ResourceDoesNotExistException } from '../../router';
 import { InvalidDatabaseFilePathException } from '../exceptions/invalid-database-file-path.exception';
 import { Serialiser } from './serialiser';
 
@@ -27,7 +27,7 @@ export class Db implements IDb {
 
         const model: any = this.serialiser.deserialise(await file.readContent());
 
-        LOCATION_REGISTER.register(model, location);
+        MODEL_REGISTER.setLocation(model, location);
 
         return model;
     }
@@ -64,7 +64,7 @@ export class Db implements IDb {
         const filePath: string = location.toString() + '.json';
         const file: Entity = await Entity.fromPath(filePath);
 
-        LOCATION_REGISTER.register(model, location);
+        MODEL_REGISTER.setLocation(model, location);
 
         await file.write(this.serialiser.serialise(model));
     }

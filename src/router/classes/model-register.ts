@@ -1,14 +1,14 @@
 import { IMeta, MetaKey, Nullable } from '../../shared';
 import { Location } from './location';
 
-export class LocationRegister {
+export class ModelRegister {
     private readonly _meta: IMeta;
 
     constructor(meta: IMeta) {
         this._meta = meta;
     }
 
-    public register(model: any, location: Location): void {
+    public setLocation(model: any, location: Location): void {
         this._meta.set(model, MetaKey.LOCATION, location);
     }
 
