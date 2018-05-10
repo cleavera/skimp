@@ -1,4 +1,5 @@
 import * as $uuid from 'uuid/v4';
+import { ValidationException } from '..';
 import { LOGGER } from '../../debug';
 import { ISchema, ModelValidationExceptions, SCHEMA_REGISTER } from '../../schema';
 import { IRouter, Request, Response, ResponseCode, ResponseMethod } from '../../server';
@@ -58,6 +59,9 @@ export class Router implements IRouter {
             } else if (e instanceof ModelValidationExceptions) {
                 LOGGER.warn(...e);
                 this._api.error(response, ResponseCode.BAD_REQUEST, e);
+            } else if (e instanceof ValidationException) {
+                LOGGER.warn(e);
+                this._api.error(response, ResponseCode.BAD_REQUEST, [e]);
             } else {
                 throw e;
             }

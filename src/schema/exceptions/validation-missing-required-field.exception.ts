@@ -1,4 +1,4 @@
-import { ValidationExceptionCode } from '../constants/validation-exception-code.constant';
+import { ValidationExceptionCode } from '../../router';
 import { ModelValidationException } from './model-validation.exception';
 
 export class ValidationMissingRequiredFieldException extends ModelValidationException {

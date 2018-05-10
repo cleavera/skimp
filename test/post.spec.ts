@@ -125,7 +125,7 @@ export class PostSpec {
         } catch (e) {
             Expect(e.statusCode).toEqual(400);
             Expect(e.error).toEqual({
-                error: [
+                errors: [
                     {
                         code: 'invalidJsonData',
                         source: {
@@ -172,7 +172,7 @@ export class PostSpec {
         } catch (e) {
             Expect(e.statusCode).toEqual(400);
             Expect(e.error).toEqual({
-                error: [
+                errors: [
                     {
                         code: 'required',
                         source: {

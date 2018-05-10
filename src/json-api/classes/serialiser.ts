@@ -24,7 +24,7 @@ export class Serialiser {
                     return {
                         code: exception.code,
                         source: {
-                            pointer: field ? `/data/attributes/${field}` : '/'
+                            pointer: field ? `/data/attributes/${field}` : ''
                         }
                     };
                 }));
