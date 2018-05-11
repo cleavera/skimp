@@ -1,4 +1,4 @@
-import { Date, Field, Integer, Number, Required, Schema, String } from '../../src';
+import { Boolean, Date, Field, Integer, Number, Required, Schema, String } from '../../src';
 
 @Schema('person')
 export class PersonSchema {
@@ -8,14 +8,18 @@ export class PersonSchema {
     public name: string;
 
     @Date
-    @Field('dateOfBirth')
+    @Field()
     public dateOfBirth: Date;
 
     @Number
-    @Field('height')
+    @Field()
     public height: number;
 
     @Integer
-    @Field('weight')
+    @Field()
     public weight: number;
+
+    @Boolean
+    @Field()
+    public employed: boolean;
 }

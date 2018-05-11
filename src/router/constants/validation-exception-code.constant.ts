@@ -4,5 +4,6 @@ export enum ValidationExceptionCode {
     INVALID_NUMBER = 'invalidNumber',
     INVALID_INTEGER = 'invalidInteger',
     INVALID_DATE = 'invalidDate',
+    INVALID_BOOLEAN = 'invalidBoolean',
     INVALID_JSON_DATA = 'invalidJsonData'
 }
