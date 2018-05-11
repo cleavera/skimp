@@ -1,6 +1,6 @@
 import { IApi, Location, MODEL_REGISTER, NoLocationRegisteredException, ValidationException } from '../../router';
 import { Response, ResponseCode } from '../../server';
-import { Nullable } from '../../shared';
+import { MissingCreatedDateException, Nullable } from '../../shared';
 import { RequestNotValidDataException } from '../exception/request-not-valid-data.exception';
 import { IJsonApi } from '../interfaces/json-api.interface';
 import { IJsonData } from '../interfaces/json-data.interface';
@@ -15,7 +15,28 @@ export class Api implements IApi {
 
     public respond(response: Response, model: Array<any> | any, created?: boolean): void {
         if (Array.isArray(model)) {
-            model = model.map((item: any) => {
+            model = model.sort((a: any, b: any): number => {
+                const aCreated: Nullable<Date> = MODEL_REGISTER.getCreatedDate(a);
+                const bCreated: Nullable<Date> = MODEL_REGISTER.getCreatedDate(b);
+
+                if (!aCreated) {
+                    throw new MissingCreatedDateException(a);
+                }
+
+                if (!bCreated) {
+                    throw new MissingCreatedDateException(b);
+                }
+
+                if (aCreated < bCreated) {
+                    return 1;
+                }
+
+                if (aCreated > bCreated) {
+                    return -1;
+                }
+
+                return 0;
+            }).map((item: any) => {
                 const location: Nullable<Location> = MODEL_REGISTER.getLocation(item);
 
                 if (!location) {

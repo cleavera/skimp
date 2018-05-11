@@ -30,6 +30,12 @@ export class Entity {
         return (this._stats as Stats).isDirectory();
     }
 
+    public createdDate(): Date {
+        this.assertExists();
+
+        return (this._stats as Stats).birthtime;
+    }
+
     public isFile(): boolean {
         this.assertExists();
 

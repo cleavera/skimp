@@ -28,6 +28,7 @@ export class Db implements IDb {
         const model: any = this.serialiser.deserialise(await file.readContent());
 
         MODEL_REGISTER.setLocation(model, location);
+        MODEL_REGISTER.setCreatedDate(model, file.createdDate());
 
         return model;
     }

@@ -8,6 +8,14 @@ export class ModelRegister {
         this._meta = meta;
     }
 
+    public setCreatedDate(model: any, created: Date): void {
+        this._meta.set(model, MetaKey.CREATED, created);
+    }
+
+    public getCreatedDate(model: any): Nullable<Date> {
+        return this._meta.get(model, MetaKey.CREATED);
+    }
+
     public setLocation(model: any, location: Location): void {
         this._meta.set(model, MetaKey.LOCATION, location);
     }

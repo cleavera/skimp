@@ -15,6 +15,7 @@ import { Entity } from '../src/file-system';
 import { IJsonApi } from '../src/json-api/interfaces/json-api.interface';
 import * as DATA_PATH from './data/path';
 import { PersonSchema } from './schemas/person';
+import uuid = require('uuid');
 
 @TestFixture('Update')
 export class UpdateSpec {
@@ -157,9 +158,10 @@ export class UpdateSpec {
         };
 
         let success: boolean = false;
+        const location: string = `/person/${uuid.v4()}`;
 
         try {
-            await request('/person/123', baseOptions);
+            await request(location, baseOptions);
 
             success = true;
         } catch (e) {
@@ -179,8 +181,6 @@ export class UpdateSpec {
                 }
             } as IJsonApi
         });
-
-        const location: string = '/person/123';
 
         const putResponse: Response = await request(location, putOptions);
 
@@ -240,17 +240,7 @@ export class UpdateSpec {
             resolveWithFullResponse: true
         };
 
-        let success: boolean = false;
-
-        try {
-            await request('/person/123', baseOptions);
-
-            success = true;
-        } catch (e) {
-            Expect(e.statusCode).toEqual(404);
-        }
-
-        Expect(success).toBe(false);
+        const location: string = `/person/${uuid.v4()}`;
 
         const putOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
             method: 'PUT',
@@ -264,8 +254,6 @@ export class UpdateSpec {
                 }
             } as IJsonApi
         });
-
-        const location: string = '/person/123';
 
         const putResponse: Response = await request(location, putOptions);
 
@@ -337,10 +325,11 @@ export class UpdateSpec {
             } as IJsonApi
         });
 
+        const location: string = `/person/${uuid.v4()}`;
         let success: boolean = false;
 
         try {
-            await request('/person/123', postOptions);
+            await request(location, postOptions);
 
             success = true;
         } catch (e) {
@@ -382,10 +371,11 @@ export class UpdateSpec {
             } as IJsonApi
         });
 
+        const location: string = `/invalid/${uuid.v4()}`;
         let success: boolean = false;
 
         try {
-            await request('/invalid/123', postOptions);
+            await request(location, postOptions);
 
             success = true;
         } catch (e) {
