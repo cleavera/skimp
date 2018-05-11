@@ -25,7 +25,7 @@ export class Serialiser {
 
         const out: IJsonFile = {
             type,
-            data: fields.reduce((result: IData, field: IFieldMapping): IData => {
+            data: fields.reduce<IData>((result: IData, field: IFieldMapping): IData => {
                 result[field.fieldName] = SCHEMA_REGISTER.serialise(schema, field.propertyName, model[field.propertyName]);
 
                 return result;

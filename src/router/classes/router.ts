@@ -40,13 +40,21 @@ export class Router implements IRouter {
             }
 
             if (request.isGet) {
-                return await this._get(location, response);
+                await this._get(location, response);
+
+                return;
             } else if (request.isPut) {
-                return await this._put(location, model, response);
+                await this._put(location, model, response);
+
+                return;
             } else if (request.isPost) {
-                return await this._post(location, model, response);
+                await this._post(location, model, response);
+
+                return;
             } else if (request.isDelete) {
-                return await this._delete(location, response);
+                await this._delete(location, response);
+
+                return;
             } else {
                 throw new MethodNotAllowedException(request.method as ResponseMethod, request.url);
             }
@@ -77,10 +85,12 @@ export class Router implements IRouter {
         }
 
         if (location.resourceId) {
-            return this._api.respond(response, await this._db.get(location));
+            this._api.respond(response, await this._db.get(location));
+
+            return;
         }
 
-        return this._api.respond(response, await this._db.list(location));
+        this._api.respond(response, await this._db.list(location));
     }
 
     private async _post(location: Location, model: any, response: Response): Promise<void> {

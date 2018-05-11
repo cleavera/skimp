@@ -50,7 +50,7 @@ export class Serialiser {
             data: {
                 type,
                 id: location.toString(),
-                attributes: fields.reduce((result: IAttributes, field: IFieldMapping): IAttributes => {
+                attributes: fields.reduce<IAttributes>((result: IAttributes, field: IFieldMapping): IAttributes => {
                     result[field.fieldName] = SCHEMA_REGISTER.serialise(schema, field.propertyName, model[field.propertyName]);
 
                     return result;

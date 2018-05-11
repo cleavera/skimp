@@ -41,7 +41,7 @@ export class FileSystem {
 
             const resourcePath: string = join(this.path, resourceName);
 
-            await new Promise((resolve: () => void, reject: (reason: Error) => void): void => {
+            await new Promise<void>((resolve: () => void, reject: (reason: Error) => void): void => {
                 mkdir(resourcePath, (err: ErrnoException) => {
                     if (err && err.code !== 'EEXIST') {
                         reject(err);

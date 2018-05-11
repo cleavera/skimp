@@ -120,7 +120,6 @@
     "strict-type-predicates": true,
     "switch-default": true,
     "triple-equals": true,
-    "typeof-compare": true,
     "use-isnan": true,
 
     "cyclomatic-complexity": true,
