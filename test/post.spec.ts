@@ -205,8 +205,10 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([]);
     }
 
+    @TestCase(3)
+    @TestCase(true)
     @AsyncTest('When sending an invalid string value')
-    public async invalidString(): Promise<void> {
+    public async invalidString(value: any): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
@@ -218,7 +220,7 @@ export class PostSpec {
             body: {
                 data: {
                     attributes: {
-                        fullName: 3
+                        fullName: value
                     },
                     type: 'person'
                 }
@@ -252,8 +254,10 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([]);
     }
 
+    @TestCase('abc')
+    @TestCase(true)
     @AsyncTest('When sending an invalid number value')
-    public async invalidNumber(): Promise<void> {
+    public async invalidNumber(value: any): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
@@ -266,7 +270,7 @@ export class PostSpec {
                 data: {
                     attributes: {
                         fullName: 'Anthony Cleaver',
-                        height: '123'
+                        height: value
                     },
                     type: 'person'
                 }
@@ -300,8 +304,11 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([]);
     }
 
+    @TestCase('abc')
+    @TestCase(true)
+    @TestCase(12.5)
     @AsyncTest('When sending an invalid integer value')
-    public async invalidInteger(): Promise<void> {
+    public async invalidInteger(value: any): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
@@ -314,7 +321,7 @@ export class PostSpec {
                 data: {
                     attributes: {
                         fullName: 'Anthony Cleaver',
-                        weight: 12.5
+                        weight: value
                     },
                     type: 'person'
                 }
