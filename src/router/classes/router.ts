@@ -1,11 +1,12 @@
 import * as $uuid from 'uuid/v4';
-import { ValidationException } from '..';
 import { LOGGER } from '../../debug';
-import { ISchema, ModelValidationExceptions, SCHEMA_REGISTER } from '../../schema';
+import { ISchema, SCHEMA_REGISTER } from '../../schema';
 import { IRouter, Request, Response, ResponseCode, ResponseMethod } from '../../server';
 import { Nullable } from '../../shared';
+import { ModelValidationExceptions } from '../../validators';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
+import { ValidationException } from '../exceptions/validation.exception';
 import { IApi } from '../interfaces/api.interface';
 import { IDb } from '../interfaces/db.interface';
 import { Location } from './location';

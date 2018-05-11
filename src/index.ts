@@ -1,5 +1,5 @@
-export { Required } from './schema';
+export { Boolean, Date, Integer, Number, Required, String } from './validators';
 export { ConsoleLogger, ILogger } from './debug';
 export { init } from './init';
 export { Server } from './server';
-export { Boolean, Date, Field, Integer, Number, Schema, String } from './schema';
+export { Field, Schema } from './schema';

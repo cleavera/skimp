@@ -1,5 +1,5 @@
 import { ValidationExceptionCode } from '../../router';
-import { ModelPointer } from '../classes/model-pointer';
+import { ModelPointer } from '../../schema';
 import { ModelValidationException } from './model-validation.exception';
 
 export class ValidationFieldInvalidIntegerException extends ModelValidationException {

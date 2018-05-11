@@ -1,4 +1,4 @@
-import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
+import { SCHEMA_REGISTER } from '../../schema';
 import { ValidationFieldInvalidIntegerException } from '../exceptions/validation-field-invalid-integer.exception';
 
 export function Integer(target: any, propertyKey: string): void {

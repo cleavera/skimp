@@ -3,13 +3,13 @@ import {
     IFieldMapping,
     ISchema,
     ModelPointer,
-    ModelValidationException,
     ResourceNotRegisteredException,
     SCHEMA_REGISTER,
     SchemaHasNoFieldsException,
     SchemaNotRegisteredException
 } from '../../schema';
 import { Nullable } from '../../shared';
+import { ModelValidationException } from '../../validators';
 import { IAttributes } from '../interfaces/attributes.interface';
 import { IJsonData } from '../interfaces/json-data.interface';
 import { IJsonError } from '../interfaces/json-error.interface';

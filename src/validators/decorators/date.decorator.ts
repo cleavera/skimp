@@ -1,5 +1,5 @@
+import { SCHEMA_REGISTER } from '../../schema';
 import { Nullable } from '../../shared';
-import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { ValidationFieldInvalidDateException } from '../exceptions/validation-field-invalid-date.exception';
 
 export function DateType(target: any, propertyKey: string): void {

@@ -1,4 +1,4 @@
-import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
+import { SCHEMA_REGISTER } from '../../schema';
 import { ValidationFieldRequiredException } from '../exceptions/validation-field-required.exception';
 
 export function Required(target: any, propertyKey: string): void {
