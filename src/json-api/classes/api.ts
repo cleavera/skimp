@@ -76,7 +76,7 @@ export class Api implements IApi {
     }
 
     public deserialise(json: IJsonApi, location: Location): any {
-        if (!this.isData(json)) {
+        if (!Api.isData(json)) {
             throw new RequestNotValidDataException(json);
         }
 
@@ -87,7 +87,7 @@ export class Api implements IApi {
         return model;
     }
 
-    private isData(json: IJsonApi): json is IJsonData {
+    private static isData(json: IJsonApi): json is IJsonData {
         return 'data' in json && 'attributes' in json.data && 'type' in json.data;
     }
 }
