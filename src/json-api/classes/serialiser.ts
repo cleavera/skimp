@@ -51,7 +51,7 @@ export class Serialiser {
                 type,
                 id: location.toString(),
                 attributes: fields.reduce((result: IAttributes, field: IFieldMapping): IAttributes => {
-                    result[field.fieldName] = model[field.propertyName];
+                    result[field.fieldName] = SCHEMA_REGISTER.serialise(schema, field.propertyName, model[field.propertyName]);
 
                     return result;
                 }, {})
@@ -75,7 +75,7 @@ export class Serialiser {
         const model: any = new schema(); // tslint:disable-line no-any
 
         fields.forEach((field: IFieldMapping) => {
-            model[field.propertyName] = json.data.attributes[field.fieldName];
+            model[field.propertyName] = SCHEMA_REGISTER.deserialise(schema, field.propertyName, json.data.attributes[field.fieldName]);
         });
 
         return model;

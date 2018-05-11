@@ -4,6 +4,7 @@ export { ModelValidationExceptions } from './exceptions/model-validation.excepti
 export { Required } from './decorators/required.decorator';
 export { String } from './decorators/string.decorator';
 export { Number } from './decorators/number.decorator';
+export { DateType as Date } from './decorators/date.decorator';
 export { Integer } from './decorators/integer.decorator';
 export { ResourceNotRegisteredException } from './exceptions/resource-not-registered.exception';
 export { SchemaNotRegisteredException } from './exceptions/schema-not-registered.exception';

@@ -26,7 +26,7 @@ export class Serialiser {
         const out: IJsonFile = {
             type,
             data: fields.reduce((result: IData, field: IFieldMapping): IData => {
-                result[field.fieldName] = model[field.propertyName];
+                result[field.fieldName] = SCHEMA_REGISTER.serialise(schema, field.propertyName, model[field.propertyName]);
 
                 return result;
             }, {})
@@ -52,7 +52,7 @@ export class Serialiser {
         const model: any = new schema(); // tslint:disable-line no-any
 
         fields.forEach((field: IFieldMapping) => {
-            model[field.propertyName] = json.data[field.fieldName];
+            model[field.propertyName] = SCHEMA_REGISTER.deserialise(schema, field.propertyName, json.data[field.fieldName]);
         });
 
         return model;

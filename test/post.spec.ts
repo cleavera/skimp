@@ -3,7 +3,7 @@ import {
     AsyncTeardown,
     AsyncTeardownFixture,
     AsyncTest,
-    Expect,
+    Expect, TestCase,
     TestFixture
 } from 'alsatian';
 import { Response } from 'request';
@@ -55,6 +55,7 @@ export class PostSpec {
                 data: {
                     attributes: {
                         fullName: 'Anthony Cleaver',
+                        dateOfBirth: '1990-05-04',
                         height: 180,
                         weight: 78
                     },
@@ -70,6 +71,7 @@ export class PostSpec {
             data: {
                 attributes: {
                     fullName: 'Anthony Cleaver',
+                    dateOfBirth: '1990-05-04',
                     height: 180,
                     weight: 78
                 },
@@ -84,6 +86,7 @@ export class PostSpec {
             data: {
                 attributes: {
                     fullName: 'Anthony Cleaver',
+                    dateOfBirth: '1990-05-04',
                     height: 180,
                     weight: 78
                 },
@@ -98,6 +101,7 @@ export class PostSpec {
             data: {
                 attributes: {
                     fullName: 'Anthony Cleaver',
+                    dateOfBirth: '1990-05-04',
                     height: 180,
                     weight: 78
                 },
@@ -344,6 +348,75 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([]);
     }
 
+    @TestCase(123)
+    @TestCase('abc')
+    @TestCase('1990-1-2')
+    @TestCase('1990-01-2')
+    @TestCase('1990-1-02')
+    @TestCase('1990-00-02')
+    @TestCase('1990-01-00')
+    @TestCase('1990-13-12')
+    @TestCase('1990-01-32')
+    @TestCase('2001-02-29')
+    @TestCase('2004-02-30')
+    @TestCase('1990-03-32')
+    @TestCase('1990-04-31')
+    @TestCase('1990-05-32')
+    @TestCase('1990-06-31')
+    @TestCase('1990-07-32')
+    @TestCase('1990-08-32')
+    @TestCase('1990-09-31')
+    @TestCase('1990-10-32')
+    @TestCase('1990-11-31')
+    @TestCase('1990-12-32')
+    @AsyncTest('When sending an invalid date')
+    public async invalidDate(date: any): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: date
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request('/person', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(400);
+            Expect(e.error).toEqual({
+                errors: [
+                    {
+                        code: ValidationExceptionCode.INVALID_DATE,
+                        source: {
+                            pointer: '/data/attributes/dateOfBirth'
+                        }
+                    }
+                ]
+            });
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
+    }
+
     @AsyncTest('When posting to a schema that does not exist')
     public async schemaDoesNotExist(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
@@ -458,6 +531,7 @@ export class PostSpec {
             data: {
                 attributes: {
                     fullName: 'Anthony Cleaver',
+                    dateOfBirth: '1990-05-04',
                     height: 180,
                     weight: 78
                 },

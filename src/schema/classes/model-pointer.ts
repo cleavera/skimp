@@ -9,7 +9,7 @@ export class ModelPointer {
     constructor(model: any, property: string) {
         const field: Nullable<string> = SCHEMA_REGISTER.mapToField(model.constructor, property);
 
-        if ((!(property in model)) || !field) {
+        if (!field) {
             throw new InvalidPointerException(model, property);
         }
 

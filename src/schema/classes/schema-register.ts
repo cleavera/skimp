@@ -2,6 +2,8 @@ import { LOGGER } from '../../debug';
 import { IMeta, MetaKey, Nullable } from '../../shared';
 import { ModelValidationException } from '../exceptions/model-validation.exception';
 import { ModelValidationExceptions } from '../exceptions/model-validation.exceptions';
+import { IValueDeserialiser } from '../exceptions/value-deserialiser.interface';
+import { IValueSerialiser } from '../exceptions/value-serialiser.interface';
 import { IFieldMapping } from '../interfaces/field-mapping.interface';
 import { ISchema } from '../interfaces/schema.interface';
 import { IValidation } from '../interfaces/validation.interface';
@@ -31,6 +33,34 @@ export class SchemaRegister {
 
     public getSchema(resourceName: string): Nullable<ISchema> {
         return this._schemas[resourceName];
+    }
+
+    public addSerialiser(schema: ISchema, propertyName: string, serialiser: IValueSerialiser, deserialiser: IValueDeserialiser): void {
+        const serialisers: { [key: string]: { serialiser: IValueSerialiser, deserialiser: IValueDeserialiser } } = this._meta.get(schema, MetaKey.SERIALISER) || {};
+
+        serialisers[propertyName] = { serialiser, deserialiser };
+
+        this._meta.set(schema, MetaKey.SERIALISER, serialisers);
+    }
+
+    public serialise(schema: ISchema, propertyName: string, value: any): any {
+        const serialisers: { [key: string]: { serialiser: IValueSerialiser, deserialiser: IValueDeserialiser } } = this._meta.get(schema, MetaKey.SERIALISER) || {};
+
+        if (!(propertyName in serialisers)) {
+            return value;
+        }
+
+        return serialisers[propertyName].serialiser(value);
+    }
+
+    public deserialise(schema: ISchema, propertyName: string, value: any): any {
+        const serialisers: { [key: string]: { serialiser: IValueSerialiser, deserialiser: IValueDeserialiser } } = this._meta.get(schema, MetaKey.SERIALISER) || {};
+
+        if (!(propertyName in serialisers)) {
+            return value;
+        }
+
+        return serialisers[propertyName].deserialiser(value);
     }
 
     public addValidation(schema: ISchema, validation: IValidation): void {
