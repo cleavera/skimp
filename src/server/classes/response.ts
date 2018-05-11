@@ -53,7 +53,7 @@ export class Response {
     }
 
     public serverError(error: Error): void {
-        LOGGER.exception(error);
+        LOGGER.error(error);
 
         this.statusCode = ResponseCode.SERVER_ERROR;
         this._response.write(JSON.stringify(error));

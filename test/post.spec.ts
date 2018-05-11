@@ -10,6 +10,7 @@ import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
 import * as request from 'request-promise-native';
 import { init, Server } from '../src';
+import { LOGGER, LogLevel } from '../src/debug';
 import { Entity } from '../src/file-system';
 import { IJsonApi } from '../src/json-api/interfaces/json-api.interface';
 import * as DATA_PATH from './data/path';
@@ -23,6 +24,7 @@ export class PostSpec {
     @AsyncSetupFixture
     public async setup(): Promise<void> {
         this._server = await init(1338, DATA_PATH, [PersonSchema]);
+        LOGGER.setLogLevel(LogLevel.ERROR);
     }
 
     @AsyncTeardownFixture

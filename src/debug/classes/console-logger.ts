@@ -5,15 +5,11 @@ export class ConsoleLogger implements ILogger {
         console.log(...messages); // tslint:disable-line no-console
     }
 
-    public warn(...messages: Array<any>): void { // tslint:disable-line no-any
+    public warn(...messages: Array<Error>): void {
         console.warn(...messages); // tslint:disable-line no-console
     }
 
-    public error(...messages: Array<any>): void { // tslint:disable-line no-any
+    public error(...messages: Array<Error>): void {
         console.error(...messages); // tslint:disable-line no-console
-    }
-
-    public exception(exception: Error): void {
-        console.error(exception); // tslint:disable-line no-console
     }
 }

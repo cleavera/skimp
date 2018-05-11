@@ -1,16 +1,26 @@
-import { ILogger } from '..';
+import { LogLevel } from '../constants/log-level.constant';
 import { NoLoggerException } from '../exceptions/no-logger.exception';
+import { ILogger } from '../interfaces/logger.interface';
 
 export class Logger implements ILogger {
     private _logger: ILogger;
+    private _logLevel: LogLevel;
 
-    public configure(loggerClass: ILogger): void {
+    public setLogger(loggerClass: ILogger): void {
         this._logger = loggerClass;
+    }
+
+    public setLogLevel(level: LogLevel): void {
+        this._logLevel = level;
     }
 
     public debug(...messages: Array<any>): void {
         if (!this._logger) {
             throw new NoLoggerException();
+        }
+
+        if (this._logLevel > LogLevel.DEBUG) {
+            return;
         }
 
         this._logger.debug(...messages);
@@ -21,24 +31,22 @@ export class Logger implements ILogger {
             throw new NoLoggerException();
         }
 
-        this._logger.warn(...exceptions.map((exception: Error) => {
-            return exception.message;
-        }));
+        if (this._logLevel > LogLevel.WARNING) {
+            return;
+        }
+
+        this._logger.warn(...exceptions);
     }
 
-    public error(...messages: Array<any>): void { // tslint:disable-line no-any
+    public error(...exception: Array<Error>): void {
         if (!this._logger) {
             throw new NoLoggerException();
         }
 
-        this._logger.error(...messages);
-    }
-
-    public exception(exception: Error): void {
-        if (!this._logger) {
-            throw new NoLoggerException();
+        if (this._logLevel > LogLevel.ERROR) {
+            return;
         }
 
-        this._logger.exception(exception);
+        this._logger.error(...exception);
     }
 }

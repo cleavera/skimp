@@ -7,7 +7,7 @@ import { ISchema } from './schema';
 import { Server } from './server';
 
 export async function init(port: number, dataPath: string, _schemas: Array<ISchema>, loggerClass: ILogger = new ConsoleLogger()): Promise<Server> {
-    LOGGER.configure(loggerClass);
+    LOGGER.setLogger(loggerClass);
     await FILE_SYSTEM.configure(dataPath);
     const server: Server = new Server(port, new Router(new Api(), new Db()));
 
