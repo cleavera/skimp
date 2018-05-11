@@ -2,6 +2,7 @@ export { ModelPointer } from './classes/model-pointer';
 export { ModelValidationException } from './exceptions/model-validation.exception';
 export { ModelValidationExceptions } from './exceptions/model-validation.exceptions';
 export { Required } from './decorators/required.decorator';
+export { String } from './decorators/string.decorator';
 export { ResourceNotRegisteredException } from './exceptions/resource-not-registered.exception';
 export { SchemaNotRegisteredException } from './exceptions/schema-not-registered.exception';
 export { SchemaHasNoFieldsException } from './exceptions/schema-has-no-fields.exception';

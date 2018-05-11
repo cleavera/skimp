@@ -1,8 +1,9 @@
-import { Field, Required, Schema } from '../../src';
+import { Field, Required, Schema, String } from '../../src';
 
 @Schema('person')
 export class PersonSchema {
     @Required
+    @String
     @Field('fullName')
     public name: string;
 

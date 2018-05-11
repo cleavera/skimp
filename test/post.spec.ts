@@ -13,6 +13,7 @@ import { init, Server } from '../src';
 import { LOGGER, LogLevel } from '../src/debug';
 import { Entity } from '../src/file-system';
 import { IJsonApi } from '../src/json-api/interfaces/json-api.interface';
+import { ValidationExceptionCode } from '../src/router';
 import * as DATA_PATH from './data/path';
 import { PersonSchema } from './schemas/person';
 
@@ -129,7 +130,7 @@ export class PostSpec {
             Expect(e.error).toEqual({
                 errors: [
                     {
-                        code: 'invalidJsonData',
+                        code: ValidationExceptionCode.INVALID_JSON_DATA,
                         source: {
                             pointer: ''
                         }
@@ -176,7 +177,54 @@ export class PostSpec {
             Expect(e.error).toEqual({
                 errors: [
                     {
-                        code: 'required',
+                        code: ValidationExceptionCode.REQUIRED,
+                        source: {
+                            pointer: '/data/attributes/fullName'
+                        }
+                    }
+                ]
+            });
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
+    }
+
+    @AsyncTest('When sending an invalid string value')
+    public async invalidString(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        fullName: 3
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request('/person', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(400);
+            Expect(e.error).toEqual({
+                errors: [
+                    {
+                        code: ValidationExceptionCode.INVALID_STRING,
                         source: {
                             pointer: '/data/attributes/fullName'
                         }
