@@ -54,7 +54,9 @@ export class PostSpec {
             body: {
                 data: {
                     attributes: {
-                        fullName: 'Anthony Cleaver'
+                        fullName: 'Anthony Cleaver',
+                        height: 180,
+                        weight: 78
                     },
                     type: 'person'
                 }
@@ -67,7 +69,9 @@ export class PostSpec {
         Expect(postResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    height: 180,
+                    weight: 78
                 },
                 id: this.location,
                 type: 'person'
@@ -79,7 +83,9 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([{
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    height: 180,
+                    weight: 78
                 },
                 id: this.location,
                 type: 'person'
@@ -91,7 +97,9 @@ export class PostSpec {
         Expect(getSingleResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    height: 180,
+                    weight: 78
                 },
                 id: this.location,
                 type: 'person'
@@ -240,6 +248,102 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([]);
     }
 
+    @AsyncTest('When sending an invalid number value')
+    public async invalidNumber(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        height: '123'
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request('/person', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(400);
+            Expect(e.error).toEqual({
+                errors: [
+                    {
+                        code: ValidationExceptionCode.INVALID_NUMBER,
+                        source: {
+                            pointer: '/data/attributes/height'
+                        }
+                    }
+                ]
+            });
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
+    }
+
+    @AsyncTest('When sending an invalid integer value')
+    public async invalidInteger(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        weight: 12.5
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request('/person', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(400);
+            Expect(e.error).toEqual({
+                errors: [
+                    {
+                        code: ValidationExceptionCode.INVALID_INTEGER,
+                        source: {
+                            pointer: '/data/attributes/weight'
+                        }
+                    }
+                ]
+            });
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
+    }
+
     @AsyncTest('When posting to a schema that does not exist')
     public async schemaDoesNotExist(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
@@ -353,7 +457,9 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([{
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    height: 180,
+                    weight: 78
                 },
                 id: this.location,
                 type: 'person'

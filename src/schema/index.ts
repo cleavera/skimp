@@ -3,6 +3,8 @@ export { ModelValidationException } from './exceptions/model-validation.exceptio
 export { ModelValidationExceptions } from './exceptions/model-validation.exceptions';
 export { Required } from './decorators/required.decorator';
 export { String } from './decorators/string.decorator';
+export { Number } from './decorators/number.decorator';
+export { Integer } from './decorators/integer.decorator';
 export { ResourceNotRegisteredException } from './exceptions/resource-not-registered.exception';
 export { SchemaNotRegisteredException } from './exceptions/schema-not-registered.exception';
 export { SchemaHasNoFieldsException } from './exceptions/schema-has-no-fields.exception';
