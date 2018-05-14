@@ -1,7 +1,7 @@
 import * as $uuid from 'uuid/v4';
 import { LOGGER } from '../../debug';
 import { ISchema, SCHEMA_REGISTER } from '../../schema';
-import { IRouter, Request, Response, ResponseCode, ResponseMethod } from '../../server';
+import { IRouter, Request, Response, ResponseCode, RequestMethod } from '../../server';
 import { Nullable } from '../../shared';
 import { ModelValidationExceptions } from '../../validators';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
@@ -56,7 +56,7 @@ export class Router implements IRouter {
 
                 return;
             } else {
-                throw new MethodNotAllowedException(request.method as ResponseMethod, request.url);
+                throw new MethodNotAllowedException(request.method as RequestMethod, request.url);
             }
         } catch (e) {
             if (e instanceof ResourceDoesNotExistException) {
@@ -102,7 +102,7 @@ export class Router implements IRouter {
 
         if (location.resourceId) {
             if (await this._db.exists(location)) {
-                throw new MethodNotAllowedException(ResponseMethod.POST, location.toUrl());
+                throw new MethodNotAllowedException(RequestMethod.POST, location.toUrl());
             } else {
                 throw new ResourceDoesNotExistException(location.toUrl());
             }
@@ -123,7 +123,7 @@ export class Router implements IRouter {
         }
 
         if (!location.resourceId) {
-            throw new MethodNotAllowedException(ResponseMethod.PUT, location.toUrl());
+            throw new MethodNotAllowedException(RequestMethod.PUT, location.toUrl());
         }
 
         const isCreate: boolean = !await this._db.exists(location);
@@ -141,7 +141,7 @@ export class Router implements IRouter {
         }
 
         if (!location.resourceId) {
-            throw new MethodNotAllowedException(ResponseMethod.DELETE, location.toUrl());
+            throw new MethodNotAllowedException(RequestMethod.DELETE, location.toUrl());
         }
 
         await this._db.delete(location);

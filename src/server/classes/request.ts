@@ -1,6 +1,6 @@
 import { IncomingMessage } from 'http';
 import { Nullable } from '../../shared';
-import { ResponseMethod } from '../constants/response-methods.constant';
+import { RequestMethod } from '../constants/request-method.constant';
 import { Content } from './content';
 import { Url } from './url';
 
@@ -23,7 +23,7 @@ export class Request {
             return true;
         }
 
-        return this.method === ResponseMethod.GET;
+        return this.method === RequestMethod.GET;
     }
 
     public get isPut(): boolean {
@@ -31,7 +31,7 @@ export class Request {
             return false;
         }
 
-        return this.method === ResponseMethod.PUT;
+        return this.method === RequestMethod.PUT;
     }
 
     public get isPost(): boolean {
@@ -39,7 +39,7 @@ export class Request {
             return false;
         }
 
-        return this.method === ResponseMethod.POST;
+        return this.method === RequestMethod.POST;
     }
 
     public get isDelete(): boolean {
@@ -47,7 +47,7 @@ export class Request {
             return false;
         }
 
-        return this.method === ResponseMethod.DELETE;
+        return this.method === RequestMethod.DELETE;
     }
 
     public static async fromIncomingMessage(message: IncomingMessage): Promise<Request> {

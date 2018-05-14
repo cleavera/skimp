@@ -1,5 +1,5 @@
 export { ResponseCode } from './constants/response-code.constant';
-export { ResponseMethod } from './constants/response-methods.constant';
+export { RequestMethod } from './constants/request-method.constant';
 export { Url } from './classes/url';
 export { Request } from './classes/request';
 export { Response } from './classes/response';
