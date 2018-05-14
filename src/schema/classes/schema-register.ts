@@ -1,6 +1,6 @@
 import { LOGGER } from '../../debug';
 import { IMeta, MetaKey, Nullable } from '../../shared';
-import { ValidationException, ValidationExceptions } from '../../validators';
+import { ValidationException, ValidationExceptions } from '../../validation';
 import { IValueDeserialiser } from '../exceptions/value-deserialiser.interface';
 import { IValueSerialiser } from '../exceptions/value-serialiser.interface';
 import { IFieldMapping } from '../interfaces/field-mapping.interface';

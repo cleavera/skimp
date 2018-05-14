@@ -10,7 +10,7 @@ import {
 } from '../../schema';
 import { Url } from '../../server';
 import { Nullable } from '../../shared';
-import { ModelValidationException, ValidationException } from '../../validators';
+import { ModelValidationException, ValidationException } from '../../validation';
 import { InvalidJSONRelationship } from '../exception/invalid-json-relationship.exception';
 import { IAttributes } from '../interfaces/attributes.interface';
 import { IJsonData } from '../interfaces/json-data.interface';

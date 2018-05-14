@@ -3,7 +3,7 @@ import { LOGGER } from '../../debug';
 import { ISchema, SCHEMA_REGISTER } from '../../schema';
 import { IRouter, Request, RequestMethod, Response, ResponseCode } from '../../server';
 import { Nullable } from '../../shared';
-import { ValidationException, ValidationExceptions } from '../../validators';
+import { ValidationException, ValidationExceptions } from '../../validation';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
 import { IApi } from '../interfaces/api.interface';
