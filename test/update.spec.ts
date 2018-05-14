@@ -15,7 +15,7 @@ import { LOGGER, LogLevel } from '../src/debug';
 import { Entity } from '../src/file-system';
 import { IJsonApi } from '../src/json-api/interfaces/json-api.interface';
 import * as DATA_PATH from './data/path';
-import { PersonSchema } from './schemas/person';
+import { SCHEMAS } from './schemas';
 import uuid = require('uuid');
 
 @TestFixture('Update')
@@ -25,7 +25,7 @@ export class UpdateSpec {
 
     @AsyncSetupFixture
     public async setup(): Promise<void> {
-        this._server = await init(1338, DATA_PATH, [PersonSchema]);
+        this._server = await init(1338, DATA_PATH, SCHEMAS);
         LOGGER.setLogLevel(LogLevel.ERROR);
     }
 

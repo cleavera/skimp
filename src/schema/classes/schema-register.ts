@@ -4,6 +4,7 @@ import { ModelValidationException, ModelValidationExceptions } from '../../valid
 import { IValueDeserialiser } from '../exceptions/value-deserialiser.interface';
 import { IValueSerialiser } from '../exceptions/value-serialiser.interface';
 import { IFieldMapping } from '../interfaces/field-mapping.interface';
+import { IRelationshipDefinition } from '../interfaces/relationship-definition.interface';
 import { ISchema } from '../interfaces/schema.interface';
 import { IValidation } from '../interfaces/validation.interface';
 
@@ -88,6 +89,18 @@ export class SchemaRegister {
         });
 
         return errors;
+    }
+
+    public addSchemaRelationship(schema: ISchema, relationship: ISchema, limit?: number): void {
+        const relationships: Array<IRelationshipDefinition> = this._meta.get(schema, MetaKey.SCHEMA_RELATIONSHIPS) || [];
+
+        relationships.push({ limit, schema: relationship });
+
+        this._meta.set(schema, MetaKey.SCHEMA_RELATIONSHIPS, relationships);
+    }
+
+    public getRelationships(schema: ISchema): Nullable<Array<ISchema>> {
+        return this._meta.get(schema, MetaKey.SCHEMA_RELATIONSHIPS);
     }
 
     public addField(schema: ISchema, propertyName: string, fieldName: string): void {

@@ -1,7 +1,7 @@
 import * as $uuid from 'uuid/v4';
 import { LOGGER } from '../../debug';
 import { ISchema, SCHEMA_REGISTER } from '../../schema';
-import { IRouter, Request, Response, ResponseCode, RequestMethod } from '../../server';
+import { IRouter, Request, RequestMethod, Response, ResponseCode } from '../../server';
 import { Nullable } from '../../shared';
 import { ModelValidationExceptions } from '../../validators';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';

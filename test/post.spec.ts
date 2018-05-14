@@ -3,7 +3,8 @@ import {
     AsyncTeardown,
     AsyncTeardownFixture,
     AsyncTest,
-    Expect, TestCase,
+    Expect,
+    TestCase,
     TestFixture
 } from 'alsatian';
 import { Response } from 'request';
@@ -15,7 +16,7 @@ import { Entity } from '../src/file-system';
 import { IJsonApi } from '../src/json-api/interfaces/json-api.interface';
 import { ValidationExceptionCode } from '../src/router';
 import * as DATA_PATH from './data/path';
-import { PersonSchema } from './schemas/person';
+import { SCHEMAS } from './schemas';
 
 @TestFixture('Post')
 export class PostSpec {
@@ -24,7 +25,7 @@ export class PostSpec {
 
     @AsyncSetupFixture
     public async setup(): Promise<void> {
-        this._server = await init(1338, DATA_PATH, [PersonSchema]);
+        this._server = await init(1338, DATA_PATH, SCHEMAS);
         LOGGER.setLogLevel(LogLevel.ERROR);
     }
 
@@ -601,5 +602,88 @@ export class PostSpec {
                 type: 'person'
             }
         } as IJsonApi]);
+    }
+
+    @AsyncTest('When adding a relationship')
+    public async addRelationship(): Promise<void> {
+        await this.create();
+
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        name: 'Web developer'
+                    },
+                    relationships: [
+                        {
+                            href: this.location
+                        }
+                    ],
+                    type: 'job'
+                }
+            } as IJsonApi
+        });
+
+        const postResponse: Response = await request('/job', postOptions);
+        const location: string = postResponse.headers.location || '';
+
+        Expect(postResponse.body).toEqual({
+            data: {
+                attributes: {
+                    name: 'Web developer'
+                },
+                id: location,
+                relationships: [
+                    {
+                        href: this.location,
+                        type: 'person'
+                    }
+                ],
+                type: 'job'
+            }
+        } as IJsonApi);
+
+        const getResponse: Response = await request('/job', baseOptions);
+
+        Expect(getResponse.body).toEqual([{
+            data: {
+                attributes: {
+                    name: 'Web developer'
+                },
+                id: location,
+                relationships: [
+                    {
+                        href: this.location,
+                        type: 'person'
+                    }
+                ],
+                type: 'job'
+            }
+        } as IJsonApi]);
+
+        const getSingleResponse: Response = await request(location, baseOptions);
+
+        Expect(getSingleResponse.body).toEqual({
+            data: {
+                attributes: {
+                    name: 'Web developer'
+                },
+                id: location,
+                relationships: [
+                    {
+                        href: this.location,
+                        type: 'person'
+                    }
+                ],
+                type: 'job'
+            }
+        } as IJsonApi);
     }
 }

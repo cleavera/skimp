@@ -23,4 +23,16 @@ export class ModelRegister {
     public getLocation(model: any): Nullable<Location> {
         return this._meta.get(model, MetaKey.LOCATION);
     }
+
+    public addRelationship(model: any, relationship: Location): void {
+        const relationships: Array<Location> = this._meta.get(model, MetaKey.MODEL_RELATIONSHIPS) || [];
+
+        relationships.push(relationship);
+
+        this._meta.set(model, MetaKey.MODEL_RELATIONSHIPS, relationships);
+    }
+
+    public getRelationships(model: any): Array<Location> {
+        return this._meta.get(model, MetaKey.MODEL_RELATIONSHIPS) || [];
+    }
 }

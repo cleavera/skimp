@@ -1,3 +1,4 @@
+export { Relationship } from './decorators/relationship.decorator';
 export { ModelPointer } from './classes/model-pointer';
 export { ResourceNotRegisteredException } from './exceptions/resource-not-registered.exception';
 export { SchemaNotRegisteredException } from './exceptions/schema-not-registered.exception';

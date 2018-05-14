@@ -1,11 +1,11 @@
 import { IAttributes } from './attributes.interface';
-import { ILinks } from './links.interface';
+import { ILink } from './link.interface';
 
 export interface IJsonData {
     data: {
         attributes: IAttributes;
         id?: string;
         type: string;
-        relationships?: Array<ILinks | IJsonData>
+        relationships?: Array<ILink | IJsonData>
     };
 }
