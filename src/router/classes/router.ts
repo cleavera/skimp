@@ -3,10 +3,10 @@ import { LOGGER } from '../../debug';
 import { ISchema, SCHEMA_REGISTER } from '../../schema';
 import { IRouter, Request, RequestMethod, Response, ResponseCode } from '../../server';
 import { Nullable } from '../../shared';
-import { ModelValidationExceptions } from '../../validators';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
 import { ValidationException } from '../exceptions/validation.exception';
+import { ValidationExceptions } from '../exceptions/validation.exceptions';
 import { IApi } from '../interfaces/api.interface';
 import { IDb } from '../interfaces/db.interface';
 import { Location } from './location';
@@ -32,7 +32,7 @@ export class Router implements IRouter {
             if (request.content) {
                 model = this._api.deserialise(request.content.json(), location);
 
-                const validationIssues: ModelValidationExceptions = SCHEMA_REGISTER.validate(model);
+                const validationIssues: ValidationExceptions = SCHEMA_REGISTER.validate(model);
 
                 if (validationIssues.length) {
                     throw validationIssues;
@@ -65,7 +65,7 @@ export class Router implements IRouter {
             } else if (e instanceof MethodNotAllowedException) {
                 LOGGER.warn(e);
                 this._api.error(response, ResponseCode.METHOD_NOT_ALLOWED);
-            } else if (e instanceof ModelValidationExceptions) {
+            } else if (e instanceof ValidationExceptions) {
                 LOGGER.warn(...e);
                 this._api.error(response, ResponseCode.BAD_REQUEST, e);
             } else if (e instanceof ValidationException) {

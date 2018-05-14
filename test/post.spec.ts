@@ -872,6 +872,9 @@ export class PostSpec {
                     relationships: [
                         {
                             href: jobLocation
+                        },
+                        {
+                            href: jobLocation
                         }
                     ],
                     type: 'team'
@@ -890,9 +893,15 @@ export class PostSpec {
             Expect(e.error).toEqual({
                 errors: [
                     {
-                        code: ValidationExceptionCode.RELATIONSHIP_NOT_ALLOWED,
+                        code: ValidationExceptionCode.RELATIONSHIP_TYPE_NOT_ALLOWED,
                         source: {
                             pointer: '/data/relationships/0'
+                        }
+                    },
+                    {
+                        code: ValidationExceptionCode.RELATIONSHIP_TYPE_NOT_ALLOWED,
+                        source: {
+                            pointer: '/data/relationships/1'
                         }
                     }
                 ]

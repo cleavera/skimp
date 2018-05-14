@@ -1,6 +1,6 @@
 import { LOGGER } from '../../debug';
+import { ValidationException, ValidationExceptions } from '../../router';
 import { IMeta, MetaKey, Nullable } from '../../shared';
-import { ModelValidationException, ModelValidationExceptions } from '../../validators';
 import { IValueDeserialiser } from '../exceptions/value-deserialiser.interface';
 import { IValueSerialiser } from '../exceptions/value-serialiser.interface';
 import { IFieldMapping } from '../interfaces/field-mapping.interface';
@@ -71,17 +71,20 @@ export class SchemaRegister {
         this._meta.set(schema, MetaKey.VALIDATION, validations);
     }
 
-    public validate(model: any): ModelValidationExceptions {
+    public validate(model: any): ValidationExceptions {
         const validations: Array<IValidation> = this._meta.get(model.constructor, MetaKey.VALIDATION) || [];
-        const errors: ModelValidationExceptions = new ModelValidationExceptions();
+        let errors: ValidationExceptions = new ValidationExceptions();
 
         validations.forEach((validate: IValidation) => {
             try {
                 validate(model);
             } catch (e) {
-                if (e instanceof ModelValidationException) {
+                if (e instanceof ValidationException) {
                     LOGGER.warn(e);
                     errors.push(e);
+                } else if (e instanceof ValidationExceptions) {
+                    LOGGER.warn(...e);
+                    errors = errors.concat(e);
                 } else {
                     throw e;
                 }
@@ -99,7 +102,7 @@ export class SchemaRegister {
         this._meta.set(schema, MetaKey.SCHEMA_RELATIONSHIPS, relationships);
     }
 
-    public getRelationships(schema: ISchema): Nullable<Array<ISchema>> {
+    public getSchemaRelationships(schema: ISchema): Nullable<Array<IRelationshipDefinition>> {
         return this._meta.get(schema, MetaKey.SCHEMA_RELATIONSHIPS);
     }
 

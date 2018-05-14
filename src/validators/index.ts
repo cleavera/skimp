@@ -5,4 +5,3 @@ export { Number } from './decorators/number.decorator';
 export { DateType as Date } from './decorators/date.decorator';
 export { Integer } from './decorators/integer.decorator';
 export { ModelValidationException } from './exceptions/model-validation.exception';
-export { ModelValidationExceptions } from './exceptions/model-validation.exceptions';
