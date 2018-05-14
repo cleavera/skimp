@@ -1,3 +1,5 @@
+export { ValidationExceptions } from './exceptions/validation.exceptions';
+export { ValidationException } from './exceptions/validation.exception';
 export { Required } from './decorators/required.decorator';
 export { String } from './decorators/string.decorator';
 export { Boolean } from './decorators/boolean.decorator';

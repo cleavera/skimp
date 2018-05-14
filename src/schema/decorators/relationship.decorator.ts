@@ -1,4 +1,5 @@
-import { Location, MODEL_REGISTER, ValidationExceptions } from '../../router';
+import { Location, MODEL_REGISTER } from '../../router';
+import { ValidationExceptions } from '../../validators';
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { RelationshipTypeNotAllowedException } from '../exceptions/relationship-type-not-allowed.exception';
 import { IRelationshipDefinition } from '../interfaces/relationship-definition.interface';

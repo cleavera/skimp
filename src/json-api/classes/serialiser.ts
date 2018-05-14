@@ -1,4 +1,4 @@
-import { Location, MODEL_REGISTER, ValidationException } from '../../router';
+import { Location, MODEL_REGISTER } from '../../router';
 import {
     IFieldMapping,
     ISchema,
@@ -10,7 +10,7 @@ import {
 } from '../../schema';
 import { Url } from '../../server';
 import { Nullable } from '../../shared';
-import { ModelValidationException } from '../../validators';
+import { ModelValidationException, ValidationException } from '../../validators';
 import { InvalidJSONRelationship } from '../exception/invalid-json-relationship.exception';
 import { IAttributes } from '../interfaces/attributes.interface';
 import { IJsonData } from '../interfaces/json-data.interface';
