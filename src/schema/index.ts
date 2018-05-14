@@ -1,3 +1,5 @@
+export { RelationshipPointer } from './classes/relationship-pointer';
+export { RelationshipValidationException } from './exceptions/relationship-validation.exception';
 export { Relationship } from './decorators/relationship.decorator';
 export { ModelPointer } from './classes/model-pointer';
 export { ResourceNotRegisteredException } from './exceptions/resource-not-registered.exception';

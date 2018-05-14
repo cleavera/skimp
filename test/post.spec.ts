@@ -36,11 +36,72 @@ export class PostSpec {
 
     @AsyncTeardown
     public async clear(): Promise<void> {
-        const files: Array<string> = await (await Entity.fromPath('/person')).listChildren();
+        const files: Array<string> = (await (await Entity.fromPath('/person')).listChildren())
+            .concat(await (await Entity.fromPath('/job')).listChildren())
+            .concat(await (await Entity.fromPath('/team')).listChildren());
 
         await Promise.all(files.map(async(file: string) => {
             await (await Entity.fromPath(file)).delete();
         }));
+    }
+
+    public async createJob(): Promise<string> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        name: 'Web developer'
+                    },
+                    type: 'job'
+                }
+            } as IJsonApi
+        });
+
+        const postResponse: Response = await request('/job', postOptions);
+        const location: string = postResponse.headers.location || '';
+
+        Expect(postResponse.body).toEqual({
+            data: {
+                attributes: {
+                    name: 'Web developer'
+                },
+                id: location,
+                type: 'job'
+            }
+        } as IJsonApi);
+
+        const getResponse: Response = await request('/job', baseOptions);
+
+        Expect(getResponse.body).toEqual([{
+            data: {
+                attributes: {
+                    name: 'Web developer'
+                },
+                id: location,
+                type: 'job'
+            }
+        } as IJsonApi]);
+
+        const getSingleResponse: Response = await request(location, baseOptions);
+
+        Expect(getSingleResponse.body).toEqual({
+            data: {
+                attributes: {
+                    name: 'Web developer'
+                },
+                id: location,
+                type: 'job'
+            }
+        } as IJsonApi);
+
+        return location;
     }
 
     public async create(): Promise<void> {
@@ -685,5 +746,163 @@ export class PostSpec {
                 type: 'job'
             }
         } as IJsonApi);
+    }
+
+    @AsyncTest('When adding a relationship with invalid structure')
+    public async addInvalidStructureRelationship(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        name: 'Web developer'
+                    },
+                    relationships: [
+                        {
+                            link: '/person/123'
+                        } as any
+                    ],
+                    type: 'job'
+                }
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request('/job', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(400);
+            Expect(e.error).toEqual({
+                errors: [
+                    {
+                        code: ValidationExceptionCode.RELATIONSHIP_INVALID_JSON,
+                        source: {
+                            pointer: '/data/relationships/0'
+                        }
+                    }
+                ]
+            });
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/job', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
+    }
+
+    @AsyncTest('When adding a relationship that does not exist')
+    public async addNonExistingRelationship(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        name: 'Web developer'
+                    },
+                    relationships: [
+                        {
+                            href: '/person/123'
+                        }
+                    ],
+                    type: 'job'
+                }
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request('/job', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(400);
+            Expect(e.error).toEqual({
+                errors: [
+                    {
+                        code: ValidationExceptionCode.RELATIONSHIP_NOT_FOUND,
+                        source: {
+                            pointer: '/data/relationships/0'
+                        }
+                    }
+                ]
+            });
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/job', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
+    }
+
+    @AsyncTest('When adding a relationship that has not been specified')
+    public async addNonSpecifiedRelationship(): Promise<void> {
+        const jobLocation: string = await this.createJob();
+
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        name: 'Apollo'
+                    },
+                    relationships: [
+                        {
+                            href: jobLocation
+                        }
+                    ],
+                    type: 'team'
+                }
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request('/team', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(400);
+            Expect(e.error).toEqual({
+                errors: [
+                    {
+                        code: ValidationExceptionCode.RELATIONSHIP_NOT_ALLOWED,
+                        source: {
+                            pointer: '/data/relationships/0'
+                        }
+                    }
+                ]
+            });
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/team', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
     }
 }

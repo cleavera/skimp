@@ -2,7 +2,7 @@ import { Location, MODEL_REGISTER, ValidationException } from '../../router';
 import {
     IFieldMapping,
     ISchema,
-    ModelPointer,
+    ModelPointer, RelationshipPointer, RelationshipValidationException,
     ResourceNotRegisteredException,
     SCHEMA_REGISTER,
     SchemaHasNoFieldsException,
@@ -22,16 +22,34 @@ export class Serialiser {
     public error(errors: Array<ValidationException>): IJsonErrors {
         return {
             errors: errors.reduce((acc: Array<IJsonError>, exception: ValidationException) => {
-                const fields: Array<ModelPointer> = (exception as ModelValidationException).fields || [null];
-
-                return acc.concat((fields).map((pointer: ModelPointer): IJsonError => {
-                    return {
+                if (exception instanceof ModelValidationException) {
+                    return acc.concat((exception.fields).map((pointer: ModelPointer): IJsonError => {
+                        return {
+                            code: exception.code,
+                            source: {
+                                pointer: pointer ? `/data/attributes/${pointer.field}` : ''
+                            }
+                        };
+                    }));
+                } else if (exception instanceof RelationshipValidationException) {
+                    return acc.concat((exception.relationships).map((pointer: RelationshipPointer): IJsonError => {
+                        return {
+                            code: exception.code,
+                            source: {
+                                pointer: pointer ? `/data/relationships/${pointer}` : ''
+                            }
+                        };
+                    }));
+                } else {
+                    acc.push({
                         code: exception.code,
                         source: {
-                            pointer: pointer ? `/data/attributes/${pointer.field}` : ''
+                            pointer: ''
                         }
-                    };
-                }));
+                    });
+
+                    return acc;
+                }
             }, [])
         };
     }
@@ -59,7 +77,7 @@ export class Serialiser {
 
                     return result;
                 }, {}),
-                relationships: relationships ? relationships.map((relationship: Location): ILink => {
+                relationships: relationships && relationships.length ? relationships.map((relationship: Location): ILink => {
                     return {
                         href: relationship.toString(),
                         type: relationship.resourceName
@@ -89,9 +107,9 @@ export class Serialiser {
         });
 
         if (json.data.relationships) {
-            json.data.relationships.forEach((relationship: ILink) => {
+            json.data.relationships.forEach((relationship: ILink, index: number) => {
                 if (!relationship.href) {
-                    throw new InvalidJSONRelationship(relationship);
+                    throw new InvalidJSONRelationship(index);
                 }
 
                 MODEL_REGISTER.addRelationship(model, Location.fromUrl(new Url(relationship.href)));

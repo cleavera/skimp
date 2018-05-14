@@ -34,7 +34,7 @@ export class Serialiser {
 
                 return result;
             }, {}),
-            relationships: relationships ? relationships.map((relationship: Location): IRelationship => {
+            relationships: relationships && relationships.length ? relationships.map((relationship: Location): IRelationship => {
                 return relationship.toString();
             }) : undefined
         };
