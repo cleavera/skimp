@@ -7,6 +7,7 @@ import { ISchema } from '../interfaces/schema.interface';
 export function Relationship(schema: ISchema, limit?: number): ClassDecorator {
     return (target: any): void => {
         SCHEMA_REGISTER.addSchemaRelationship(target, schema, limit);
+        SCHEMA_REGISTER.addSchemaRelationship(schema, target, limit);
 
         SCHEMA_REGISTER.addValidation(target, async(model: any) => {
             const relationships: Array<Location> = MODEL_REGISTER.getRelationships(model);
