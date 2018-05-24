@@ -1,6 +1,7 @@
 import { LOGGER } from '../../debug';
 import { IMeta, MetaKey, Nullable } from '../../shared';
 import { ValidationException, ValidationExceptions } from '../../validation';
+import { DuplicateResourceNameException } from '../exceptions/duplicate-resource-name.exception';
 import { IValueDeserialiser } from '../exceptions/value-deserialiser.interface';
 import { IValueSerialiser } from '../exceptions/value-serialiser.interface';
 import { IFieldMapping } from '../interfaces/field-mapping.interface';
@@ -24,6 +25,10 @@ export class SchemaRegister {
     }
 
     public register(schema: ISchema, resourceName: string): void {
+        if (this._schemas[resourceName]) {
+            throw new DuplicateResourceNameException(resourceName);
+        }
+
         if (!this._schemas[resourceName]) {
             this._schemas[resourceName] = schema;
         }

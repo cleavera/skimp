@@ -1,6 +1,5 @@
 - Remove resource, delete relationship
 - Relationship limit
 - Root level entity
-- Stop duplicate schemas
 - Security
 - List relationships of type for a resources

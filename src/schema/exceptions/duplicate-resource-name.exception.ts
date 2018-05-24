@@ -1,5 +1,5 @@
 export class DuplicateResourceNameException extends Error {
     constructor(resourceName: string) {
-        super(`${resourceName} is already registered`);
+        super(`${resourceName} is already registered to a schema`);
     }
 }
