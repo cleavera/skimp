@@ -1,4 +1,6 @@
-- Root level entity
-- Security
 - List relationships of type for a resources
-- Templating
+- Allowed request methods for resource
+- Allowed request methods for links
+- Root level entity
+- Templating/Self documentation
+- Security
