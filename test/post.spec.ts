@@ -860,6 +860,105 @@ export class PostSpec {
         } as IJsonApi);
     }
 
+    @AsyncTest('When adding an implicit relationship')
+    public async addImplicitRelationship(): Promise<void> {
+        const jobLocation: string = await this.createJob();
+
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: '1990-05-04',
+                        height: 180,
+                        weight: 78,
+                        employed: true
+                    },
+                    type: 'person',
+                    relationships: [
+                        {
+                            href: jobLocation
+                        }
+                    ]
+                }
+            } as IJsonApi
+        });
+
+        const postResponse: Response = await request('/person', postOptions);
+        this.location = postResponse.headers.location || '';
+
+        Expect(postResponse.body).toEqual({
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: '1990-05-04',
+                    height: 180,
+                    weight: 78,
+                    employed: true
+                },
+                relationships: [
+                    {
+                        href: jobLocation,
+                        type: 'job'
+                    }
+                ],
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([{
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: '1990-05-04',
+                    height: 180,
+                    weight: 78,
+                    employed: true
+                },
+                relationships: [
+                    {
+                        href: jobLocation,
+                        type: 'job'
+                    }
+                ],
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi]);
+
+        const getSingleResponse: Response = await request(this.location, baseOptions);
+
+        Expect(getSingleResponse.body).toEqual({
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: '1990-05-04',
+                    height: 180,
+                    weight: 78,
+                    employed: true
+                },
+                relationships: [
+                    {
+                        href: jobLocation,
+                        type: 'job'
+                    }
+                ],
+                id: this.location,
+                type: 'person'
+            }
+        } as IJsonApi);
+    }
+
     @AsyncTest('When adding a relationship with invalid structure')
     public async addInvalidStructureRelationship(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
