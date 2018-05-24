@@ -1,10 +1,12 @@
 export interface ILink {
     href: string;
     type?: string;
-    methods?: {
-        GET: boolean;
-        POST: boolean;
-        PUT: boolean;
-        DELETE: boolean;
+    meta?: {
+        methods?: {
+            GET: boolean;
+            POST: boolean;
+            PUT: boolean;
+            DELETE: boolean;
+        }
     };
 }
