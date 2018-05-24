@@ -71,13 +71,13 @@ export class SchemaRegister {
         this._meta.set(schema, MetaKey.VALIDATION, validations);
     }
 
-    public validate(model: any): ValidationExceptions {
+    public async validate(model: any): Promise<ValidationExceptions> {
         const validations: Array<IValidation> = this._meta.get(model.constructor, MetaKey.VALIDATION) || [];
         let errors: ValidationExceptions = new ValidationExceptions();
 
-        validations.forEach((validate: IValidation) => {
+        for (const validate of validations) {
             try {
-                validate(model);
+                await validate(model);
             } catch (e) {
                 if (e instanceof ValidationException) {
                     LOGGER.warn(e);
@@ -89,7 +89,7 @@ export class SchemaRegister {
                     throw e;
                 }
             }
-        });
+        }
 
         return errors;
     }

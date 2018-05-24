@@ -34,7 +34,7 @@ export class Router implements IRouter {
             if (request.content) {
                 model = this._api.deserialise(request.content.json(), location);
 
-                const validationIssues: ValidationExceptions = SCHEMA_REGISTER.validate(model);
+                const validationIssues: ValidationExceptions = await SCHEMA_REGISTER.validate(model);
 
                 if (validationIssues.length) {
                     throw validationIssues;

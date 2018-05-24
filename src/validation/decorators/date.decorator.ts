@@ -3,7 +3,7 @@ import { Nullable } from '../../shared';
 import { ValidationFieldInvalidDateException } from '../exceptions/validation-field-invalid-date.exception';
 
 export function DateType(target: any, propertyKey: string): void {
-    SCHEMA_REGISTER.addValidation(target.constructor, (model: any) => {
+    SCHEMA_REGISTER.addValidation(target.constructor, async(model: any) => {
         if (!(model[propertyKey] instanceof Date) && model[propertyKey] !== null) {
             throw new ValidationFieldInvalidDateException(propertyKey, model);
         }
