@@ -1,3 +1,4 @@
+export { DB_REGISTER } from './constants/db-register.constant';
 export { ValidationExceptionCode } from './constants/validation-exception-code.constant';
 export { IApi } from './interfaces/api.interface';
 export { IDb } from './interfaces/db.interface';

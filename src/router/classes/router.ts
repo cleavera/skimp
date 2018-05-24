@@ -1,4 +1,5 @@
 import * as $uuid from 'uuid/v4';
+import { DB_REGISTER } from '..';
 import { LOGGER } from '../../debug';
 import { ISchema, SCHEMA_REGISTER } from '../../schema';
 import { IRouter, Request, RequestMethod, Response, ResponseCode } from '../../server';
@@ -17,6 +18,8 @@ export class Router implements IRouter {
     constructor(api: IApi, db: IDb) {
         this._api = api;
         this._db = db;
+
+        DB_REGISTER.configure(db);
     }
 
     public async route(request: Request, response: Response): Promise<void> {
