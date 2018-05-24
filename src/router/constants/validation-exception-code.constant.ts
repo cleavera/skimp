@@ -8,5 +8,6 @@ export enum ValidationExceptionCode {
     INVALID_JSON_DATA = 'invalidJsonData',
     RELATIONSHIP_NOT_FOUND = 'relationshipNotFound',
     RELATIONSHIP_INVALID_JSON = 'relationshipInvalidJSON',
-    RELATIONSHIP_TYPE_NOT_ALLOWED = 'relationshipNotAllowed'
+    RELATIONSHIP_TYPE_NOT_ALLOWED = 'relationshipNotAllowed',
+    RELATIONSHIP_LIMIT_REACHED = 'relationshipLimitReached'
 }

@@ -45,6 +45,96 @@ export class PostSpec {
         }));
     }
 
+    public async createSecondPerson(): Promise<string> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver2',
+                        dateOfBirth: '1990-05-03',
+                        height: 180,
+                        weight: 78,
+                        employed: true
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
+        });
+
+        const postResponse: Response = await request('/person', postOptions);
+        const location: string = postResponse.headers.location || '';
+
+        Expect(postResponse.body).toEqual({
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver2',
+                    dateOfBirth: '1990-05-03',
+                    height: 180,
+                    weight: 78,
+                    employed: true
+                },
+                id: location,
+                type: 'person'
+            }
+        } as IJsonApi);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver2',
+                        dateOfBirth: '1990-05-03',
+                        height: 180,
+                        weight: 78,
+                        employed: true
+                    },
+                    id: location,
+                    type: 'person'
+                }
+            } as IJsonApi,
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: '1990-05-04',
+                        height: 180,
+                        weight: 78,
+                        employed: true
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
+
+        const getSingleResponse: Response = await request(location, baseOptions);
+
+        Expect(getSingleResponse.body).toEqual({
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver2',
+                    dateOfBirth: '1990-05-03',
+                    height: 180,
+                    weight: 78,
+                    employed: true
+                },
+                id: location,
+                type: 'person'
+            }
+        } as IJsonApi);
+
+        return location;
+    }
+
     public async createJob(): Promise<string> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -933,6 +1023,64 @@ export class PostSpec {
         Expect(success).toBe(false);
 
         const getResponse: Response = await request('/team', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
+    }
+
+    @AsyncTest('When adding a relationships above limit')
+    public async addTooManyRelationship(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        await this.create();
+        const secondPersonLocation: string = await this.createSecondPerson();
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        name: 'Web developer'
+                    },
+                    relationships: [
+                        {
+                            href: this.location
+                        },
+                        {
+                            href: secondPersonLocation
+                        }
+                    ],
+                    type: 'job'
+                }
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request('/job', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(400);
+            Expect(e.error).toEqual({
+                errors: [
+                    {
+                        code: ValidationExceptionCode.RELATIONSHIP_LIMIT_REACHED,
+                        source: {
+                            pointer: '/data/relationships/1'
+                        }
+                    }
+                ]
+            });
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/job', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
