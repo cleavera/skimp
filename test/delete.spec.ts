@@ -33,6 +33,107 @@ export class DeleteSpec {
         await this._server.close();
     }
 
+    public async createJob(): Promise<string> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        name: 'Web developer'
+                    },
+                    type: 'job',
+                    relationships: [
+                        {
+                            href: this.location,
+                            type: 'person'
+                        }
+                    ]
+                }
+            } as IJsonApi
+        });
+
+        const postResponse: Response = await request('/job', postOptions);
+        const location: string = postResponse.headers.location || '';
+
+        Expect(postResponse.body).toEqual({
+            data: {
+                attributes: {
+                    name: 'Web developer'
+                },
+                id: location,
+                type: 'job',
+                relationships: [
+                    {
+                        href: this.location,
+                        type: 'person'
+                    }
+                ]
+            }
+        } as IJsonApi);
+
+        const getResponse: Response = await request('/job', baseOptions);
+
+        Expect(getResponse.body).toEqual([{
+            data: {
+                attributes: {
+                    name: 'Web developer'
+                },
+                id: location,
+                type: 'job',
+                relationships: [
+                    {
+                        href: this.location,
+                        type: 'person'
+                    }
+                ]
+            }
+        } as IJsonApi]);
+
+        const getSingleResponse: Response = await request(location, baseOptions);
+
+        Expect(getSingleResponse.body).toEqual({
+            data: {
+                attributes: {
+                    name: 'Web developer'
+                },
+                id: location,
+                type: 'job',
+                relationships: [
+                    {
+                        href: this.location,
+                        type: 'person'
+                    }
+                ]
+            }
+        } as IJsonApi);
+
+        const getSinglePersonResponse: Response = await request(this.location, baseOptions);
+
+        Expect(getSinglePersonResponse.body).toEqual({
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.location,
+                type: 'person',
+                relationships: [
+                    {
+                        href: location,
+                        type: 'job'
+                    }
+                ]
+            }
+        } as IJsonApi);
+
+        return location;
+    }
+
     @AsyncSetup
     public async create(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
@@ -90,6 +191,7 @@ export class DeleteSpec {
 
     @AsyncTest('Happy path')
     public async happyPath(): Promise<void> {
+        const jobLocation: string = await this.createJob();
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
@@ -104,6 +206,34 @@ export class DeleteSpec {
 
         Expect(deleteResponse.body).not.toBeDefined();
         Expect(deleteResponse.statusCode).toBe(204);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
+
+        let success: boolean = false;
+
+        try {
+            await request(this.location, baseOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(404);
+        }
+
+        Expect(success).toBe(false);
+
+        const getSingleJobResponse: Response = await request(jobLocation, baseOptions);
+
+        Expect(getSingleJobResponse.body).toEqual({
+            data: {
+                attributes: {
+                    name: 'Web developer'
+                },
+                id: jobLocation,
+                type: 'job'
+            }
+        });
     }
 
     @AsyncTest('When trying to delete a directory should 405')

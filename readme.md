@@ -1,4 +1,3 @@
-- Remove resource, delete relationship
 - Relationship limit
 - Root level entity
 - Security

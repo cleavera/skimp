@@ -154,12 +154,15 @@ export class Router implements IRouter {
             throw new MethodNotAllowedException(RequestMethod.DELETE, location.toUrl());
         }
 
+        const oldModel: any = await this._db.get(location);
+
         await this._db.delete(location);
+        await this._updateRelationships(location, null, oldModel);
 
         response.noContent();
     }
 
-    private async _updateRelationships(location: Location, model: any, previousModel?: any): Promise<void> {
+    private async _updateRelationships(location: Location, model?: any, previousModel?: any): Promise<void> {
         const newRelationships: Array<Location> = MODEL_REGISTER.getRelationships(model);
         const oldRelationships: Array<Location> = MODEL_REGISTER.getRelationships(previousModel);
         const added: Array<Location> = newRelationships.filter((item: Location) => {
