@@ -5,7 +5,6 @@ import { DuplicateResourceNameException } from '../exceptions/duplicate-resource
 import { IValueDeserialiser } from '../exceptions/value-deserialiser.interface';
 import { IValueSerialiser } from '../exceptions/value-serialiser.interface';
 import { IFieldMapping } from '../interfaces/field-mapping.interface';
-import { IRelationshipDefinition } from '../interfaces/relationship-definition.interface';
 import { ISchema } from '../interfaces/schema.interface';
 import { IValidation } from '../interfaces/validation.interface';
 
@@ -99,15 +98,15 @@ export class SchemaRegister {
         return errors;
     }
 
-    public addSchemaRelationship(schema: ISchema, relationship: ISchema, limit?: number): void {
-        const relationships: Array<IRelationshipDefinition> = this._meta.get(schema, MetaKey.SCHEMA_RELATIONSHIPS) || [];
+    public addSchemaRelationship(schema: ISchema, relationship: ISchema): void {
+        const relationships: Array<ISchema> = this._meta.get(schema, MetaKey.SCHEMA_RELATIONSHIPS) || [];
 
-        relationships.push({ limit, schema: relationship });
+        relationships.push(relationship);
 
         this._meta.set(schema, MetaKey.SCHEMA_RELATIONSHIPS, relationships);
     }
 
-    public getSchemaRelationships(schema: ISchema): Nullable<Array<IRelationshipDefinition>> {
+    public getSchemaRelationships(schema: ISchema): Nullable<Array<ISchema>> {
         return this._meta.get(schema, MetaKey.SCHEMA_RELATIONSHIPS);
     }
 
