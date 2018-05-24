@@ -746,6 +746,28 @@ export class PostSpec {
                 type: 'job'
             }
         } as IJsonApi);
+
+        const getSinglePersonResponse: Response = await request(this.location, baseOptions);
+
+        Expect(getSinglePersonResponse.body).toEqual({
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: '1990-05-04',
+                    height: 180,
+                    weight: 78,
+                    employed: true
+                },
+                id: this.location,
+                type: 'person',
+                relationships: [
+                    {
+                        href: location,
+                        type: 'job'
+                    }
+                ]
+            }
+        } as IJsonApi);
     }
 
     @AsyncTest('When adding a relationship with invalid structure')

@@ -1,5 +1,5 @@
 import * as $uuid from 'uuid/v4';
-import { DB_REGISTER } from '..';
+import { DB_REGISTER, MODEL_REGISTER } from '..';
 import { LOGGER } from '../../debug';
 import { ISchema, SCHEMA_REGISTER } from '../../schema';
 import { IRouter, Request, RequestMethod, Response, ResponseCode } from '../../server';
@@ -113,6 +113,7 @@ export class Router implements IRouter {
         const createdLocation: Location = new Location(location.resourceName, $uuid());
 
         await this._db.set(createdLocation, model);
+        await this._updateRelationships(createdLocation, model);
 
         this._api.respond(response, await this._db.get(createdLocation), true);
     }
@@ -130,7 +131,14 @@ export class Router implements IRouter {
 
         const isCreate: boolean = !await this._db.exists(location);
 
+        let oldModel: any;
+
+        if (!isCreate) {
+            oldModel = await this._db.get(location);
+        }
+
         await this._db.set(location, model);
+        await this._updateRelationships(location, model, oldModel);
 
         this._api.respond(response, await this._db.get(location), isCreate);
     }
@@ -149,5 +157,33 @@ export class Router implements IRouter {
         await this._db.delete(location);
 
         response.noContent();
+    }
+
+    private async _updateRelationships(location: Location, model: any, previousModel?: any): Promise<void> {
+        const newRelationships: Array<Location> = MODEL_REGISTER.getRelationships(model);
+        const oldRelationships: Array<Location> = MODEL_REGISTER.getRelationships(previousModel);
+        const added: Array<Location> = newRelationships.filter((item: Location) => {
+            return oldRelationships.indexOf(item) === -1;
+        });
+
+        const removed: Array<Location> = oldRelationships.filter((item: Location) => {
+            return newRelationships.indexOf(item) === -1;
+        });
+
+        for (const item of added) {
+            const otherModel: any = await this._db.get(item);
+
+            MODEL_REGISTER.addRelationship(otherModel, location);
+
+            await this._db.set(item, otherModel);
+        }
+
+        for (const item of removed) {
+            const otherModel: any = await this._db.get(item);
+
+            MODEL_REGISTER.removeRelationship(otherModel, location);
+
+            await this._db.set(item, otherModel);
+        }
     }
 }

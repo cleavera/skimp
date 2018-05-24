@@ -32,6 +32,14 @@ export class ModelRegister {
         this._meta.set(model, MetaKey.MODEL_RELATIONSHIPS, relationships);
     }
 
+    public removeRelationship(model: any, relationship: Location): void {
+        const relationships: Array<Location> = this._meta.get(model, MetaKey.MODEL_RELATIONSHIPS) || [];
+
+        relationships.splice(relationships.indexOf(relationship), 1);
+
+        this._meta.set(model, MetaKey.MODEL_RELATIONSHIPS, relationships);
+    }
+
     public getRelationships(model: any): Array<Location> {
         return this._meta.get(model, MetaKey.MODEL_RELATIONSHIPS) || [];
     }
