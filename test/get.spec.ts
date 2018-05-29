@@ -220,7 +220,7 @@ export class GetSpec {
         await $clearDB();
     }
 
-    @AsyncTest()
+    @AsyncTest('When getting the root resource')
     public async getRootResource(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -246,7 +246,7 @@ export class GetSpec {
         } as IJsonApi);
     }
 
-    @AsyncTest()
+    @AsyncTest('When getting the root resource at /ROOT')
     public async getRootResourceAtAlias(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -267,7 +267,7 @@ export class GetSpec {
         Expect(success).toBe(false);
     }
 
-    @AsyncTest()
+    @AsyncTest('When getting a single resource')
     public async getSingleResource(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -304,7 +304,7 @@ export class GetSpec {
         Expect(getResponse.headers.allow).toEqual('GET, PUT, DELETE');
     }
 
-    @AsyncTest()
+    @AsyncTest('When getting the a multiple resource')
     public async getMultipleResource(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -339,5 +339,29 @@ export class GetSpec {
         } as IJsonApi]);
 
         Expect(getResponse.headers.allow).toEqual('GET, POST');
+    }
+
+    @AsyncTest('When getting a resource with an invalid accept content type')
+    public async getResourceInvalidAcceptContentType(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: false,
+            headers: {
+                Accept: 'invalid/type'
+            },
+            resolveWithFullResponse: true
+        };
+
+        let success: boolean = false;
+
+        try {
+            await request('/person', baseOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(406);
+        }
+
+        Expect(success).toBe(false);
     }
 }

@@ -1,5 +1,5 @@
-import { IJsonValue, Nullable } from '../../shared';
+import { IJsonValue, Maybe } from '../../shared';
 
 export interface IValueSerialiser {
-    (value: any): Nullable<IJsonValue>;
+    (value: any): Maybe<IJsonValue>;
 }

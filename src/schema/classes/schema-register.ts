@@ -1,5 +1,5 @@
 import { LOGGER } from '../../debug';
-import { IMeta, MetaKey, Nullable } from '../../shared';
+import { IMeta, MetaKey, Maybe } from '../../shared';
 import { ValidationException, ValidationExceptions } from '../../validation';
 import { DuplicateResourceNameException } from '../exceptions/duplicate-resource-name.exception';
 import { IValueDeserialiser } from '../exceptions/value-deserialiser.interface';
@@ -35,7 +35,7 @@ export class SchemaRegister {
         this._meta.set(schema, MetaKey.RESOURCE_NAME, resourceName);
     }
 
-    public getSchema(resourceName: string): Nullable<ISchema> {
+    public getSchema(resourceName: string): Maybe<ISchema> {
         return this._schemas[resourceName];
     }
 
@@ -106,7 +106,7 @@ export class SchemaRegister {
         this._meta.set(schema, MetaKey.SCHEMA_RELATIONSHIPS, relationships);
     }
 
-    public getSchemaRelationships(schema: ISchema): Nullable<Array<ISchema>> {
+    public getSchemaRelationships(schema: ISchema): Maybe<Array<ISchema>> {
         return this._meta.get(schema, MetaKey.SCHEMA_RELATIONSHIPS);
     }
 
@@ -118,18 +118,18 @@ export class SchemaRegister {
         this._meta.set(schema, MetaKey.FIELDS, fields);
     }
 
-    public getFields(schema: ISchema): Nullable<Array<IFieldMapping>> {
+    public getFields(schema: ISchema): Maybe<Array<IFieldMapping>> {
         return this._meta.get(schema, MetaKey.FIELDS);
     }
 
-    public mapToField(schema: ISchema, property: string): Nullable<string> {
-        const fields: Nullable<Array<IFieldMapping>> = this._meta.get(schema, MetaKey.FIELDS);
+    public mapToField(schema: ISchema, property: string): Maybe<string> {
+        const fields: Maybe<Array<IFieldMapping>> = this._meta.get(schema, MetaKey.FIELDS);
 
         if (!fields || !fields.length) {
             return;
         }
 
-        const matchedField: Nullable<IFieldMapping> = fields.find((field: IFieldMapping) => {
+        const matchedField: Maybe<IFieldMapping> = fields.find((field: IFieldMapping) => {
             return field.propertyName === property;
         });
 
@@ -140,7 +140,7 @@ export class SchemaRegister {
         return matchedField.fieldName;
     }
 
-    public getSchemaResourceName(schema: ISchema): Nullable<string> {
+    public getSchemaResourceName(schema: ISchema): Maybe<string> {
         return this._meta.get(schema, MetaKey.RESOURCE_NAME);
     }
 }

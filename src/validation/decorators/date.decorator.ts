@@ -1,5 +1,5 @@
 import { SCHEMA_REGISTER } from '../../schema';
-import { Nullable } from '../../shared';
+import { Maybe } from '../../shared';
 import { ValidationFieldInvalidDateException } from '../exceptions/validation-field-invalid-date.exception';
 
 export function DateType(target: any, propertyKey: string): void {
@@ -9,13 +9,13 @@ export function DateType(target: any, propertyKey: string): void {
         }
     });
 
-    SCHEMA_REGISTER.addSerialiser(target.constructor, propertyKey, (deserialisedValue: Nullable<Date>): Nullable<string> => {
+    SCHEMA_REGISTER.addSerialiser(target.constructor, propertyKey, (deserialisedValue: Maybe<Date>): Maybe<string> => {
         if (!deserialisedValue) {
             return;
         }
 
         return deserialisedValue.toISOString().split('T')[0];
-    }, (serialisedValue: Nullable<string>): Nullable<Date> => {
+    }, (serialisedValue: Maybe<string>): Maybe<Date> | null => {
         if (serialisedValue === undefined || serialisedValue === null || serialisedValue === '') {
             return null;
         }

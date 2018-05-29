@@ -9,7 +9,7 @@ import {
     SchemaNotRegisteredException
 } from '../../schema';
 import { Url } from '../../server';
-import { Nullable } from '../../shared';
+import { Maybe } from '../../shared';
 import { ModelValidationException, ValidationException } from '../../validation';
 import { InvalidJSONRelationship } from '../exception/invalid-json-relationship.exception';
 import { IAttributes } from '../interfaces/attributes.interface';
@@ -57,10 +57,10 @@ export class Serialiser {
 
     public serialise(model: any, location: Location): IJsonData {
         const schema: ISchema = model.constructor;
-        const fields: Nullable<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
-        const type: Nullable<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
-        const relationships: Nullable<Array<Location>> = MODEL_REGISTER.getRelationships(model);
-        const links: Nullable<Array<Location>> = MODEL_REGISTER.getLinks(model);
+        const fields: Maybe<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
+        const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
+        const relationships: Maybe<Array<Location>> = MODEL_REGISTER.getRelationships(model);
+        const links: Maybe<Array<Location>> = MODEL_REGISTER.getLinks(model);
 
         if (!type) {
             throw new SchemaNotRegisteredException(schema);
@@ -103,13 +103,13 @@ export class Serialiser {
     }
 
     public deserialise(json: IJsonData): any {
-        const schema: Nullable<ISchema> = SCHEMA_REGISTER.getSchema(json.data.type);
+        const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(json.data.type);
 
         if (!schema) {
             throw new ResourceNotRegisteredException(json.data.type);
         }
 
-        const fields: Nullable<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
+        const fields: Maybe<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
 
         if (!fields || !fields.length) {
             throw new SchemaHasNoFieldsException(schema);

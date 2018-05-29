@@ -1,4 +1,4 @@
-import { IMeta, MetaKey, Nullable } from '../../shared';
+import { IMeta, MetaKey, Maybe } from '../../shared';
 import { Location } from './location';
 
 export class ModelRegister {
@@ -12,7 +12,7 @@ export class ModelRegister {
         this._meta.set(model, MetaKey.CREATED, created);
     }
 
-    public getCreatedDate(model: any): Nullable<Date> {
+    public getCreatedDate(model: any): Maybe<Date> {
         return this._meta.get(model, MetaKey.CREATED);
     }
 
@@ -20,7 +20,7 @@ export class ModelRegister {
         this._meta.set(model, MetaKey.LOCATION, location);
     }
 
-    public getLocation(model: any): Nullable<Location> {
+    public getLocation(model: any): Maybe<Location> {
         return this._meta.get(model, MetaKey.LOCATION);
     }
 

@@ -1,13 +1,14 @@
 import * as $uuid from 'uuid/v4';
-import { DB_REGISTER, MODEL_REGISTER } from '..';
+import { DB_REGISTER, IApi, MODEL_REGISTER } from '..';
 import { LOGGER } from '../../debug';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '../../schema';
 import { IRouter, Request, RequestMethod, Response, ResponseCode } from '../../server';
-import { Nullable } from '../../shared';
+import { Maybe } from '../../shared';
 import { ValidationException, ValidationExceptions } from '../../validation';
+import { API_REGISTER } from '../constants/api-register.constant';
+import { ContentTypeNotSupportedException } from '../exceptions/content-type-not-supported.exception';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
-import { IApi } from '../interfaces/api.interface';
 import { IDb } from '../interfaces/db.interface';
 import { RootSchema } from '../schemas/root.schema';
 import { Location } from './location';
@@ -15,25 +16,23 @@ import { Location } from './location';
 export class Router implements IRouter {
     public version: string;
 
-    private _api: IApi;
     private _db: IDb;
 
-    constructor(api: IApi, db: IDb, version: string) {
-        this._api = api;
-        this._db = db;
+    constructor(version: string) {
+        this._db = DB_REGISTER.get();
         this.version = version;
-
-        DB_REGISTER.configure(db);
     }
 
     public async route(request: Request, response: Response): Promise<void> {
-        if (request.url.toString() === '/') {
-            await this._root(response);
-
-            return;
-        }
-
         try {
+            const api: IApi = API_REGISTER.get(request.accepts);
+
+            if (request.url.toString() === '/') {
+                await this._root(response, api);
+
+                return;
+            }
+
             if (!SCHEMA_REGISTER.getSchema(request.url.resourceName)) {
                 throw new ResourceDoesNotExistException(request.url);
             }
@@ -42,7 +41,7 @@ export class Router implements IRouter {
             let model: any = null;
 
             if (request.content) {
-                model = this._api.deserialise(request.content.json(), location);
+                model = API_REGISTER.get(request.contentType).deserialise(request.content.json(), location);
 
                 const validationIssues: ValidationExceptions = await SCHEMA_REGISTER.validate(model);
 
@@ -52,15 +51,15 @@ export class Router implements IRouter {
             }
 
             if (request.isGet) {
-                await this._get(location, response);
+                await this._get(location, response, api);
 
                 return;
             } else if (request.isPut) {
-                await this._put(location, model, response);
+                await this._put(location, model, response, api);
 
                 return;
             } else if (request.isPost) {
-                await this._post(location, model, response);
+                await this._post(location, model, response, api);
 
                 return;
             } else if (request.isDelete) {
@@ -73,40 +72,43 @@ export class Router implements IRouter {
         } catch (e) {
             if (e instanceof ResourceDoesNotExistException) {
                 LOGGER.warn(e);
-                this._api.error(response, ResponseCode.NOT_FOUND);
+                API_REGISTER.get().error(response, ResponseCode.NOT_FOUND);
             } else if (e instanceof MethodNotAllowedException) {
                 LOGGER.warn(e);
-                this._api.error(response, ResponseCode.METHOD_NOT_ALLOWED);
+                API_REGISTER.get().error(response, ResponseCode.METHOD_NOT_ALLOWED);
             } else if (e instanceof ValidationExceptions) {
                 LOGGER.warn(...e);
-                this._api.error(response, ResponseCode.BAD_REQUEST, e);
+                API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST, e);
             } else if (e instanceof ValidationException) {
                 LOGGER.warn(e);
-                this._api.error(response, ResponseCode.BAD_REQUEST, [e]);
+                API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST, [e]);
+            } else if (e instanceof ContentTypeNotSupportedException) {
+                LOGGER.warn(e);
+                API_REGISTER.get().error(response, ResponseCode.NOT_ACCEPTABLE);
             } else {
                 throw e;
             }
         }
     }
 
-    private async _get(location: Location, response: Response): Promise<void> {
-        const schema: Nullable<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
+    private async _get(location: Location, response: Response, api: IApi): Promise<void> {
+        const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
             throw new ResourceDoesNotExistException(location.toUrl());
         }
 
         if (location.resourceId) {
-            this._api.respond(response, await this._db.get(location));
+            api.respond(response, await this._db.get(location));
 
             return;
         }
 
-        this._api.respond(response, await this._db.list(location));
+        api.respond(response, await this._db.list(location));
     }
 
-    private async _post(location: Location, model: any, response: Response): Promise<void> {
-        const schema: Nullable<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
+    private async _post(location: Location, model: any, response: Response, api: IApi): Promise<void> {
+        const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
             throw new ResourceDoesNotExistException(location.toUrl());
@@ -125,11 +127,11 @@ export class Router implements IRouter {
         await this._db.set(createdLocation, model);
         await this._updateRelationships(createdLocation, model);
 
-        this._api.respond(response, await this._db.get(createdLocation), true);
+        api.respond(response, await this._db.get(createdLocation), true);
     }
 
-    private async _put(location: Location, model: any, response: Response): Promise<void> {
-        const schema: Nullable<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
+    private async _put(location: Location, model: any, response: Response, api: IApi): Promise<void> {
+        const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
             throw new ResourceDoesNotExistException(location.toUrl());
@@ -150,11 +152,11 @@ export class Router implements IRouter {
         await this._db.set(location, model);
         await this._updateRelationships(location, model, oldModel);
 
-        this._api.respond(response, await this._db.get(location), isCreate);
+        api.respond(response, await this._db.get(location), isCreate);
     }
 
     private async _delete(location: Location, response: Response): Promise<void> {
-        const schema: Nullable<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
+        const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
             throw new ResourceDoesNotExistException(location.toUrl());
@@ -200,7 +202,7 @@ export class Router implements IRouter {
         }
     }
 
-    private async _root(response: Response): Promise<void> {
+    private async _root(response: Response, api: IApi): Promise<void> {
         const model: RootSchema = new RootSchema();
 
         model.version = this.version;
@@ -210,7 +212,7 @@ export class Router implements IRouter {
         MODEL_REGISTER.setLocation(model, new Location(''));
 
         SCHEMA_REGISTER.schemas.forEach((schema: ISchema) => {
-            const resourceName: Nullable<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
+            const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
 
             if (!resourceName) {
                 throw new SchemaNotRegisteredException(schema);
@@ -219,6 +221,6 @@ export class Router implements IRouter {
             MODEL_REGISTER.addLink(model, new Location(resourceName));
         });
 
-        this._api.respond(response, model);
+        api.respond(response, model);
     }
 }

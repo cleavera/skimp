@@ -1,5 +1,5 @@
 export { MetaData } from './classes/meta-data';
-export { Nullable } from './interfaces/nullable.interface';
+export { Maybe } from './interfaces/maybe.interface';
 export { IJsonValue } from './interfaces/json-value.interface';
 export { IMeta } from './interfaces/meta.interface';
 export { MissingCreatedDateException } from './exceptions/missing-created-date.exception';

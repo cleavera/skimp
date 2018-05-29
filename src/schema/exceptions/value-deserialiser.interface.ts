@@ -1,5 +1,5 @@
-import { IJsonValue, Nullable } from '../../shared';
+import { IJsonValue, Maybe } from '../../shared';
 
 export interface IValueDeserialiser {
-    (value: Nullable<IJsonValue>): any;
+    (value: Maybe<IJsonValue>): any;
 }

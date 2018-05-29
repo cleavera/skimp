@@ -1,6 +1,6 @@
 import { IApi, Location, MODEL_REGISTER, NoLocationRegisteredException } from '../../router';
 import { Response, ResponseCode } from '../../server';
-import { MissingCreatedDateException, Nullable } from '../../shared';
+import { MissingCreatedDateException, Maybe } from '../../shared';
 import { ValidationException } from '../../validation';
 import { RequestNotValidDataException } from '../exception/request-not-valid-data.exception';
 import { IJsonApi } from '../interfaces/json-api.interface';
@@ -17,8 +17,8 @@ export class Api implements IApi {
     public respond(response: Response, model: Array<any> | any, created?: boolean): void {
         if (Array.isArray(model)) {
             model = model.sort((a: any, b: any): number => {
-                const aCreated: Nullable<Date> = MODEL_REGISTER.getCreatedDate(a);
-                const bCreated: Nullable<Date> = MODEL_REGISTER.getCreatedDate(b);
+                const aCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(a);
+                const bCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(b);
 
                 if (!aCreated) {
                     throw new MissingCreatedDateException(a);
@@ -38,7 +38,7 @@ export class Api implements IApi {
 
                 return 0;
             }).map((item: any) => {
-                const location: Nullable<Location> = MODEL_REGISTER.getLocation(item);
+                const location: Maybe<Location> = MODEL_REGISTER.getLocation(item);
 
                 if (!location) {
                     throw new NoLocationRegisteredException(item);
@@ -49,7 +49,7 @@ export class Api implements IApi {
 
             response.setAllow(true, false, false);
         } else {
-            const location: Nullable<Location> = MODEL_REGISTER.getLocation(model);
+            const location: Maybe<Location> = MODEL_REGISTER.getLocation(model);
 
             if (!location) {
                 throw new NoLocationRegisteredException(model);

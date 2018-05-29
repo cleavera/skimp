@@ -1,7 +1,7 @@
 import { createReadStream, lstat, readdir, readFile, ReadStream, Stats, unlink, writeFile } from 'fs';
 import { join } from 'path';
 import { Writable } from 'stream';
-import { Nullable } from '../../shared';
+import { Maybe } from '../../shared';
 import { FILE_SYSTEM } from '../constants/file-system.constant';
 import { EntityDoesNotExistException } from '../exceptions/entity-does-not-exist.exception';
 import { EntityNotADirectoryException } from '../exceptions/entity-not-a-directory.exception';
@@ -10,7 +10,7 @@ import { EntityNotValidJsonException } from '../exceptions/entity-not-valid-json
 
 export class Entity {
     public readonly path: string;
-    private _stats: Nullable<Stats>;
+    private _stats: Maybe<Stats>;
     private get _absolutePath(): string {
         return Entity.getAbsolutePath(this.path);
     }

@@ -1,6 +1,6 @@
 import uuid = require('uuid');
 import { IMeta } from '../interfaces/meta.interface';
-import { Nullable } from '../interfaces/nullable.interface';
+import { Maybe } from '../interfaces/maybe.interface';
 
 export class MetaData implements IMeta {
     private readonly _objects: { [key: string]: any }; // tslint:disable-line no-any
@@ -21,7 +21,7 @@ export class MetaData implements IMeta {
         this._metaData[objectId][metaKey] = value;
     }
 
-    public get<T = any>(object: any, metaKey: string): Nullable<T> { // tslint:disable-line no-any
+    public get<T = any>(object: any, metaKey: string): Maybe<T> { // tslint:disable-line no-any
         const objectId: string = this._getObjectId(object);
 
         if (!this._metaData[objectId]) {

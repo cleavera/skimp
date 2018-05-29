@@ -1,12 +1,12 @@
 import { IncomingMessage } from 'http';
-import { Nullable } from '../../shared';
+import { Maybe } from '../../shared';
 import { RequestMethod } from '../constants/request-method.constant';
 import { Content } from './content';
 import { Url } from './url';
 
 export class Request {
     public url: Url;
-    public content: Nullable<Content>;
+    public content: Maybe<Content>;
     public readonly method: string;
     private _message: IncomingMessage;
 
@@ -50,8 +50,16 @@ export class Request {
         return this.method === RequestMethod.DELETE;
     }
 
+    public get accepts(): Maybe<string> {
+        return this._message.headers.accept;
+    }
+
+    public get contentType(): Maybe<string> {
+        return this._message.headers['content-type'];
+    }
+
     public static async fromIncomingMessage(message: IncomingMessage): Promise<Request> {
-        const content: Nullable<Content> = await Content.fromStream(message);
+        const content: Maybe<Content> = await Content.fromStream(message);
 
         if (content) {
             return new Request(message, content);
