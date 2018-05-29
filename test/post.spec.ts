@@ -12,10 +12,10 @@ import { RequestPromiseOptions } from 'request-promise-native';
 import * as request from 'request-promise-native';
 import { init, Server } from '../src';
 import { LOGGER, LogLevel } from '../src/debug';
-import { Entity } from '../src/file-system';
 import { IJsonApi } from '../src/json-api/interfaces/json-api.interface';
 import { ValidationExceptionCode } from '../src/router';
 import * as DATA_PATH from './data/path';
+import { $clearDB } from './helpers/clear-db.helper';
 import { SCHEMAS } from './schemas';
 
 @TestFixture('Post')
@@ -36,13 +36,7 @@ export class PostSpec {
 
     @AsyncTeardown
     public async clear(): Promise<void> {
-        const files: Array<string> = (await (await Entity.fromPath('/person')).listChildren())
-            .concat(await (await Entity.fromPath('/job')).listChildren())
-            .concat(await (await Entity.fromPath('/team')).listChildren());
-
-        await Promise.all(files.map(async(file: string) => {
-            await (await Entity.fromPath(file)).delete();
-        }));
+        await $clearDB();
     }
 
     public async createSecondPerson(): Promise<string> {

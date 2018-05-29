@@ -12,9 +12,9 @@ import { RequestPromiseOptions } from 'request-promise-native';
 import * as request from 'request-promise-native';
 import { init, Server } from '../src';
 import { LOGGER, LogLevel } from '../src/debug';
-import { Entity } from '../src/file-system';
 import { IJsonApi } from '../src/json-api/interfaces/json-api.interface';
 import * as DATA_PATH from './data/path';
+import { $clearDB } from './helpers/clear-db.helper';
 import { SCHEMAS } from './schemas';
 import uuid = require('uuid');
 
@@ -183,11 +183,7 @@ export class UpdateSpec {
 
     @AsyncTeardown
     public async clear(): Promise<void> {
-        const files: Array<string> = await (await Entity.fromPath('/person')).listChildren();
-
-        await Promise.all(files.map(async(file: string) => {
-            await (await Entity.fromPath(file)).delete();
-        }));
+        await $clearDB();
     }
 
     @AsyncTest('When putting an existing resource')

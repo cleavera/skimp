@@ -1,7 +1,7 @@
 import * as $uuid from 'uuid/v4';
 import { DB_REGISTER, MODEL_REGISTER } from '..';
 import { LOGGER } from '../../debug';
-import { ISchema, SCHEMA_REGISTER } from '../../schema';
+import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '../../schema';
 import { IRouter, Request, RequestMethod, Response, ResponseCode } from '../../server';
 import { Nullable } from '../../shared';
 import { ValidationException, ValidationExceptions } from '../../validation';
@@ -9,20 +9,30 @@ import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exce
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
 import { IApi } from '../interfaces/api.interface';
 import { IDb } from '../interfaces/db.interface';
+import { RootSchema } from '../schemas/root.schema';
 import { Location } from './location';
 
 export class Router implements IRouter {
+    public version: string;
+
     private _api: IApi;
     private _db: IDb;
 
-    constructor(api: IApi, db: IDb) {
+    constructor(api: IApi, db: IDb, version: string) {
         this._api = api;
         this._db = db;
+        this.version = version;
 
         DB_REGISTER.configure(db);
     }
 
     public async route(request: Request, response: Response): Promise<void> {
+        if (request.url.toString() === '/') {
+            await this._root(response);
+
+            return;
+        }
+
         try {
             if (!SCHEMA_REGISTER.getSchema(request.url.resourceName)) {
                 throw new ResourceDoesNotExistException(request.url);
@@ -188,5 +198,27 @@ export class Router implements IRouter {
 
             await this._db.set(item, otherModel);
         }
+    }
+
+    private async _root(response: Response): Promise<void> {
+        const model: RootSchema = new RootSchema();
+
+        model.version = this.version;
+
+        SCHEMA_REGISTER.register(RootSchema, 'ROOT', true);
+        SCHEMA_REGISTER.addField(RootSchema, 'version', 'version');
+        MODEL_REGISTER.setLocation(model, new Location(''));
+
+        SCHEMA_REGISTER.schemas.forEach((schema: ISchema) => {
+            const resourceName: Nullable<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
+
+            if (!resourceName) {
+                throw new SchemaNotRegisteredException(schema);
+            }
+
+            MODEL_REGISTER.addRelationship(model, new Location(resourceName));
+        });
+
+        this._api.respond(response, model);
     }
 }

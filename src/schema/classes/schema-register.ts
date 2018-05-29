@@ -23,12 +23,12 @@ export class SchemaRegister {
         });
     }
 
-    public register(schema: ISchema, resourceName: string): void {
-        if (this._schemas[resourceName]) {
+    public register(schema: ISchema, resourceName: string, isPrivate?: boolean): void {
+        if (this._schemas[resourceName] && !isPrivate) {
             throw new DuplicateResourceNameException(resourceName);
         }
 
-        if (!this._schemas[resourceName]) {
+        if (!this._schemas[resourceName] && !isPrivate) {
             this._schemas[resourceName] = schema;
         }
 

@@ -2,8 +2,7 @@ import {
     AsyncSetup,
     AsyncSetupFixture,
     AsyncTeardown,
-    AsyncTeardownFixture,
-    AsyncTest,
+    AsyncTeardownFixture, AsyncTest,
     Expect,
     TestFixture
 } from 'alsatian';
@@ -17,9 +16,10 @@ import * as DATA_PATH from './data/path';
 import { $clearDB } from './helpers/clear-db.helper';
 import { SCHEMAS } from './schemas';
 
-@TestFixture('Delete')
-export class DeleteSpec {
-    public location: string;
+@TestFixture('Get')
+export class GetSpec {
+    public personLocation: string;
+    public jobLocation: string;
     private _server: Server;
 
     @AsyncSetupFixture
@@ -33,7 +33,7 @@ export class DeleteSpec {
         await this._server.close();
     }
 
-    public async createJob(): Promise<string> {
+    public async createJob(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
@@ -50,7 +50,7 @@ export class DeleteSpec {
                     type: 'job',
                     relationships: [
                         {
-                            href: this.location,
+                            href: this.personLocation,
                             type: 'person'
                         }
                     ]
@@ -59,18 +59,18 @@ export class DeleteSpec {
         });
 
         const postResponse: Response = await request('/job', postOptions);
-        const location: string = postResponse.headers.location || '';
+        this.jobLocation = postResponse.headers.location || '';
 
         Expect(postResponse.body).toEqual({
             data: {
                 attributes: {
                     name: 'Web developer'
                 },
-                id: location,
+                id: this.jobLocation,
                 type: 'job',
                 relationships: [
                     {
-                        href: this.location,
+                        href: this.personLocation,
                         type: 'person'
                     }
                 ]
@@ -84,58 +84,55 @@ export class DeleteSpec {
                 attributes: {
                     name: 'Web developer'
                 },
-                id: location,
+                id: this.jobLocation,
                 type: 'job',
                 relationships: [
                     {
-                        href: this.location,
+                        href: this.personLocation,
                         type: 'person'
                     }
                 ]
             }
         } as IJsonApi]);
 
-        const getSingleResponse: Response = await request(location, baseOptions);
+        const getSingleResponse: Response = await request(this.jobLocation, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
                 attributes: {
                     name: 'Web developer'
                 },
-                id: location,
+                id: this.jobLocation,
                 type: 'job',
                 relationships: [
                     {
-                        href: this.location,
+                        href: this.personLocation,
                         type: 'person'
                     }
                 ]
             }
         } as IJsonApi);
 
-        const getSinglePersonResponse: Response = await request(this.location, baseOptions);
+        const getSinglePersonResponse: Response = await request(this.personLocation, baseOptions);
 
         Expect(getSinglePersonResponse.body).toEqual({
             data: {
                 attributes: {
                     fullName: 'Anthony Cleaver'
                 },
-                id: this.location,
+                id: this.personLocation,
                 type: 'person',
                 relationships: [
                     {
-                        href: location,
+                        href: this.jobLocation,
                         type: 'job'
                     }
                 ]
             }
         } as IJsonApi);
-
-        return location;
     }
 
-    @AsyncSetup
-    public async create(): Promise<void> {
+    public async createPerson(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
@@ -155,14 +152,14 @@ export class DeleteSpec {
         });
 
         const postResponse: Response = await request('/person', postOptions);
-        this.location = postResponse.headers.location || '';
+        this.personLocation = postResponse.headers.location || '';
 
         Expect(postResponse.body).toEqual({
             data: {
                 attributes: {
                     fullName: 'Anthony Cleaver'
                 },
-                id: this.location,
+                id: this.personLocation,
                 type: 'person'
             }
         } as IJsonApi);
@@ -174,10 +171,16 @@ export class DeleteSpec {
                 attributes: {
                     fullName: 'Anthony Cleaver'
                 },
-                id: this.location,
+                id: this.personLocation,
                 type: 'person'
             }
         } as IJsonApi]);
+    }
+
+    @AsyncSetup
+    public async setupTests(): Promise<void> {
+        await this.createPerson();
+        await this.createJob();
     }
 
     @AsyncTeardown
@@ -185,32 +188,53 @@ export class DeleteSpec {
         await $clearDB();
     }
 
-    @AsyncTest('Happy path')
-    public async happyPath(): Promise<void> {
-        const jobLocation: string = await this.createJob();
+    @AsyncTest()
+    public async getRootResource(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
             resolveWithFullResponse: true
         };
 
-        const deleteOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
-            method: 'DELETE'
-        });
+        const getResponse: Response = await request('/', baseOptions);
 
-        const deleteResponse: Response = await request(this.location, deleteOptions);
+        Expect(getResponse.body).toEqual({
+            data: {
+                attributes: {
+                    version: 'UNVERSIONED'
+                },
+                id: '/',
+                type: 'ROOT',
+                relationships: [
+                    {
+                        href: '/person',
+                        type: 'person'
+                    },
+                    {
+                        href: '/job',
+                        type: 'job'
+                    },
+                    {
+                        href: '/team',
+                        type: 'team'
+                    }
+                ]
+            }
+        } as IJsonApi);
+    }
 
-        Expect(deleteResponse.body).not.toBeDefined();
-        Expect(deleteResponse.statusCode).toBe(204);
-
-        const getResponse: Response = await request('/person', baseOptions);
-
-        Expect(getResponse.body).toEqual([]);
+    @AsyncTest()
+    public async getRootResourceAtAlias(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
 
         let success: boolean = false;
 
         try {
-            await request(this.location, baseOptions);
+            await request('/ROOT', baseOptions);
 
             success = true;
         } catch (e) {
@@ -218,93 +242,5 @@ export class DeleteSpec {
         }
 
         Expect(success).toBe(false);
-
-        const getSingleJobResponse: Response = await request(jobLocation, baseOptions);
-
-        Expect(getSingleJobResponse.body).toEqual({
-            data: {
-                attributes: {
-                    name: 'Web developer'
-                },
-                id: jobLocation,
-                type: 'job'
-            }
-        });
-    }
-
-    @AsyncTest('When trying to delete a directory should 405')
-    public async deleteADirectory(): Promise<void> {
-        const baseOptions: RequestPromiseOptions = {
-            baseUrl: 'http://localhost:1338',
-            json: true,
-            resolveWithFullResponse: true
-        };
-
-        const deleteOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
-            method: 'DELETE'
-        });
-
-        let success: boolean = false;
-
-        try {
-            await request('/person', deleteOptions);
-
-            success = true;
-        } catch (e) {
-            Expect(e.body).not.toBeDefined();
-            Expect(e.statusCode).toBe(405);
-        }
-
-        Expect(success).toBe(false);
-
-        const getResponse: Response = await request('/person', baseOptions);
-
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver'
-                },
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
-    }
-
-    @AsyncTest('When trying to delete a resource that does not exist should 404')
-    public async deleteAMissingFile(): Promise<void> {
-        const baseOptions: RequestPromiseOptions = {
-            baseUrl: 'http://localhost:1338',
-            json: true,
-            resolveWithFullResponse: true
-        };
-
-        const deleteOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
-            method: 'DELETE'
-        });
-
-        let success: boolean = false;
-
-        try {
-            await request('/person/12345', deleteOptions);
-
-            success = true;
-        } catch (e) {
-            Expect(e.body).not.toBeDefined();
-            Expect(e.statusCode).toBe(404);
-        }
-
-        Expect(success).toBe(false);
-
-        const getResponse: Response = await request('/person', baseOptions);
-
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver'
-                },
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
     }
 }
