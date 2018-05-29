@@ -1,3 +1,5 @@
+- Use accept header to specify return type
+- File upload
 - Templating/Self documentation
 - Security
 - Include relationships
