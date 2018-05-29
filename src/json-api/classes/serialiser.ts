@@ -82,7 +82,15 @@ export class Serialiser {
                 relationships: relationships && relationships.length ? relationships.map((relationship: Location): IRelationship => {
                     return {
                         href: relationship.toString(),
-                        type: relationship.resourceName
+                        type: relationship.resourceName,
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     };
                 }) : undefined,
                 links: links && links.length ? links.reduce((acc: ILinks, relationship: Location): ILinks => {

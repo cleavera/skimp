@@ -788,7 +788,15 @@ export class PostSpec {
                 relationships: [
                     {
                         href: this.location,
-                        type: 'person'
+                        type: 'person',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ],
                 type: 'job'
@@ -806,7 +814,15 @@ export class PostSpec {
                 relationships: [
                     {
                         href: this.location,
-                        type: 'person'
+                        type: 'person',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ],
                 type: 'job'
@@ -824,7 +840,15 @@ export class PostSpec {
                 relationships: [
                     {
                         href: this.location,
-                        type: 'person'
+                        type: 'person',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ],
                 type: 'job'
@@ -847,7 +871,15 @@ export class PostSpec {
                 relationships: [
                     {
                         href: location,
-                        type: 'job'
+                        type: 'job',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ]
             }
@@ -900,7 +932,15 @@ export class PostSpec {
                 relationships: [
                     {
                         href: jobLocation,
-                        type: 'job'
+                        type: 'job',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ],
                 id: this.location,
@@ -922,7 +962,15 @@ export class PostSpec {
                 relationships: [
                     {
                         href: jobLocation,
-                        type: 'job'
+                        type: 'job',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ],
                 id: this.location,
@@ -944,7 +992,15 @@ export class PostSpec {
                 relationships: [
                     {
                         href: jobLocation,
-                        type: 'job'
+                        type: 'job',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ],
                 id: this.location,

@@ -72,7 +72,15 @@ export class UpdateSpec {
                 relationships: [
                     {
                         href: this.location,
-                        type: 'person'
+                        type: 'person',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ]
             }
@@ -90,7 +98,15 @@ export class UpdateSpec {
                 relationships: [
                     {
                         href: this.location,
-                        type: 'person'
+                        type: 'person',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ]
             }
@@ -108,7 +124,15 @@ export class UpdateSpec {
                 relationships: [
                     {
                         href: this.location,
-                        type: 'person'
+                        type: 'person',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ]
             }
@@ -126,7 +150,15 @@ export class UpdateSpec {
                 relationships: [
                     {
                         href: location,
-                        type: 'job'
+                        type: 'job',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ]
             }

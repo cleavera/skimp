@@ -71,7 +71,15 @@ export class GetSpec {
                 relationships: [
                     {
                         href: this.personLocation,
-                        type: 'person'
+                        type: 'person',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ]
             }
@@ -89,7 +97,15 @@ export class GetSpec {
                 relationships: [
                     {
                         href: this.personLocation,
-                        type: 'person'
+                        type: 'person',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ]
             }
@@ -107,7 +123,15 @@ export class GetSpec {
                 relationships: [
                     {
                         href: this.personLocation,
-                        type: 'person'
+                        type: 'person',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ]
             }
@@ -125,7 +149,15 @@ export class GetSpec {
                 relationships: [
                     {
                         href: this.jobLocation,
-                        type: 'job'
+                        type: 'job',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ]
             }
@@ -255,7 +287,15 @@ export class GetSpec {
                 relationships: [
                     {
                         href: this.jobLocation,
-                        type: 'job'
+                        type: 'job',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ]
             }
@@ -284,7 +324,15 @@ export class GetSpec {
                 relationships: [
                     {
                         href: this.jobLocation,
-                        type: 'job'
+                        type: 'job',
+                        meta: {
+                            methods: {
+                                GET: true,
+                                POST: false,
+                                PUT: true,
+                                DELETE: true
+                            }
+                        }
                     }
                 ]
             }
