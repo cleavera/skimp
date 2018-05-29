@@ -1,5 +1,3 @@
-- Allowed request methods for resource
-- Allowed request methods for links
 - Templating/Self documentation
 - Security
 - Include relationships
