@@ -32,6 +32,14 @@ export class ModelRegister {
         this._meta.set(model, MetaKey.MODEL_RELATIONSHIPS, relationships);
     }
 
+    public addLink(model: any, link: Location): void {
+        const links: Array<Location> = this._meta.get(model, MetaKey.LINKS) || [];
+
+        links.push(link);
+
+        this._meta.set(model, MetaKey.LINKS, links);
+    }
+
     public removeRelationship(model: any, relationship: Location): void {
         const relationships: Array<Location> = this._meta.get(model, MetaKey.MODEL_RELATIONSHIPS) || [];
 
@@ -42,5 +50,9 @@ export class ModelRegister {
 
     public getRelationships(model: any): Array<Location> {
         return this._meta.get(model, MetaKey.MODEL_RELATIONSHIPS) || [];
+    }
+
+    public getLinks(model: any): Array<Location> {
+        return this._meta.get(model, MetaKey.LINKS) || [];
     }
 }

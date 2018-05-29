@@ -1,4 +1,4 @@
-export interface ILink {
+export interface IRelationship {
     href: string;
     type?: string;
     meta?: {

@@ -205,20 +205,11 @@ export class GetSpec {
                 },
                 id: '/',
                 type: 'ROOT',
-                relationships: [
-                    {
-                        href: '/person',
-                        type: 'person'
-                    },
-                    {
-                        href: '/job',
-                        type: 'job'
-                    },
-                    {
-                        href: '/team',
-                        type: 'team'
-                    }
-                ]
+                links: {
+                    person: '/person',
+                    job: '/job',
+                    team: '/team'
+                }
             }
         } as IJsonApi);
     }

@@ -6,3 +6,4 @@ export const SERIALISER: string = 'SCHEMA.serialiser';
 export const LOCATION: string = 'MODEL.location';
 export const CREATED: string = 'MODEL.created';
 export const MODEL_RELATIONSHIPS: string = 'MODEL.relationships';
+export const LINKS: string = 'MODEL.links';

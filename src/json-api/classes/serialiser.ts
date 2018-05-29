@@ -16,7 +16,8 @@ import { IAttributes } from '../interfaces/attributes.interface';
 import { IJsonData } from '../interfaces/json-data.interface';
 import { IJsonError } from '../interfaces/json-error.interface';
 import { IJsonErrors } from '../interfaces/json-errors.interface';
-import { ILink } from '../interfaces/link.interface';
+import { ILinks } from '../interfaces/links.interface';
+import { IRelationship } from '../interfaces/relationship.interface';
 
 export class Serialiser {
     public error(errors: Array<ValidationException>): IJsonErrors {
@@ -59,6 +60,7 @@ export class Serialiser {
         const fields: Nullable<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
         const type: Nullable<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
         const relationships: Nullable<Array<Location>> = MODEL_REGISTER.getRelationships(model);
+        const links: Nullable<Array<Location>> = MODEL_REGISTER.getLinks(model);
 
         if (!type) {
             throw new SchemaNotRegisteredException(schema);
@@ -77,12 +79,17 @@ export class Serialiser {
 
                     return result;
                 }, {}),
-                relationships: relationships && relationships.length ? relationships.map((relationship: Location): ILink => {
+                relationships: relationships && relationships.length ? relationships.map((relationship: Location): IRelationship => {
                     return {
                         href: relationship.toString(),
                         type: relationship.resourceName
                     };
-                }) : undefined
+                }) : undefined,
+                links: links && links.length ? links.reduce((acc: ILinks, relationship: Location): ILinks => {
+                    acc[relationship.resourceName] = relationship.toString();
+
+                    return acc;
+                }, {}) : undefined
             }
         };
     }
@@ -107,7 +114,7 @@ export class Serialiser {
         });
 
         if (json.data.relationships) {
-            json.data.relationships.forEach((relationship: ILink, index: number) => {
+            json.data.relationships.forEach((relationship: IRelationship, index: number) => {
                 if (!relationship.href) {
                     throw new InvalidJSONRelationship(index);
                 }

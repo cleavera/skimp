@@ -216,7 +216,7 @@ export class Router implements IRouter {
                 throw new SchemaNotRegisteredException(schema);
             }
 
-            MODEL_REGISTER.addRelationship(model, new Location(resourceName));
+            MODEL_REGISTER.addLink(model, new Location(resourceName));
         });
 
         this._api.respond(response, model);
