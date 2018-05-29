@@ -23,6 +23,14 @@ export class Location {
         return new Url(this.toString());
     }
 
+    public isResource(): boolean {
+        return !!this.resourceName && !this.resourceId;
+    }
+
+    public isEntity(): boolean {
+        return !!this.resourceName && !!this.resourceId;
+    }
+
     public static fromUrl(url: Url): Location {
         if (url.parts.length === 0 || url.parts.length > 2) {
             throw new InvalidLocationException(url);

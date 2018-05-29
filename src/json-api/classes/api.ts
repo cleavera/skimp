@@ -46,6 +46,8 @@ export class Api implements IApi {
 
                 return this.serialiser.serialise(item, location);
             });
+
+            response.setAllow(true, false, false);
         } else {
             const location: Nullable<Location> = MODEL_REGISTER.getLocation(model);
 
@@ -60,6 +62,8 @@ export class Api implements IApi {
 
                 response.location = location.toString();
             }
+
+            response.setAllow(location.isResource(), location.isEntity(), location.isEntity());
         }
 
         response.json(model);

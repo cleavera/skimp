@@ -234,4 +234,62 @@ export class GetSpec {
 
         Expect(success).toBe(false);
     }
+
+    @AsyncTest()
+    public async getSingleResource(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const getResponse: Response = await request(this.personLocation, baseOptions);
+
+        Expect(getResponse.body).toEqual({
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.personLocation,
+                type: 'person',
+                relationships: [
+                    {
+                        href: this.jobLocation,
+                        type: 'job'
+                    }
+                ]
+            }
+        } as IJsonApi);
+
+        Expect(getResponse.headers.allow).toEqual('GET, PUT, DELETE');
+    }
+
+    @AsyncTest()
+    public async getMultipleResource(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([{
+            data: {
+                attributes: {
+                    fullName: 'Anthony Cleaver'
+                },
+                id: this.personLocation,
+                type: 'person',
+                relationships: [
+                    {
+                        href: this.jobLocation,
+                        type: 'job'
+                    }
+                ]
+            }
+        } as IJsonApi]);
+
+        Expect(getResponse.headers.allow).toEqual('GET, POST');
+    }
 }

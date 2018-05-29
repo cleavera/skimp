@@ -31,6 +31,24 @@ export class Response {
         return this._response;
     }
 
+    public setAllow(post: boolean, put: boolean, remove: boolean): void {
+        const allowed: Array<string> = ['GET'];
+
+        if (post) {
+            allowed.push('POST');
+        }
+
+        if (put) {
+            allowed.push('PUT');
+        }
+
+        if (remove) {
+            allowed.push('DELETE');
+        }
+
+        this._response.setHeader('Allow', allowed);
+    }
+
     public commit(): void {
         this._response.end();
     }
