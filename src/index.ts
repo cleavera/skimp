@@ -1,4 +1,4 @@
-export { Boolean, Date, Integer, Number, Required, String } from './validation';
+export { Boolean, Date, Integer, IOptions, Number, Options, Required, String } from './validation';
 export { ConsoleLogger, ILogger } from './debug';
 export { init } from './init';
 export { Server } from './server';

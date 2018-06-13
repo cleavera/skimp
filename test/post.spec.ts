@@ -14,6 +14,7 @@ import { init, Server } from '../src';
 import { LOGGER, LogLevel } from '../src/debug';
 import { IJsonApi } from '../src/json-api/interfaces/json-api.interface';
 import { ValidationExceptionCode } from '../src/router';
+import { Gender } from './constants/genders.constant';
 import * as DATA_PATH from './data/path';
 import { $clearDB } from './helpers/clear-db.helper';
 import { SCHEMAS } from './schemas';
@@ -102,7 +103,8 @@ export class PostSpec {
                         dateOfBirth: '1990-05-04',
                         height: 180,
                         weight: 78,
-                        employed: true
+                        employed: true,
+                        gender: Gender.MALE
                     },
                     id: this.location,
                     type: 'person'
@@ -204,7 +206,8 @@ export class PostSpec {
                         dateOfBirth: '1990-05-04',
                         height: 180,
                         weight: 78,
-                        employed: true
+                        employed: true,
+                        gender: Gender.MALE
                     },
                     type: 'person'
                 }
@@ -221,7 +224,8 @@ export class PostSpec {
                     dateOfBirth: '1990-05-04',
                     height: 180,
                     weight: 78,
-                    employed: true
+                    employed: true,
+                    gender: Gender.MALE
                 },
                 id: this.location,
                 type: 'person'
@@ -237,7 +241,8 @@ export class PostSpec {
                     dateOfBirth: '1990-05-04',
                     height: 180,
                     weight: 78,
-                    employed: true
+                    employed: true,
+                    gender: Gender.MALE
                 },
                 id: this.location,
                 type: 'person'
@@ -253,7 +258,8 @@ export class PostSpec {
                     dateOfBirth: '1990-05-04',
                     height: 180,
                     weight: 78,
-                    employed: true
+                    employed: true,
+                    gender: Gender.MALE
                 },
                 id: this.location,
                 type: 'person'
@@ -555,6 +561,56 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([]);
     }
 
+    @TestCase('Gender.MALES')
+    @TestCase('MALE')
+    @AsyncTest('When sending an invalid option value')
+    public async invalidOption(value: any): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        gender: value
+                    },
+                    type: 'person'
+                }
+            } as IJsonApi
+        });
+
+        let success: boolean = false;
+
+        try {
+            await request('/person', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(400);
+            Expect(e.error).toEqual({
+                errors: [
+                    {
+                        code: ValidationExceptionCode.INVALID_OPTION,
+                        source: {
+                            pointer: '/data/attributes/gender'
+                        }
+                    }
+                ]
+            });
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await request('/person', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
+    }
+
     @TestCase(123)
     @TestCase('abc')
     @TestCase('1990-1-2')
@@ -741,7 +797,8 @@ export class PostSpec {
                     dateOfBirth: '1990-05-04',
                     height: 180,
                     weight: 78,
-                    employed: true
+                    employed: true,
+                    gender: Gender.MALE
                 },
                 id: this.location,
                 type: 'person'
@@ -864,7 +921,8 @@ export class PostSpec {
                     dateOfBirth: '1990-05-04',
                     height: 180,
                     weight: 78,
-                    employed: true
+                    employed: true,
+                    gender: Gender.MALE
                 },
                 id: this.location,
                 type: 'person',

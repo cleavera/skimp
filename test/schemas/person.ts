@@ -1,4 +1,5 @@
-import { Boolean, Date, Field, Integer, Number, Required, Schema, String } from '../../src';
+import { Boolean, Date, Field, Integer, Number, Options, Required, Schema, String } from '../../src';
+import { GENDER_OPTIONS } from '../constants/gender-options.constant';
 
 @Schema('person')
 export class PersonSchema {
@@ -22,4 +23,9 @@ export class PersonSchema {
     @Boolean
     @Field()
     public employed: boolean;
+
+    @String
+    @Options(GENDER_OPTIONS)
+    @Field()
+    public gender: string;
 }

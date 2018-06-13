@@ -2,3 +2,5 @@
 - Templating/Self documentation
 - Security
 - Include relationships
+- CORs
+- ETag
