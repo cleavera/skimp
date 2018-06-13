@@ -11,12 +11,12 @@ export function DateType(target: any, propertyKey: string): void {
 
     SCHEMA_REGISTER.addSerialiser(target.constructor, propertyKey, (deserialisedValue: Maybe<Date>): Maybe<string> => {
         if (!deserialisedValue) {
-            return;
+            return null;
         }
 
         return deserialisedValue.toISOString().split('T')[0];
-    }, (serialisedValue: Maybe<string>): Maybe<Date> | null => {
-        if (serialisedValue === undefined || serialisedValue === null || serialisedValue === '') {
+    }, (serialisedValue: Maybe<string> = null): Maybe<Date> | null => {
+        if (serialisedValue === null || serialisedValue === '') {
             return null;
         }
 

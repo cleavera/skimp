@@ -143,7 +143,12 @@ export class UpdateSpec {
         Expect(getSinglePersonResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person',
@@ -193,7 +198,12 @@ export class UpdateSpec {
         Expect(postResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'
@@ -205,7 +215,12 @@ export class UpdateSpec {
         Expect(getResponse.body).toEqual([{
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'
@@ -246,7 +261,12 @@ export class UpdateSpec {
         Expect(putResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver2'
+                    fullName: 'Anthony Cleaver2',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'
@@ -260,7 +280,12 @@ export class UpdateSpec {
         Expect(getSingleResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver2'
+                    fullName: 'Anthony Cleaver2',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'
@@ -272,7 +297,12 @@ export class UpdateSpec {
         Expect(getResponse.body).toEqual([{
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver2'
+                    fullName: 'Anthony Cleaver2',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'
@@ -318,7 +348,12 @@ export class UpdateSpec {
         Expect(putResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver2'
+                    fullName: 'Anthony Cleaver2',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: location,
                 type: 'person'
@@ -332,7 +367,12 @@ export class UpdateSpec {
         Expect(getSingleResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver2'
+                    fullName: 'Anthony Cleaver2',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: location,
                 type: 'person'
@@ -345,7 +385,12 @@ export class UpdateSpec {
             {
                 data: {
                     attributes: {
-                        fullName: 'Anthony Cleaver2'
+                        fullName: 'Anthony Cleaver2',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
                     },
                     id: location,
                     type: 'person'
@@ -354,7 +399,12 @@ export class UpdateSpec {
             {
                 data: {
                     attributes: {
-                        fullName: 'Anthony Cleaver'
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
                     },
                     id: this.location,
                     type: 'person'
@@ -391,7 +441,12 @@ export class UpdateSpec {
         Expect(putResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver2'
+                    fullName: 'Anthony Cleaver2',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: location,
                 type: 'person'
@@ -405,7 +460,12 @@ export class UpdateSpec {
         Expect(getSingleResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver2'
+                    fullName: 'Anthony Cleaver2',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: location,
                 type: 'person'
@@ -418,7 +478,12 @@ export class UpdateSpec {
             {
                 data: {
                     attributes: {
-                        fullName: 'Anthony Cleaver2'
+                        fullName: 'Anthony Cleaver2',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
                     },
                     id: location,
                     type: 'person'
@@ -427,7 +492,12 @@ export class UpdateSpec {
             {
                 data: {
                     attributes: {
-                        fullName: 'Anthony Cleaver'
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
                     },
                     id: this.location,
                     type: 'person'
@@ -474,7 +544,12 @@ export class UpdateSpec {
         Expect(getResponse.body).toEqual([{
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'
@@ -520,7 +595,12 @@ export class UpdateSpec {
         Expect(getResponse.body).toEqual([{
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'
@@ -557,7 +637,12 @@ export class UpdateSpec {
         Expect(putResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'
@@ -571,7 +656,12 @@ export class UpdateSpec {
         Expect(getSingleResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'
@@ -583,7 +673,12 @@ export class UpdateSpec {
         Expect(getResponse.body).toEqual([{
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'

@@ -6,7 +6,7 @@ export class Location {
     public readonly resourceName: string;
     public readonly resourceId: Maybe<string>;
 
-    constructor(resourceName: string, resourceId?: string) {
+    constructor(resourceName: string, resourceId: Maybe<string> = null) {
         this.resourceName = resourceName;
         this.resourceId = resourceId;
     }

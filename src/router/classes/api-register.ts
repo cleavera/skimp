@@ -1,3 +1,4 @@
+import { Maybe } from '../../shared/interfaces/maybe.interface';
 import { ContentTypeNotSupportedException } from '../exceptions/content-type-not-supported.exception';
 import { IApi } from '../interfaces/api.interface';
 
@@ -18,7 +19,11 @@ export class ApiRegister {
         this._apis[contentType] = db;
     }
 
-    public get(contentType: string = this.defaultContentType): IApi {
+    public get(contentType: Maybe<string> = null): IApi {
+        if (!contentType) {
+            contentType = this.defaultContentType;
+        }
+
         if (!this._apis[contentType]) {
             throw new ContentTypeNotSupportedException(contentType);
         }

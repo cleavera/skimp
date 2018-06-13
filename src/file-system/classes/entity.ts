@@ -15,7 +15,7 @@ export class Entity {
         return Entity.getAbsolutePath(this.path);
     }
 
-    private constructor(path: string, stats?: Stats) {
+    private constructor(path: string, stats: Maybe<Stats> = null) {
         this.path = path;
         this._stats = stats;
     }

@@ -142,7 +142,12 @@ export class GetSpec {
         Expect(getSinglePersonResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.personLocation,
                 type: 'person',
@@ -189,7 +194,12 @@ export class GetSpec {
         Expect(postResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.personLocation,
                 type: 'person'
@@ -201,7 +211,12 @@ export class GetSpec {
         Expect(getResponse.body).toEqual([{
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.personLocation,
                 type: 'person'
@@ -280,7 +295,12 @@ export class GetSpec {
         Expect(getResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.personLocation,
                 type: 'person',
@@ -317,7 +337,12 @@ export class GetSpec {
         Expect(getResponse.body).toEqual([{
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.personLocation,
                 type: 'person',

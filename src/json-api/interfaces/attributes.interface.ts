@@ -1,5 +1,5 @@
-import { IJsonValue } from '../../shared';
+import { IJsonValue, Maybe } from '../../shared';
 
 export interface IAttributes {
-    [attribute: string]: IJsonValue;
+    [attribute: string]: Maybe<IJsonValue>;
 }

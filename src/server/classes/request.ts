@@ -10,7 +10,7 @@ export class Request {
     public readonly method: string;
     private _message: IncomingMessage;
 
-    constructor(message: IncomingMessage, content?: Content) {
+    constructor(message: IncomingMessage, content: Maybe<Content> = null) {
         this._message = message;
         this.content = content;
         this.method = (this._message.method || '').toUpperCase();
@@ -51,11 +51,11 @@ export class Request {
     }
 
     public get accepts(): Maybe<string> {
-        return this._message.headers.accept;
+        return this._message.headers.accept || null;
     }
 
     public get contentType(): Maybe<string> {
-        return this._message.headers['content-type'];
+        return this._message.headers['content-type'] || null;
     }
 
     public static async fromIncomingMessage(message: IncomingMessage): Promise<Request> {

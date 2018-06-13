@@ -8,7 +8,7 @@ export function Options<T extends IJsonValue>(options: IOptions<T>): PropertyDec
         SCHEMA_REGISTER.addValidation(target.constructor, async(model: any) => {
             const value: T = model[propertyKey];
 
-            if (value && options.indexOf(value) === -1) {
+            if (value !== null && options.indexOf(value) === -1) {
                 throw new ValidationFieldNotValidOptionException(propertyKey, model);
             }
         });

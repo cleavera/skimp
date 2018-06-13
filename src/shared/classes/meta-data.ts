@@ -28,7 +28,7 @@ export class MetaData implements IMeta {
             this._metaData[objectId] = {};
         }
 
-        return this._metaData[objectId][metaKey];
+        return this._metaData[objectId][metaKey] || null;
     }
 
     private _getObjectId(object: any): string { // tslint:disable-line no-any

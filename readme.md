@@ -4,4 +4,3 @@
 - Include relationships
 - CORs
 - ETag
-- Maybe switched to T | null

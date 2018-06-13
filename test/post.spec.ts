@@ -56,7 +56,8 @@ export class PostSpec {
                         dateOfBirth: '1990-05-03',
                         height: 180,
                         weight: 78,
-                        employed: true
+                        employed: true,
+                        gender: Gender.FEMALE
                     },
                     type: 'person'
                 }
@@ -73,7 +74,8 @@ export class PostSpec {
                     dateOfBirth: '1990-05-03',
                     height: 180,
                     weight: 78,
-                    employed: true
+                    employed: true,
+                    gender: Gender.FEMALE
                 },
                 id: location,
                 type: 'person'
@@ -90,7 +92,8 @@ export class PostSpec {
                         dateOfBirth: '1990-05-03',
                         height: 180,
                         weight: 78,
-                        employed: true
+                        employed: true,
+                        gender: Gender.FEMALE
                     },
                     id: location,
                     type: 'person'
@@ -121,7 +124,8 @@ export class PostSpec {
                     dateOfBirth: '1990-05-03',
                     height: 180,
                     weight: 78,
-                    employed: true
+                    employed: true,
+                    gender: Gender.FEMALE
                 },
                 id: location,
                 type: 'person'
@@ -963,7 +967,8 @@ export class PostSpec {
                         dateOfBirth: '1990-05-04',
                         height: 180,
                         weight: 78,
-                        employed: true
+                        employed: true,
+                        gender: Gender.FEMALE
                     },
                     type: 'person',
                     relationships: [
@@ -985,7 +990,8 @@ export class PostSpec {
                     dateOfBirth: '1990-05-04',
                     height: 180,
                     weight: 78,
-                    employed: true
+                    employed: true,
+                    gender: Gender.FEMALE
                 },
                 relationships: [
                     {
@@ -1015,7 +1021,8 @@ export class PostSpec {
                     dateOfBirth: '1990-05-04',
                     height: 180,
                     weight: 78,
-                    employed: true
+                    employed: true,
+                    gender: Gender.FEMALE
                 },
                 relationships: [
                     {
@@ -1045,7 +1052,8 @@ export class PostSpec {
                     dateOfBirth: '1990-05-04',
                     height: 180,
                     weight: 78,
-                    employed: true
+                    employed: true,
+                    gender: Gender.FEMALE
                 },
                 relationships: [
                     {

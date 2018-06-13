@@ -3,7 +3,7 @@ import { ValidationFieldInvalidIntegerException } from '../exceptions/validation
 
 export function Integer(target: any, propertyKey: string): void {
     SCHEMA_REGISTER.addValidation(target.constructor, async(model: any) => {
-        if ((typeof model[propertyKey] !== 'number' || !Number.isInteger(model[propertyKey])) && model[propertyKey] !== undefined) {
+        if ((typeof model[propertyKey] !== 'number' || !Number.isInteger(model[propertyKey])) && model[propertyKey] !== null) {
             throw new ValidationFieldInvalidIntegerException(propertyKey, model);
         }
     });

@@ -29,7 +29,7 @@ export class Content {
                     resolve(new Content(body));
                 }
 
-                resolve(void 0);
+                resolve(null);
             });
 
             stream.on('error', (bodyReadError: Error): void => {

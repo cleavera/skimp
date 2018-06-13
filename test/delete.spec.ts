@@ -142,7 +142,12 @@ export class DeleteSpec {
         Expect(getSinglePersonResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person',
@@ -192,7 +197,12 @@ export class DeleteSpec {
         Expect(postResponse.body).toEqual({
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'
@@ -204,7 +214,12 @@ export class DeleteSpec {
         Expect(getResponse.body).toEqual([{
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'
@@ -294,7 +309,12 @@ export class DeleteSpec {
         Expect(getResponse.body).toEqual([{
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'
@@ -332,7 +352,12 @@ export class DeleteSpec {
         Expect(getResponse.body).toEqual([{
             data: {
                 attributes: {
-                    fullName: 'Anthony Cleaver'
+                    fullName: 'Anthony Cleaver',
+                    dateOfBirth: null,
+                    height: null,
+                    weight: null,
+                    employed: null,
+                    gender: null
                 },
                 id: this.location,
                 type: 'person'

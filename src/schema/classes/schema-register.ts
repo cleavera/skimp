@@ -36,7 +36,7 @@ export class SchemaRegister {
     }
 
     public getSchema(resourceName: string): Maybe<ISchema> {
-        return this._schemas[resourceName];
+        return this._schemas[resourceName] || null;
     }
 
     public addSerialiser(schema: ISchema, propertyName: string, serialiser: IValueSerialiser, deserialiser: IValueDeserialiser): void {
@@ -61,7 +61,7 @@ export class SchemaRegister {
         const serialisers: { [key: string]: { serialiser: IValueSerialiser, deserialiser: IValueDeserialiser } } = this._meta.get(schema, MetaKey.SERIALISER) || {};
 
         if (!(propertyName in serialisers)) {
-            return value;
+            return value || null;
         }
 
         return serialisers[propertyName].deserialiser(value);
@@ -126,15 +126,15 @@ export class SchemaRegister {
         const fields: Maybe<Array<IFieldMapping>> = this._meta.get(schema, MetaKey.FIELDS);
 
         if (!fields || !fields.length) {
-            return;
+            return null;
         }
 
         const matchedField: Maybe<IFieldMapping> = fields.find((field: IFieldMapping) => {
             return field.propertyName === property;
-        });
+        }) || null;
 
         if (!matchedField) {
-            return;
+            return null;
         }
 
         return matchedField.fieldName;
