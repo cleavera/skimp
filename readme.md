@@ -1,6 +1,6 @@
-- File upload
-- Templating/Self documentation
-- Security
-- Include relationships
 - CORs
+- Templating/Self documentation
 - ETag
+- Security
+- File upload
+- Include relationships
