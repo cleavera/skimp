@@ -93,7 +93,7 @@ export class Serialiser {
                         }
                     };
                 }) : undefined,
-                links: links && links.length ? links.reduce((acc: ILinks, relationship: Location): ILinks => {
+                links: links && links.length ? links.reduce<ILinks>((acc: ILinks, relationship: Location): ILinks => {
                     acc[relationship.resourceName] = relationship.toString();
 
                     return acc;
