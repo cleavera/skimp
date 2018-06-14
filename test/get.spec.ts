@@ -24,7 +24,7 @@ export class GetSpec {
 
     @AsyncSetupFixture
     public async setup(): Promise<void> {
-        this._server = await init(1338, DATA_PATH, SCHEMAS);
+        this._server = await init(1338, DATA_PATH, SCHEMAS, true);
         LOGGER.setLogLevel(LogLevel.ERROR);
     }
 
@@ -396,12 +396,21 @@ export class GetSpec {
             baseUrl: 'http://localhost:1338',
             json: true,
             resolveWithFullResponse: true,
-            method: 'OPTIONS'
+            method: 'OPTIONS',
+            headers: {
+                origin: 'http://localhost'
+            }
         };
 
         const optionsRequest: Response = await request('/person', baseOptions);
 
         Expect(optionsRequest.body).not.toBeDefined();
+        Expect(optionsRequest.headers['access-control-allow-origin']).toEqual('http://localhost');
+        Expect(optionsRequest.headers['access-control-allow-credentials']).toEqual('true');
+        Expect(optionsRequest.headers['access-control-allow-headers']).toEqual('Content-Type');
+        Expect(optionsRequest.headers['access-control-max-age']).toEqual(86400);
+        Expect(optionsRequest.headers['access-control-allow-methods']).toEqual('POST, GET, PUT, DELETE, OPTIONS');
+
         Expect(optionsRequest.statusCode).toBe(204);
     }
 

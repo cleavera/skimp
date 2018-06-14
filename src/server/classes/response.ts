@@ -19,6 +19,18 @@ export class Response {
         this._response.statusCode = code;
     }
 
+    public get corsHeader(): string | Array<string> {
+        return this._response.getHeader('Access-Control-Allow-Origin') as string | Array<string> || '';
+    }
+
+    public set corsHeader(cors: string | Array<string>) {
+        this._response.setHeader('Access-Control-Allow-Origin', cors);
+        this._response.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+        this._response.setHeader('Access-Control-Max-Age', 86400);
+        this._response.setHeader('Access-Control-Allow-Credentials', 'true');
+        this._response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    }
+
     public get location(): string {
         return this._response.getHeader('location') as string || '';
     }

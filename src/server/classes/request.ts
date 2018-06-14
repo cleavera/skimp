@@ -62,6 +62,10 @@ export class Request {
         return this._message.headers.accept || null;
     }
 
+    public get origin(): Maybe<string | Array<string>> {
+        return this._message.headers.origin || null;
+    }
+
     public get contentType(): Maybe<string> {
         return this._message.headers['content-type'] || null;
     }

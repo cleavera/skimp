@@ -15,11 +15,13 @@ import { Location } from './location';
 
 export class Router implements IRouter {
     public version: string;
+    public cors: string | boolean | Array<string>;
 
     private _db: IDb;
 
-    constructor(version: string) {
+    constructor(version: string, cors: string | boolean | Array<string>) {
         this._db = DB_REGISTER.get();
+        this.cors = cors;
         this.version = version;
     }
 
@@ -49,6 +51,8 @@ export class Router implements IRouter {
                     throw validationIssues;
                 }
             }
+
+            this._assignCors(request, response);
 
             if (request.isGet) {
                 await this._get(location, response, api);
@@ -236,5 +240,15 @@ export class Router implements IRouter {
         });
 
         api.respond(response, model);
+    }
+
+    private _assignCors(request: Request, response: Response): void {
+        if (this.cors === false) {
+            return;
+        } else if (this.cors === true) {
+            response.corsHeader = request.origin || '*';
+        } else {
+            response.corsHeader = this.cors;
+        }
     }
 }

@@ -1,4 +1,3 @@
-- CORs
 - ETag
 - Templating/Self documentation
 - Security
