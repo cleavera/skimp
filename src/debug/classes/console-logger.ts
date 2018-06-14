@@ -1,4 +1,4 @@
-import { ILogger } from '..';
+import { ILogger } from '../interfaces/logger.interface';
 
 export class ConsoleLogger implements ILogger {
     public debug(...messages: Array<any>): void { // tslint:disable-line no-any

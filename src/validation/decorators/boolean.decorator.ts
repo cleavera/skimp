@@ -1,4 +1,5 @@
 import { SCHEMA_REGISTER } from '../../schema';
+
 import { ValidationFieldInvalidBooleanException } from '../exceptions/validation-field-invalid-boolean.exception';
 
 export function Boolean(target: any, propertyKey: string): void {

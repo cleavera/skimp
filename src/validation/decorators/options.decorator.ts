@@ -1,5 +1,6 @@
 import { SCHEMA_REGISTER } from '../../schema';
 import { IJsonValue } from '../../shared';
+
 import { ValidationFieldNotValidOptionException } from '../exceptions/validation-field-not-valid-option.exception';
 import { IOptions } from '../interfaces/options.interface';
 

@@ -1,6 +1,8 @@
 import { ServerResponse } from 'http';
 import { Writable } from 'stream';
+
 import { LOGGER } from '../../debug';
+
 import { ResponseCode } from '../constants/response-code.constant';
 import { ResponseType } from '../constants/response-types.constant';
 

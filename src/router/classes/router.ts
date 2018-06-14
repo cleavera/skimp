@@ -1,14 +1,18 @@
 import * as $uuid from 'uuid/v4';
-import { DB_REGISTER, IApi, MODEL_REGISTER } from '..';
+
 import { LOGGER } from '../../debug';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '../../schema';
 import { IRouter, Request, RequestMethod, Response, ResponseCode } from '../../server';
 import { Maybe } from '../../shared';
 import { ValidationException, ValidationExceptions } from '../../validation';
+
 import { API_REGISTER } from '../constants/api-register.constant';
+import { DB_REGISTER } from '../constants/db-register.constant';
+import { MODEL_REGISTER } from '../constants/model-register.constant';
 import { ContentTypeNotSupportedException } from '../exceptions/content-type-not-supported.exception';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
+import { IApi } from '../interfaces/api.interface';
 import { IDb } from '../interfaces/db.interface';
 import { RootSchema } from '../schemas/root.schema';
 import { Location } from './location';

@@ -1,4 +1,5 @@
-import { Maybe } from '../../shared/interfaces/maybe.interface';
+import { Maybe } from '../../shared';
+
 import { ContentTypeNotSupportedException } from '../exceptions/content-type-not-supported.exception';
 import { IApi } from '../interfaces/api.interface';
 

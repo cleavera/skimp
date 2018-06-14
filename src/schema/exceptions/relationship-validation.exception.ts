@@ -1,5 +1,6 @@
 import { ValidationExceptionCode } from '../../router';
 import { ValidationException } from '../../validation';
+
 import { RelationshipPointer } from '../classes/relationship-pointer';
 
 export class RelationshipValidationException extends ValidationException {

@@ -2,8 +2,7 @@ import { ConsoleLogger, ILogger, LOGGER } from './debug';
 import { FILE_SYSTEM } from './file-system';
 import { Api } from './json-api';
 import { Db } from './json-file';
-import { DB_REGISTER, Router } from './router';
-import { API_REGISTER } from './router/constants/api-register.constant';
+import { API_REGISTER, DB_REGISTER, Router } from './router';
 import { ISchema } from './schema';
 import { Server } from './server';
 

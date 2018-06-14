@@ -1,5 +1,6 @@
 import { Url } from '../../server';
 import { Maybe } from '../../shared';
+
 import { InvalidLocationException } from '../exceptions/invalid-location.exception';
 
 export class Location {

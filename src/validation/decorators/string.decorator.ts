@@ -1,4 +1,5 @@
 import { SCHEMA_REGISTER } from '../../schema';
+
 import { ValidationFieldInvalidStringException } from '../exceptions/validation-field-invalid-string.exception';
 
 export function String(target: any, propertyKey: string): void {

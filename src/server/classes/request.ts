@@ -1,5 +1,7 @@
 import { IncomingMessage } from 'http';
+
 import { Maybe } from '../../shared';
+
 import { RequestMethod } from '../constants/request-method.constant';
 import { Content } from './content';
 import { Url } from './url';

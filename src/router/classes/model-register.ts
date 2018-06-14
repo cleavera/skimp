@@ -1,4 +1,5 @@
 import { IMeta, Maybe, MetaKey } from '../../shared';
+
 import { Location } from './location';
 
 export class ModelRegister {

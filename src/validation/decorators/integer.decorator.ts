@@ -1,4 +1,5 @@
 import { SCHEMA_REGISTER } from '../../schema';
+
 import { ValidationFieldInvalidIntegerException } from '../exceptions/validation-field-invalid-integer.exception';
 
 export function Integer(target: any, propertyKey: string): void {

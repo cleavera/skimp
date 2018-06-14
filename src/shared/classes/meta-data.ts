@@ -1,4 +1,5 @@
-import uuid = require('uuid');
+import { v4 as uuid } from 'uuid';
+
 import { Maybe } from '../interfaces/maybe.interface';
 import { IMeta } from '../interfaces/meta.interface';
 
@@ -38,7 +39,7 @@ export class MetaData implements IMeta {
             }
         }
 
-        const newObjectId: string = uuid.v4();
+        const newObjectId: string = uuid();
 
         this._objects[newObjectId] = object;
 
