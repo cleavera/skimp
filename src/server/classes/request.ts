@@ -50,6 +50,14 @@ export class Request {
         return this.method === RequestMethod.DELETE;
     }
 
+    public get isOptions(): boolean {
+        if (!this.method) {
+            return false;
+        }
+
+        return this.method === RequestMethod.OPTIONS;
+    }
+
     public get accepts(): Maybe<string> {
         return this._message.headers.accept || null;
     }

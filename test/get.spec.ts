@@ -389,4 +389,41 @@ export class GetSpec {
 
         Expect(success).toBe(false);
     }
+
+    @AsyncTest('When sending an options request to an existing resource')
+    public async getWithOptionsRequest(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true,
+            method: 'OPTIONS'
+        };
+
+        const optionsRequest: Response = await request('/person', baseOptions);
+
+        Expect(optionsRequest.body).not.toBeDefined();
+        Expect(optionsRequest.statusCode).toBe(204);
+    }
+
+    @AsyncTest('When sending an options request to an missing resource')
+    public async optionsRequestMissingResource(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true,
+            method: 'OPTIONS'
+        };
+
+        let success: boolean = false;
+
+        try {
+            await request('/invalid', baseOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(404);
+        }
+
+        Expect(success).toBe(false);
+    }
 }

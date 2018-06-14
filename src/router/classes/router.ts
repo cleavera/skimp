@@ -66,6 +66,10 @@ export class Router implements IRouter {
                 await this._delete(location, response);
 
                 return;
+            } else if (request.isOptions) {
+                await this._options(location, response);
+
+                return;
             } else {
                 throw new MethodNotAllowedException(request.method as RequestMethod, request.url);
             }
@@ -170,6 +174,16 @@ export class Router implements IRouter {
 
         await this._db.delete(location);
         await this._updateRelationships(location, null, oldModel);
+
+        response.noContent();
+    }
+
+    private async _options(location: Location, response: Response): Promise<void> {
+        const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
+
+        if (!schema) {
+            throw new ResourceDoesNotExistException(location.toUrl());
+        }
 
         response.noContent();
     }
