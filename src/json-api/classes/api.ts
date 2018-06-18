@@ -15,7 +15,7 @@ export class Api implements IApi {
         this.serialiser = new Serialiser();
     }
 
-    public respond(response: Response, model: Array<any> | any, created?: boolean): void {
+    public respond(response: Response, model: Array<any> | any, _location: Location, created?: boolean): void {
         if (Array.isArray(model)) {
             model = model.sort((a: any, b: any): number => {
                 const aCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(a);

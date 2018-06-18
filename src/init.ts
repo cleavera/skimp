@@ -1,6 +1,6 @@
 import { ConsoleLogger, ILogger, LOGGER } from './debug';
 import { FILE_SYSTEM } from './file-system';
-import { Api } from './json-api';
+import { Api, Docs } from './json-api';
 import { Db } from './json-file';
 import { API_REGISTER, DB_REGISTER, Router } from './router';
 import { ISchema } from './schema';
@@ -11,6 +11,7 @@ export async function init(port: number, dataPath: string, _schemas: Array<ISche
     await FILE_SYSTEM.configure(dataPath);
     DB_REGISTER.configure(new Db());
     API_REGISTER.configure(new Api(), 'application/json');
+    API_REGISTER.configure(new Docs(), 'documentation/json');
     const server: Server = new Server(port, new Router(version, cors));
 
     LOGGER.debug(`Server started on port ${server.port}`);

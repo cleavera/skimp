@@ -12,6 +12,9 @@ import * as request from 'request-promise-native';
 import { init, Server } from '../src';
 import { LOGGER, LogLevel } from '../src/debug';
 import { IJsonApi } from '../src/json-api/interfaces/json-api.interface';
+import { ISchemaObject } from '../src/json-api/interfaces/schema-object.interface';
+import { ISchemaRoot } from '../src/json-api/interfaces/schema-root.interface';
+import { Gender } from './constants/genders.constant';
 import * as DATA_PATH from './data/path';
 import { $clearDB } from './helpers/clear-db.helper';
 import { SCHEMAS } from './schemas';
@@ -320,6 +323,185 @@ export class GetSpec {
                 ]
             }
         } as IJsonApi);
+
+        Expect(getResponse.headers.allow).toEqual('GET, PUT, DELETE');
+    }
+
+    @AsyncTest('When getting the documentation for single resource')
+    public async getDocumentationSingleResource(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            headers: {
+                Accept: 'documentation/json'
+            },
+            resolveWithFullResponse: true
+        };
+
+        const getResponse: Response = await request(this.personLocation, baseOptions);
+
+        Expect(getResponse.body).toEqual({
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            type: 'object',
+            required: [
+                'data'
+            ],
+            properties: {
+                data: {
+                    type: 'object',
+                    required: [
+                        'type',
+                        'id',
+                        'attributes'
+                    ],
+                    properties: {
+                        type: {
+                            type: 'string',
+                            const: 'person'
+                        },
+                        id: {
+                            type: 'string'
+                        },
+                        attributes: {
+                            type: 'object',
+                            required: [
+                                'fullName'
+                            ],
+                            properties: {
+                                fullName: {
+                                    type: 'string'
+                                },
+                                dateOfBirth: {
+                                    type: [
+                                        'string',
+                                        'null'
+                                    ]
+                                },
+                                height: {
+                                    type: [
+                                        'number',
+                                        'null'
+                                    ]
+                                },
+                                weight: {
+                                    type: [
+                                        'integer',
+                                        'null'
+                                    ]
+                                },
+                                employed: {
+                                    type: [
+                                        'boolean',
+                                        'null'
+                                    ]
+                                },
+                                gender: {
+                                    type: [
+                                        'string',
+                                        'null'
+                                    ],
+                                    enum: [
+                                        Gender.FEMALE,
+                                        Gender.MALE
+                                    ]
+                                }
+                            }
+                        },
+                        relationships: {
+                            type: 'array',
+                            items: [
+                                {
+                                    type: 'object',
+                                    required: [
+                                        'href'
+                                    ],
+                                    properties: {
+                                        href: {
+                                            type: 'string'
+                                        },
+                                        type: {
+                                            type: 'string',
+                                            const: 'job'
+                                        },
+                                        meta: {
+                                            type: 'object',
+                                            properties: {
+                                                methods: {
+                                                    type: 'object',
+                                                    required: [
+                                                        'GET',
+                                                        'POST',
+                                                        'PUT',
+                                                        'DELETE'
+                                                    ],
+                                                    properties: {
+                                                        GET: {
+                                                            type: 'boolean'
+                                                        },
+                                                        POST: {
+                                                            type: 'boolean'
+                                                        },
+                                                        PUT: {
+                                                            type: 'boolean'
+                                                        },
+                                                        DELETE: {
+                                                            type: 'boolean'
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    type: 'object',
+                                    required: [
+                                        'href'
+                                    ],
+                                    properties: {
+                                        href: {
+                                            type: 'string'
+                                        },
+                                        type: {
+                                            type: 'string',
+                                            const: 'team'
+                                        },
+                                        meta: {
+                                            type: 'object',
+                                            properties: {
+                                                methods: {
+                                                    type: 'object',
+                                                    required: [
+                                                        'GET',
+                                                        'POST',
+                                                        'PUT',
+                                                        'DELETE'
+                                                    ],
+                                                    properties: {
+                                                        GET: {
+                                                            type: 'boolean'
+                                                        },
+                                                        POST: {
+                                                            type: 'boolean'
+                                                        },
+                                                        PUT: {
+                                                            type: 'boolean'
+                                                        },
+                                                        DELETE: {
+                                                            type: 'boolean'
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        } as ISchemaRoot<ISchemaObject>);
 
         Expect(getResponse.headers.allow).toEqual('GET, PUT, DELETE');
     }

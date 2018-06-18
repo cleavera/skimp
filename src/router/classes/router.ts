@@ -97,6 +97,9 @@ export class Router implements IRouter {
             } else if (e instanceof ContentTypeNotSupportedException) {
                 LOGGER.warn(e);
                 API_REGISTER.get().error(response, ResponseCode.NOT_ACCEPTABLE);
+            } else if (e instanceof ContentTypeNotSupportedException) {
+                LOGGER.warn(e);
+                API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST);
             } else {
                 throw e;
             }
@@ -111,12 +114,12 @@ export class Router implements IRouter {
         }
 
         if (location.resourceId) {
-            api.respond(response, await this._db.get(location));
+            api.respond(response, await this._db.get(location), location);
 
             return;
         }
 
-        api.respond(response, await this._db.list(location));
+        api.respond(response, await this._db.list(location), location);
     }
 
     private async _post(location: Location, model: any, response: Response, api: IApi): Promise<void> {
@@ -139,7 +142,7 @@ export class Router implements IRouter {
         await this._db.set(createdLocation, model);
         await this._updateRelationships(createdLocation, model);
 
-        api.respond(response, await this._db.get(createdLocation), true);
+        api.respond(response, await this._db.get(createdLocation), location, true);
     }
 
     private async _put(location: Location, model: any, response: Response, api: IApi): Promise<void> {
@@ -164,7 +167,7 @@ export class Router implements IRouter {
         await this._db.set(location, model);
         await this._updateRelationships(location, model, oldModel);
 
-        api.respond(response, await this._db.get(location), isCreate);
+        api.respond(response, await this._db.get(location), location, isCreate);
     }
 
     private async _delete(location: Location, response: Response): Promise<void> {
@@ -226,12 +229,13 @@ export class Router implements IRouter {
 
     private async _root(response: Response, api: IApi): Promise<void> {
         const model: RootSchema = new RootSchema();
+        const location: Location = new Location('');
 
         model.version = this.version;
 
         SCHEMA_REGISTER.register(RootSchema, 'ROOT', true);
         SCHEMA_REGISTER.addField(RootSchema, 'version', 'version');
-        MODEL_REGISTER.setLocation(model, new Location(''));
+        MODEL_REGISTER.setLocation(model, location);
 
         SCHEMA_REGISTER.schemas.forEach((schema: ISchema) => {
             const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
@@ -243,7 +247,7 @@ export class Router implements IRouter {
             MODEL_REGISTER.addLink(model, new Location(resourceName));
         });
 
-        api.respond(response, model);
+        api.respond(response, model, location);
     }
 
     private _assignCors(request: Request, response: Response): void {

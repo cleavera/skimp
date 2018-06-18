@@ -1,6 +1,7 @@
 - ETag
 - Templating/Self documentation
 - Security
+- Add proper readme file
 - Move filesystem configuration into DB
 - File upload
 - Include relationships
