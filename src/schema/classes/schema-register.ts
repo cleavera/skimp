@@ -5,7 +5,7 @@ import { ValidationException, ValidationExceptions } from '../../validation';
 import { DuplicateResourceNameException } from '../exceptions/duplicate-resource-name.exception';
 import { IValueDeserialiser } from '../exceptions/value-deserialiser.interface';
 import { IValueSerialiser } from '../exceptions/value-serialiser.interface';
-import { IFieldMapping } from '../interfaces/field-mapping.interface';
+import { IFieldMeta } from '../interfaces/field-meta.interface';
 import { ISchema } from '../interfaces/schema.interface';
 import { IValidation } from '../interfaces/validation.interface';
 
@@ -40,32 +40,33 @@ export class SchemaRegister {
         return this._schemas[resourceName] || null;
     }
 
-    public addSerialiser(schema: ISchema, propertyName: string, serialiser: IValueSerialiser, deserialiser: IValueDeserialiser): void {
-        const serialisers: { [key: string]: { serialiser: IValueSerialiser, deserialiser: IValueDeserialiser } } = this._meta.get(schema, MetaKey.SERIALISER) || {};
+    public addSerialiser(schema: ISchema, field: string, serialiser: IValueSerialiser, deserialiser: IValueDeserialiser): void {
+        const fieldMeta: IFieldMeta = this.getFieldMeta(schema, field);
 
-        serialisers[propertyName] = { serialiser, deserialiser };
+        fieldMeta.serialiser = serialiser;
+        fieldMeta.deserialiser = deserialiser;
 
-        this._meta.set(schema, MetaKey.SERIALISER, serialisers);
+        this.setFieldMeta(schema, field, fieldMeta);
     }
 
-    public serialise(schema: ISchema, propertyName: string, value: any): any {
-        const serialisers: { [key: string]: { serialiser: IValueSerialiser, deserialiser: IValueDeserialiser } } = this._meta.get(schema, MetaKey.SERIALISER) || {};
+    public serialise(schema: ISchema, field: string, value: any): any {
+        const fieldMeta: IFieldMeta = this.getFieldMeta(schema, field);
 
-        if (!(propertyName in serialisers)) {
+        if (!fieldMeta.serialiser) {
             return value;
         }
 
-        return serialisers[propertyName].serialiser(value);
+        return fieldMeta.serialiser(value);
     }
 
-    public deserialise(schema: ISchema, propertyName: string, value: any): any {
-        const serialisers: { [key: string]: { serialiser: IValueSerialiser, deserialiser: IValueDeserialiser } } = this._meta.get(schema, MetaKey.SERIALISER) || {};
+    public deserialise(schema: ISchema, field: string, value: any): any {
+        const fieldMeta: IFieldMeta = this.getFieldMeta(schema, field);
 
-        if (!(propertyName in serialisers)) {
+        if (!fieldMeta.deserialiser) {
             return value || null;
         }
 
-        return serialisers[propertyName].deserialiser(value);
+        return fieldMeta.deserialiser(value);
     }
 
     public addValidation(schema: ISchema, validation: IValidation): void {
@@ -111,34 +112,50 @@ export class SchemaRegister {
         return this._meta.get(schema, MetaKey.SCHEMA_RELATIONSHIPS);
     }
 
-    public addField(schema: ISchema, propertyName: string, fieldName: string): void {
-        const fields: Array<IFieldMapping> = this._meta.get(schema, MetaKey.FIELDS) || [];
+    public addFieldMapping(schema: ISchema, propertyName: string, fieldName: string): void {
+        const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
 
-        fields.push({ propertyName, fieldName });
+        field.mappedName = fieldName;
+
+        this.setFieldMeta(schema, propertyName, field);
+    }
+
+    public getFieldMeta(schema: ISchema, fieldName: string): IFieldMeta {
+        const fields: { [field: string]: IFieldMeta } = this._meta.get(schema, MetaKey.FIELDS) || {};
+
+        return fields[fieldName] || {};
+    }
+
+    public setFieldMeta(schema: ISchema, fieldName: string, meta: IFieldMeta): void {
+        const fields: { [field: string]: IFieldMeta } = this._meta.get(schema, MetaKey.FIELDS) || {};
+
+        fields[fieldName] = meta;
 
         this._meta.set(schema, MetaKey.FIELDS, fields);
     }
 
-    public getFields(schema: ISchema): Maybe<Array<IFieldMapping>> {
-        return this._meta.get(schema, MetaKey.FIELDS);
+    public getFields(schema: ISchema): Maybe<Array<string>> {
+        const fields: Maybe<{ [field: string]: IFieldMeta }> = this._meta.get(schema, MetaKey.FIELDS);
+
+        if (!fields) {
+            return null;
+        }
+
+        return Object.keys(fields);
     }
 
     public mapToField(schema: ISchema, property: string): Maybe<string> {
-        const fields: Maybe<Array<IFieldMapping>> = this._meta.get(schema, MetaKey.FIELDS);
+        const field: IFieldMeta = this.getFieldMeta(schema, property);
 
-        if (!fields || !fields.length) {
+        if (!field) {
             return null;
         }
 
-        const matchedField: Maybe<IFieldMapping> = fields.find((field: IFieldMapping) => {
-            return field.propertyName === property;
-        }) || null;
-
-        if (!matchedField) {
+        if (!field.mappedName) {
             return null;
         }
 
-        return matchedField.fieldName;
+        return field.mappedName;
     }
 
     public getSchemaResourceName(schema: ISchema): Maybe<string> {

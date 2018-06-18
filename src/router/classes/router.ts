@@ -234,7 +234,7 @@ export class Router implements IRouter {
         model.version = this.version;
 
         SCHEMA_REGISTER.register(RootSchema, 'ROOT', true);
-        SCHEMA_REGISTER.addField(RootSchema, 'version', 'version');
+        SCHEMA_REGISTER.addFieldMapping(RootSchema, 'version', 'version');
         MODEL_REGISTER.setLocation(model, location);
 
         SCHEMA_REGISTER.schemas.forEach((schema: ISchema) => {

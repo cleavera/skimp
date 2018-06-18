@@ -1,13 +1,5 @@
 import { Location, MODEL_REGISTER } from '../../router';
-import {
-    IFieldMapping,
-    ISchema,
-    ModelPointer, RelationshipPointer, RelationshipValidationException,
-    ResourceNotRegisteredException,
-    SCHEMA_REGISTER,
-    SchemaHasNoFieldsException,
-    SchemaNotRegisteredException
-} from '../../schema';
+import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
 import { Url } from '../../server';
 import { Maybe } from '../../shared';
 import { ModelValidationException, ValidationException } from '../../validation';
@@ -58,7 +50,7 @@ export class Serialiser {
 
     public serialise(model: any, location: Location): IJsonData {
         const schema: ISchema = model.constructor;
-        const fields: Maybe<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
+        const fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
         const relationships: Maybe<Array<Location>> = MODEL_REGISTER.getRelationships(model);
         const links: Maybe<Array<Location>> = MODEL_REGISTER.getLinks(model);
@@ -75,8 +67,14 @@ export class Serialiser {
             data: {
                 type,
                 id: location.toString(),
-                attributes: fields.reduce<IAttributes>((result: IAttributes, field: IFieldMapping): IAttributes => {
-                    result[field.fieldName] = SCHEMA_REGISTER.serialise(schema, field.propertyName, model[field.propertyName]);
+                attributes: fields.reduce<IAttributes>((result: IAttributes, field: string): IAttributes => {
+                    const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
+
+                    if (!mappedField) {
+                        throw new FieldNotConfiguredException(schema, field);
+                    }
+
+                    result[mappedField] = SCHEMA_REGISTER.serialise(schema, field, model[field]);
 
                     return result;
                 }, {}),
@@ -110,7 +108,7 @@ export class Serialiser {
             throw new ResourceNotRegisteredException(json.data.type);
         }
 
-        const fields: Maybe<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
+        const fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
 
         if (!fields || !fields.length) {
             throw new SchemaHasNoFieldsException(schema);
@@ -118,8 +116,14 @@ export class Serialiser {
 
         const model: any = new schema();
 
-        fields.forEach((field: IFieldMapping) => {
-            model[field.propertyName] = SCHEMA_REGISTER.deserialise(schema, field.propertyName, json.data.attributes[field.fieldName]);
+        fields.forEach((field: string) => {
+            const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
+
+            if (!mappedField) {
+                throw new FieldNotConfiguredException(schema, field);
+            }
+
+            model[field] = SCHEMA_REGISTER.deserialise(schema, field, json.data.attributes[mappedField]);
         });
 
         if (json.data.relationships) {

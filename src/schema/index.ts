@@ -1,3 +1,4 @@
+export { FieldNotConfiguredException } from './exceptions/field-not-configured.exception';
 export { RelationshipPointer } from './classes/relationship-pointer';
 export { RelationshipValidationException } from './exceptions/relationship-validation.exception';
 export { Relationship } from './decorators/relationship.decorator';
@@ -5,7 +6,6 @@ export { ModelPointer } from './classes/model-pointer';
 export { ResourceNotRegisteredException } from './exceptions/resource-not-registered.exception';
 export { SchemaNotRegisteredException } from './exceptions/schema-not-registered.exception';
 export { SchemaHasNoFieldsException } from './exceptions/schema-has-no-fields.exception';
-export { IFieldMapping } from './interfaces/field-mapping.interface';
 export { Field } from './decorators/field.decorator';
 export { Schema } from './decorators/schema.decorator';
 export { InvalidSchemaResourceNameException } from './exceptions/invalid-schema-resource-name.exception';

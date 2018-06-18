@@ -1,7 +1,7 @@
 import { IApi, Location, RequestBodyNotAllowedException } from '../../router';
 import { ResourceDoesNotExistException } from '../../router/exceptions/resource-does-not-exist.exception';
 import {
-    IFieldMapping,
+    FieldNotConfiguredException,
     ISchema,
     SCHEMA_REGISTER,
     SchemaHasNoFieldsException,
@@ -42,7 +42,7 @@ export class Docs implements IApi {
 
     private _documentSchema(schema: ISchema): ISchemaRoot<ISchemaObject> {
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
-        const fields: Maybe<Array<IFieldMapping>> = SCHEMA_REGISTER.getFields(schema);
+        const fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const relationships: Maybe<Array<ISchema>> = SCHEMA_REGISTER.getSchemaRelationships(schema);
 
         if (!type) {
@@ -71,8 +71,14 @@ export class Docs implements IApi {
                         },
                         attributes: {
                             type: 'object',
-                            properties: fields.reduce<{ [propName: string]: ISchemaValue }>((result: { [propName: string]: ISchemaValue }, field: IFieldMapping): { [propName: string]: ISchemaValue } => {
-                                result[field.fieldName] = {
+                            properties: fields.reduce<{ [propName: string]: ISchemaValue }>((result: { [propName: string]: ISchemaValue }, field: string): { [propName: string]: ISchemaValue } => {
+                                const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
+
+                                if (!mappedField) {
+                                    throw new FieldNotConfiguredException(schema, field);
+                                }
+
+                                result[mappedField] = {
                                     type: ['string', 'null']
                                 };
 

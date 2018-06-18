@@ -6,6 +6,6 @@ export function Field(alias?: string): PropertyDecorator {
             alias = propertyKey;
         }
 
-        SCHEMA_REGISTER.addField(target.constructor, propertyKey, alias);
+        SCHEMA_REGISTER.addFieldMapping(target.constructor, propertyKey, alias);
     };
 }
