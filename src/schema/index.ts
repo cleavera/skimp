@@ -1,3 +1,4 @@
+export { FieldType } from './constants/field.type';
 export { FieldNotConfiguredException } from './exceptions/field-not-configured.exception';
 export { RelationshipPointer } from './classes/relationship-pointer';
 export { RelationshipValidationException } from './exceptions/relationship-validation.exception';

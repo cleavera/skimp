@@ -2,6 +2,7 @@ import { LOGGER } from '../../debug';
 import { IMeta, Maybe, MetaKey } from '../../shared';
 import { ValidationException, ValidationExceptions } from '../../validation';
 
+import { FieldType } from '../constants/field.type';
 import { DuplicateResourceNameException } from '../exceptions/duplicate-resource-name.exception';
 import { IValueDeserialiser } from '../exceptions/value-deserialiser.interface';
 import { IValueSerialiser } from '../exceptions/value-serialiser.interface';
@@ -118,6 +119,24 @@ export class SchemaRegister {
         field.mappedName = fieldName;
 
         this.setFieldMeta(schema, propertyName, field);
+    }
+
+    public setFieldType(schema: ISchema, propertyName: string, type: FieldType): void {
+        const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
+
+        field.type = type;
+
+        this.setFieldMeta(schema, propertyName, field);
+    }
+
+    public getFieldType(schema: ISchema, propertyName: string): Maybe<FieldType> {
+        const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
+
+        if (!('type' in field) || field === void 0) {
+            return null;
+        }
+
+        return (field as { type: FieldType }).type;
     }
 
     public getFieldMeta(schema: ISchema, fieldName: string): IFieldMeta {

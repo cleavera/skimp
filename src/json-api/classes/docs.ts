@@ -1,7 +1,7 @@
-import { IApi, Location, RequestBodyNotAllowedException } from '../../router';
-import { ResourceDoesNotExistException } from '../../router/exceptions/resource-does-not-exist.exception';
+import { IApi, Location, RequestBodyNotAllowedException, ResourceDoesNotExistException } from '../../router';
 import {
     FieldNotConfiguredException,
+    FieldType,
     ISchema,
     SCHEMA_REGISTER,
     SchemaHasNoFieldsException,
@@ -9,6 +9,7 @@ import {
 } from '../../schema';
 import { Response, ResponseCode } from '../../server';
 import { Maybe } from '../../shared';
+import { FieldTypeMapping } from '../constants/field-type-mapping.constant';
 import { ISchemaObject } from '../interfaces/schema-object.interface';
 import { ISchemaRoot } from '../interfaces/schema-root.interface';
 import { ISchemaValue } from '../interfaces/schema-value.interface';
@@ -73,14 +74,15 @@ export class Docs implements IApi {
                             type: 'object',
                             properties: fields.reduce<{ [propName: string]: ISchemaValue }>((result: { [propName: string]: ISchemaValue }, field: string): { [propName: string]: ISchemaValue } => {
                                 const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
+                                const fieldType: Maybe<FieldType> = SCHEMA_REGISTER.getFieldType(schema, field);
 
-                                if (!mappedField) {
+                                if (!mappedField || fieldType === null) {
                                     throw new FieldNotConfiguredException(schema, field);
                                 }
 
                                 result[mappedField] = {
-                                    type: ['string', 'null']
-                                };
+                                    type: [FieldTypeMapping[fieldType], 'null']
+                                } as any; // tslint:disable-line no-any
 
                                 return result;
                             }, {})

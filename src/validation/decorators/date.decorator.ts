@@ -1,16 +1,18 @@
-import { SCHEMA_REGISTER } from '../../schema';
+import { FieldType, ISchema, SCHEMA_REGISTER } from '../../schema';
 import { Maybe } from '../../shared';
 
 import { ValidationFieldInvalidDateException } from '../exceptions/validation-field-invalid-date.exception';
 
 export function DateType(target: any, propertyKey: string): void {
-    SCHEMA_REGISTER.addValidation(target.constructor, async(model: any) => {
+    const schema: ISchema = target.constructor;
+
+    SCHEMA_REGISTER.addValidation(schema, async(model: any) => {
         if (!(model[propertyKey] instanceof Date) && model[propertyKey] !== null) {
             throw new ValidationFieldInvalidDateException(propertyKey, model);
         }
     });
 
-    SCHEMA_REGISTER.addSerialiser(target.constructor, propertyKey, (deserialisedValue: Maybe<Date>): Maybe<string> => {
+    SCHEMA_REGISTER.addSerialiser(schema, propertyKey, (deserialisedValue: Maybe<Date>): Maybe<string> => {
         if (!deserialisedValue) {
             return null;
         }
@@ -29,4 +31,6 @@ export function DateType(target: any, propertyKey: string): void {
 
         return deserialisedValue;
     });
+
+    SCHEMA_REGISTER.setFieldType(schema, propertyKey, FieldType.DATE);
 }
