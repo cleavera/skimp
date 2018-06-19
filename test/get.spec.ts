@@ -503,7 +503,7 @@ export class GetSpec {
             }
         } as ISchemaRoot<ISchemaObject>);
 
-        Expect(getResponse.headers.allow).toEqual('GET, PUT, DELETE');
+        Expect(getResponse.headers.allow).toEqual('GET');
     }
 
     @AsyncTest('When getting the a multiple resource')

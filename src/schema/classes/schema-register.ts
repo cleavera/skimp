@@ -1,6 +1,6 @@
 import { LOGGER } from '../../debug';
 import { IMeta, Maybe, MetaKey } from '../../shared';
-import { ValidationException, ValidationExceptions } from '../../validation';
+import { IOptions, ValidationException, ValidationExceptions } from '../../validation';
 
 import { FieldType } from '../constants/field.type';
 import { DuplicateResourceNameException } from '../exceptions/duplicate-resource-name.exception';
@@ -127,6 +127,20 @@ export class SchemaRegister {
         field.type = type;
 
         this.setFieldMeta(schema, propertyName, field);
+    }
+
+    public setFieldOptions(schema: ISchema, propertyName: string, options: IOptions<any>): void {
+        const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
+
+        field.options = options;
+
+        this.setFieldMeta(schema, propertyName, field);
+    }
+
+    public getFieldOptions(schema: ISchema, propertyName: string): Maybe<IOptions> {
+        const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
+
+        return field.options || null;
     }
 
     public setFieldRequired(schema: ISchema, propertyName: string, isRequired: boolean): void {

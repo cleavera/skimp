@@ -9,9 +9,11 @@ import {
 } from '../../schema';
 import { Response, ResponseCode } from '../../server';
 import { Maybe } from '../../shared';
+import { IOptions } from '../../validation';
 import { FieldTypeMapping } from '../constants/field-type-mapping.constant';
 import { ISchemaObject } from '../interfaces/schema-object.interface';
 import { ISchemaRoot } from '../interfaces/schema-root.interface';
+import { ISchemaTerminatingValue } from '../interfaces/schema-terminating-value.interface';
 import { ISchemaValue } from '../interfaces/schema-value.interface';
 import { Api } from './api';
 
@@ -29,6 +31,7 @@ export class Docs implements IApi {
             throw new ResourceDoesNotExistException(location.toUrl());
         }
 
+        response.setAllow(false, false, false);
         response.json(this._documentSchema(schema));
         response.commit();
     }
@@ -90,6 +93,7 @@ export class Docs implements IApi {
                                 const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
                                 const fieldType: Maybe<FieldType> = SCHEMA_REGISTER.getFieldType(schema, field);
                                 const isRequired: boolean = SCHEMA_REGISTER.getFieldRequired(schema, field);
+                                const options: Maybe<IOptions> = SCHEMA_REGISTER.getFieldOptions(schema, field);
 
                                 if (!mappedField || fieldType === null) {
                                     throw new FieldNotConfiguredException(schema, field);
@@ -97,7 +101,11 @@ export class Docs implements IApi {
 
                                 result[mappedField] = {
                                     type: isRequired ? FieldTypeMapping[fieldType] : [FieldTypeMapping[fieldType], 'null']
-                                } as any; // tslint:disable-line no-any
+                                } as ISchemaTerminatingValue;
+
+                                if (options) {
+                                    (result[mappedField] as ISchemaTerminatingValue).enum = options as any;
+                                }
 
                                 return result;
                             }, {})
