@@ -11,8 +11,10 @@ import { DB_REGISTER } from '../constants/db-register.constant';
 import { MODEL_REGISTER } from '../constants/model-register.constant';
 import { ContentTypeNotSupportedException } from '../exceptions/content-type-not-supported.exception';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
+import { NotAuthorisedException } from '../exceptions/not-authorised.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
 import { IApi } from '../interfaces/api.interface';
+import { IAuthenticator } from '../interfaces/authenticator.interface';
 import { IDb } from '../interfaces/db.interface';
 import { RootSchema } from '../schemas/root.schema';
 import { Location } from './location';
@@ -20,10 +22,12 @@ import { Location } from './location';
 export class Router implements IRouter {
     public version: string;
     public cors: string | boolean | Array<string>;
+    public authenticator: Maybe<IAuthenticator>;
 
     private _db: IDb;
 
-    constructor(version: string, cors: string | boolean | Array<string>) {
+    constructor(version: string, cors: string | boolean | Array<string>, authenticator: Maybe<IAuthenticator> = null) {
+        this.authenticator = authenticator;
         this._db = DB_REGISTER.get();
         this.cors = cors;
         this.version = version;
@@ -32,6 +36,14 @@ export class Router implements IRouter {
     public async route(request: Request, response: Response): Promise<void> {
         try {
             const api: IApi = API_REGISTER.get(request.accepts);
+
+            if (this.authenticator) {
+                try {
+                    this.authenticator.authenticate(request);
+                } catch (e) {
+                    throw new NotAuthorisedException();
+                }
+            }
 
             if (request.url.toString() === '/') {
                 await this._root(response, api);
@@ -100,6 +112,9 @@ export class Router implements IRouter {
             } else if (e instanceof ContentTypeNotSupportedException) {
                 LOGGER.warn(e);
                 API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST);
+            } else if (e instanceof NotAuthorisedException) {
+                LOGGER.warn(e);
+                API_REGISTER.get().error(response, ResponseCode.NOT_AUTHORISED);
             } else {
                 throw e;
             }

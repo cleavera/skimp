@@ -1,3 +1,4 @@
+export { IAuthenticator } from './interfaces/authenticator.interface';
 export { RequestBodyNotAllowedException } from './exceptions/request-body-not-allowed.exception';
 export { API_REGISTER } from './constants/api-register.constant';
 export { DB_REGISTER } from './constants/db-register.constant';
