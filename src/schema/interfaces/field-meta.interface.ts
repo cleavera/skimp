@@ -7,4 +7,5 @@ export interface IFieldMeta {
     serialiser?: IValueSerialiser;
     deserialiser?: IValueDeserialiser;
     type?: FieldType;
+    isRequired?: boolean;
 }

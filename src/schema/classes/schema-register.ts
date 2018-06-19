@@ -129,6 +129,20 @@ export class SchemaRegister {
         this.setFieldMeta(schema, propertyName, field);
     }
 
+    public setFieldRequired(schema: ISchema, propertyName: string, isRequired: boolean): void {
+        const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
+
+        field.isRequired = isRequired;
+
+        this.setFieldMeta(schema, propertyName, field);
+    }
+
+    public getFieldRequired(schema: ISchema, propertyName: string): boolean {
+        const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
+
+        return field.isRequired || false;
+    }
+
     public getFieldType(schema: ISchema, propertyName: string): Maybe<FieldType> {
         const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
 

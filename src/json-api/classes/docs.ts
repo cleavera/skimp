@@ -75,13 +75,14 @@ export class Docs implements IApi {
                             properties: fields.reduce<{ [propName: string]: ISchemaValue }>((result: { [propName: string]: ISchemaValue }, field: string): { [propName: string]: ISchemaValue } => {
                                 const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
                                 const fieldType: Maybe<FieldType> = SCHEMA_REGISTER.getFieldType(schema, field);
+                                const isRequired: boolean = SCHEMA_REGISTER.getFieldRequired(schema, field);
 
                                 if (!mappedField || fieldType === null) {
                                     throw new FieldNotConfiguredException(schema, field);
                                 }
 
                                 result[mappedField] = {
-                                    type: [FieldTypeMapping[fieldType], 'null']
+                                    type: isRequired ? FieldTypeMapping[fieldType] : [FieldTypeMapping[fieldType], 'null']
                                 } as any; // tslint:disable-line no-any
 
                                 return result;
