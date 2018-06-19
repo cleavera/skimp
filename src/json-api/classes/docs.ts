@@ -72,6 +72,20 @@ export class Docs implements IApi {
                         },
                         attributes: {
                             type: 'object',
+                            required: fields.reduce<Array<string>>((acc: Array<string>, field: string) => {
+                                const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
+                                const isRequired: boolean = SCHEMA_REGISTER.getFieldRequired(schema, field);
+
+                                if (!mappedField) {
+                                    throw new FieldNotConfiguredException(schema, field);
+                                }
+
+                                if (isRequired) {
+                                    acc.push(mappedField);
+                                }
+
+                                return acc;
+                            }, []),
                             properties: fields.reduce<{ [propName: string]: ISchemaValue }>((result: { [propName: string]: ISchemaValue }, field: string): { [propName: string]: ISchemaValue } => {
                                 const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
                                 const fieldType: Maybe<FieldType> = SCHEMA_REGISTER.getFieldType(schema, field);

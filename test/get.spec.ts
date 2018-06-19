@@ -385,7 +385,7 @@ export class GetSpec {
                                 },
                                 weight: {
                                     type: [
-                                        'integer',
+                                        'number',
                                         'null'
                                     ]
                                 },
