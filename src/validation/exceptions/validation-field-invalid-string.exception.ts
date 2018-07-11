@@ -1,6 +1,5 @@
-import { ModelPointer } from '../../schema';
+import { ModelPointer, ValidationExceptionCode } from '../../schema';
 
-import { ValidationExceptionCode } from '../../schema/constants/validation-exception-code.constant';
 import { ModelValidationException } from './model-validation.exception';
 
 export class ValidationFieldInvalidStringException extends ModelValidationException {

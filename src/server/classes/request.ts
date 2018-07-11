@@ -1,10 +1,9 @@
 import { IncomingMessage } from 'http';
 
-import { IRequest, RequestMethod } from '../../http';
+import { IRequest, RequestMethod, Url } from '../../http';
 import { Maybe } from '../../shared';
 
 import { Content } from './content';
-import { Url } from '../../http/classes/url';
 
 export class Request implements IRequest {
     public url: Url;

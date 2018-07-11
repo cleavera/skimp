@@ -1,9 +1,8 @@
 import * as $uuid from 'uuid/v4';
 
 import { LOGGER } from '../../debug';
-import { IRequest, IResponse, RequestMethod, ResponseCode } from '../../http/';
-import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException } from '../../schema';
-import { ValidationExceptions } from '../../schema/exceptions/validation.exceptions';
+import { IRequest, IResponse, RequestMethod, ResponseCode } from '../../http';
+import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException, ValidationExceptions } from '../../schema';
 import { IRouter } from '../../server';
 import { Maybe } from '../../shared';
 

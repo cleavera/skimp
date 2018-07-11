@@ -1,3 +1,4 @@
+export { ValidationExceptions } from './exceptions/validation.exceptions';
 export { ValidationExceptionCode } from './constants/validation-exception-code.constant';
 export { ValidationException } from './exceptions/validation.exception';
 export { IOptions } from './interfaces/options.interface';
