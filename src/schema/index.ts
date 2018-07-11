@@ -1,3 +1,4 @@
+export { ValidationExceptionCode } from './constants/validation-exception-code.constant';
 export { ValidationException } from './exceptions/validation.exception';
 export { IOptions } from './interfaces/options.interface';
 export { FieldType } from './constants/field.type';

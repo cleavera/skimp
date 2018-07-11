@@ -1,4 +1,3 @@
-export { ValidationExceptionCode } from './constants/validation-exception-code.constant';
 export { Required } from './decorators/required.decorator';
 export { Options } from './decorators/options.decorator';
 export { String } from './decorators/string.decorator';

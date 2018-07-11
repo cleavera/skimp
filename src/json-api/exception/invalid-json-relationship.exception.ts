@@ -1,5 +1,4 @@
-import { RelationshipPointer, RelationshipValidationException } from '../../schema';
-import { ValidationExceptionCode } from '../../validation';
+import { RelationshipPointer, RelationshipValidationException, ValidationExceptionCode } from '../../schema';
 
 export class InvalidJSONRelationship extends RelationshipValidationException {
     constructor(relationship: number) {

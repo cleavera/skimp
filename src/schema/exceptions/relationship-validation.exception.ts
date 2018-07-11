@@ -1,6 +1,5 @@
-import { ValidationExceptionCode } from '../../validation';
-
 import { RelationshipPointer } from '../classes/relationship-pointer';
+import { ValidationExceptionCode } from '../constants/validation-exception-code.constant';
 import { ValidationException } from './validation.exception';
 
 export class RelationshipValidationException extends ValidationException {
