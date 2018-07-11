@@ -1,7 +1,6 @@
 import { Url } from '../../http';
-import { Location, MODEL_REGISTER } from '../../router';
 import { FieldNotConfiguredException, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
-import { Maybe } from '../../shared';
+import { Location, Maybe, MODEL_REGISTER } from '../../shared';
 
 import { IData } from '../interfaces/data.interface';
 import { IJsonFile } from '../interfaces/json-file.interface';

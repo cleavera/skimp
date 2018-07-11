@@ -1,7 +1,7 @@
 import { Url } from '../../http';
-import { Maybe } from '../../shared';
 
 import { InvalidLocationException } from '../exceptions/invalid-location.exception';
+import { Maybe } from '../interfaces/maybe.interface';
 
 export class Location {
     public readonly resourceName: string;

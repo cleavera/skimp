@@ -1,11 +1,5 @@
 export { IAuthenticator } from './interfaces/authenticator.interface';
 export { RequestBodyNotAllowedException } from './exceptions/request-body-not-allowed.exception';
-export { API_REGISTER } from './constants/api-register.constant';
-export { DB_REGISTER } from './constants/db-register.constant';
-export { IApi } from './interfaces/api.interface';
-export { IDb } from './interfaces/db.interface';
 export { NoLocationRegisteredException } from './exceptions/no-location-registered.exception';
-export { MODEL_REGISTER } from './constants/model-register.constant';
 export { ResourceDoesNotExistException } from './exceptions/resource-does-not-exist.exception';
-export { Location } from './classes/location';
 export { Router } from './classes/router';

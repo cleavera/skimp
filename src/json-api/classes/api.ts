@@ -1,7 +1,7 @@
 import { IResponse, ResponseCode } from '../../http';
-import { IApi, Location, MODEL_REGISTER, NoLocationRegisteredException } from '../../router';
+import { NoLocationRegisteredException } from '../../router';
 import { ValidationException } from '../../schema';
-import { Maybe, MissingCreatedDateException } from '../../shared';
+import { IApi, Location, Maybe, MissingCreatedDateException, MODEL_REGISTER } from '../../shared';
 
 import { RequestNotValidDataException } from '../exception/request-not-valid-data.exception';
 import { IJsonApi } from '../interfaces/json-api.interface';

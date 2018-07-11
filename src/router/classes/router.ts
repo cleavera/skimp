@@ -4,20 +4,13 @@ import { LOGGER } from '../../debug';
 import { IRequest, IResponse, RequestMethod, ResponseCode } from '../../http';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException, ValidationExceptions } from '../../schema';
 import { IRouter } from '../../server';
-import { Maybe } from '../../shared';
+import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, Location, Maybe, MODEL_REGISTER } from '../../shared';
 
-import { API_REGISTER } from '../constants/api-register.constant';
-import { DB_REGISTER } from '../constants/db-register.constant';
-import { MODEL_REGISTER } from '../constants/model-register.constant';
-import { ContentTypeNotSupportedException } from '../exceptions/content-type-not-supported.exception';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { NotAuthorisedException } from '../exceptions/not-authorised.exception';
 import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
-import { IApi } from '../interfaces/api.interface';
 import { IAuthenticator } from '../interfaces/authenticator.interface';
-import { IDb } from '../interfaces/db.interface';
 import { RootSchema } from '../schemas/root.schema';
-import { Location } from './location';
 
 export class Router implements IRouter {
     public version: string;

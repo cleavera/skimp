@@ -1,4 +1,4 @@
-import { Location, MODEL_REGISTER } from '../../router';
+import { Location, MODEL_REGISTER } from '../../shared';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { RelationshipTypeNotAllowedException } from '../exceptions/relationship-type-not-allowed.exception';

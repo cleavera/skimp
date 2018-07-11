@@ -1,7 +1,7 @@
 import { IResponse, ResponseCode } from '../../http';
-import { IApi, Location, RequestBodyNotAllowedException, ResourceDoesNotExistException } from '../../router';
+import { RequestBodyNotAllowedException, ResourceDoesNotExistException } from '../../router';
 import { FieldNotConfiguredException, FieldType, IOptions, ISchema, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
-import { Maybe } from '../../shared';
+import { IApi, Location, Maybe } from '../../shared';
 
 import { FieldTypeMapping } from '../constants/field-type-mapping.constant';
 import { ISchemaObject } from '../interfaces/schema-object.interface';

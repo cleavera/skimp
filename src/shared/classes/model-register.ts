@@ -1,4 +1,6 @@
-import { IMeta, Maybe, MetaKey } from '../../shared';
+import * as MetaKey from '../constants/meta-field-names.constant';
+import { Maybe } from '../interfaces/maybe.interface';
+import { IMeta } from '../interfaces/meta.interface';
 
 import { Location } from './location';
 
