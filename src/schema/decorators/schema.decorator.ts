@@ -1,8 +1,8 @@
 import { Location, MODEL_REGISTER } from '../../router';
-import { ValidationExceptions } from '../../validation';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { RelationshipTypeNotAllowedException } from '../exceptions/relationship-type-not-allowed.exception';
+import { ValidationExceptions } from '../exceptions/validation.exceptions';
 import { ISchema } from '../interfaces/schema.interface';
 
 export function Schema(resourceName: string): ClassDecorator {

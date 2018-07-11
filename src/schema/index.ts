@@ -1,3 +1,4 @@
+export { ValidationException } from './exceptions/validation.exception';
 export { IOptions } from './interfaces/options.interface';
 export { FieldType } from './constants/field.type';
 export { FieldNotConfiguredException } from './exceptions/field-not-configured.exception';

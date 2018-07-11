@@ -1,7 +1,5 @@
 import { ValidationExceptionCode } from '../../router';
-import { ModelPointer } from '../../schema';
-
-import { ValidationException } from './validation.exception';
+import { ModelPointer, ValidationException } from '../../schema';
 
 export class ModelValidationException extends ValidationException {
     public fields: Array<ModelPointer>;

@@ -1,5 +1,3 @@
-export { ValidationExceptions } from './exceptions/validation.exceptions';
-export { ValidationException } from './exceptions/validation.exception';
 export { Required } from './decorators/required.decorator';
 export { Options } from './decorators/options.decorator';
 export { String } from './decorators/string.decorator';

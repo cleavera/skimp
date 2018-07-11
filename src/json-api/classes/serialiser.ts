@@ -1,8 +1,8 @@
 import { Url } from '../../http';
 import { Location, MODEL_REGISTER } from '../../router';
-import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
+import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException, ValidationException } from '../../schema';
 import { Maybe } from '../../shared';
-import { ModelValidationException, ValidationException } from '../../validation';
+import { ModelValidationException } from '../../validation';
 
 import { InvalidJSONRelationship } from '../exception/invalid-json-relationship.exception';
 import { IAttributes } from '../interfaces/attributes.interface';

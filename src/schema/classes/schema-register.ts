@@ -1,9 +1,10 @@
 import { LOGGER } from '../../debug';
 import { IMeta, Maybe, MetaKey } from '../../shared';
-import { ValidationException, ValidationExceptions } from '../../validation';
 
 import { FieldType } from '../constants/field.type';
 import { DuplicateResourceNameException } from '../exceptions/duplicate-resource-name.exception';
+import { ValidationException } from '../exceptions/validation.exception';
+import { ValidationExceptions } from '../exceptions/validation.exceptions';
 import { IValueDeserialiser } from '../exceptions/value-deserialiser.interface';
 import { IValueSerialiser } from '../exceptions/value-serialiser.interface';
 import { IFieldMeta } from '../interfaces/field-meta.interface';

@@ -2,10 +2,10 @@ import * as $uuid from 'uuid/v4';
 
 import { LOGGER } from '../../debug';
 import { IRequest, IResponse, RequestMethod, ResponseCode } from '../../http/';
-import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '../../schema';
+import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException } from '../../schema';
+import { ValidationExceptions } from '../../schema/exceptions/validation.exceptions';
 import { IRouter } from '../../server';
 import { Maybe } from '../../shared';
-import { ValidationException, ValidationExceptions } from '../../validation';
 
 import { API_REGISTER } from '../constants/api-register.constant';
 import { DB_REGISTER } from '../constants/db-register.constant';

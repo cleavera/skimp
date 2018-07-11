@@ -1,5 +1,5 @@
 import { ValidationExceptionCode } from '../../router';
-import { ValidationException } from '../../validation';
+import { ValidationException } from '../../schema';
 
 export class RequestNotValidDataException extends ValidationException {
     constructor(json: any) {
