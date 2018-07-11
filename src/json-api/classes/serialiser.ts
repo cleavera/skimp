@@ -1,6 +1,6 @@
+import { Url } from '../../http';
 import { Location, MODEL_REGISTER } from '../../router';
 import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
-import { Url } from '../../server';
 import { Maybe } from '../../shared';
 import { ModelValidationException, ValidationException } from '../../validation';
 

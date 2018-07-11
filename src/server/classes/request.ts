@@ -1,15 +1,16 @@
 import { IncomingMessage } from 'http';
 
+import { IRequest, RequestMethod } from '../../http';
 import { Maybe } from '../../shared';
 
-import { RequestMethod } from '../constants/request-method.constant';
 import { Content } from './content';
-import { Url } from './url';
+import { Url } from '../../http/classes/url';
 
-export class Request {
+export class Request implements IRequest {
     public url: Url;
     public content: Maybe<Content>;
     public readonly method: string;
+
     private _message: IncomingMessage;
 
     constructor(message: IncomingMessage, content: Maybe<Content> = null) {

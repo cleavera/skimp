@@ -1,8 +1,9 @@
 import { Readable } from 'stream';
 
+import { IContent } from '../../http';
 import { Maybe } from '../../shared';
 
-export class Content {
+export class Content implements IContent {
     public readonly raw: string;
 
     constructor(raw: string) {

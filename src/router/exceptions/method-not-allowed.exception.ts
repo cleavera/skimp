@@ -1,4 +1,4 @@
-import { RequestMethod, Url } from '../../server/';
+import { RequestMethod, Url } from '../../http/';
 
 export class MethodNotAllowedException extends Error {
     constructor(method: RequestMethod, url: Url) {

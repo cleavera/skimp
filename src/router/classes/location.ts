@@ -1,4 +1,4 @@
-import { Url } from '../../server';
+import { Url } from '../../http';
 import { Maybe } from '../../shared';
 
 import { InvalidLocationException } from '../exceptions/invalid-location.exception';

@@ -1,13 +1,6 @@
+import { IResponse, ResponseCode } from '../../http';
 import { IApi, Location, RequestBodyNotAllowedException, ResourceDoesNotExistException } from '../../router';
-import {
-    FieldNotConfiguredException,
-    FieldType,
-    ISchema,
-    SCHEMA_REGISTER,
-    SchemaHasNoFieldsException,
-    SchemaNotRegisteredException
-} from '../../schema';
-import { Response, ResponseCode } from '../../server';
+import { FieldNotConfiguredException, FieldType, ISchema, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
 import { Maybe } from '../../shared';
 import { IOptions } from '../../validation';
 import { FieldTypeMapping } from '../constants/field-type-mapping.constant';
@@ -24,7 +17,7 @@ export class Docs implements IApi {
         this._jsonAPI = new Api();
     }
 
-    public respond(response: Response, _model: Array<any> | any, location: Location): void {
+    public respond(response: IResponse, _model: Array<any> | any, location: Location): void {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
@@ -40,7 +33,7 @@ export class Docs implements IApi {
         throw new RequestBodyNotAllowedException();
     }
 
-    public error(response: Response, code: ResponseCode, errors?: Array<Error>): void {
+    public error(response: IResponse, code: ResponseCode, errors?: Array<Error>): void {
         this._jsonAPI.error(response, code, errors);
     }
 

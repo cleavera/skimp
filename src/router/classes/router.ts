@@ -1,8 +1,9 @@
 import * as $uuid from 'uuid/v4';
 
 import { LOGGER } from '../../debug';
+import { IRequest, IResponse, RequestMethod, ResponseCode } from '../../http/';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '../../schema';
-import { IRouter, Request, RequestMethod, Response, ResponseCode } from '../../server';
+import { IRouter } from '../../server';
 import { Maybe } from '../../shared';
 import { ValidationException, ValidationExceptions } from '../../validation';
 
@@ -33,7 +34,7 @@ export class Router implements IRouter {
         this.version = version;
     }
 
-    public async route(request: Request, response: Response): Promise<void> {
+    public async route(request: IRequest, response: IResponse): Promise<void> {
         try {
             const api: IApi = API_REGISTER.get(request.accepts);
 
@@ -121,7 +122,7 @@ export class Router implements IRouter {
         }
     }
 
-    private async _get(location: Location, response: Response, api: IApi): Promise<void> {
+    private async _get(location: Location, response: IResponse, api: IApi): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
@@ -137,7 +138,7 @@ export class Router implements IRouter {
         api.respond(response, await this._db.list(location), location);
     }
 
-    private async _post(location: Location, model: any, response: Response, api: IApi): Promise<void> {
+    private async _post(location: Location, model: any, response: IResponse, api: IApi): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
@@ -160,7 +161,7 @@ export class Router implements IRouter {
         api.respond(response, await this._db.get(createdLocation), location, true);
     }
 
-    private async _put(location: Location, model: any, response: Response, api: IApi): Promise<void> {
+    private async _put(location: Location, model: any, response: IResponse, api: IApi): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
@@ -185,7 +186,7 @@ export class Router implements IRouter {
         api.respond(response, await this._db.get(location), location, isCreate);
     }
 
-    private async _delete(location: Location, response: Response): Promise<void> {
+    private async _delete(location: Location, response: IResponse): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
@@ -204,7 +205,7 @@ export class Router implements IRouter {
         response.noContent();
     }
 
-    private async _options(location: Location, response: Response): Promise<void> {
+    private async _options(location: Location, response: IResponse): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
@@ -242,7 +243,7 @@ export class Router implements IRouter {
         }
     }
 
-    private async _root(response: Response, api: IApi): Promise<void> {
+    private async _root(response: IResponse, api: IApi): Promise<void> {
         const model: RootSchema = new RootSchema();
         const location: Location = new Location('');
 
@@ -265,7 +266,7 @@ export class Router implements IRouter {
         api.respond(response, model, location);
     }
 
-    private _assignCors(request: Request, response: Response): void {
+    private _assignCors(request: IRequest, response: IResponse): void {
         if (this.cors === false) {
             return;
         } else if (this.cors === true) {

@@ -2,11 +2,9 @@ import { ServerResponse } from 'http';
 import { Writable } from 'stream';
 
 import { LOGGER } from '../../debug';
+import { IResponse, ResponseCode, ResponseType } from '../../http';
 
-import { ResponseCode } from '../constants/response-code.constant';
-import { ResponseType } from '../constants/response-types.constant';
-
-export class Response {
+export class Response implements IResponse {
     private readonly _response: ServerResponse;
 
     constructor(response: ServerResponse) {

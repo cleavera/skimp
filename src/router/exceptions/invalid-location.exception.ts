@@ -1,4 +1,4 @@
-import { Url } from '../../server';
+import { Url } from '../../http';
 
 export class InvalidLocationException extends Error {
     constructor(location: Url) {

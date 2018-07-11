@@ -1,6 +1,6 @@
+import { Url } from '../../http';
 import { Location, MODEL_REGISTER } from '../../router';
 import { FieldNotConfiguredException, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
-import { Url } from '../../server';
 import { Maybe } from '../../shared';
 
 import { IData } from '../interfaces/data.interface';

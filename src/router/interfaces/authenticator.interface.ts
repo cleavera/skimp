@@ -1,5 +1,5 @@
-import { Request } from '../../server';
+import { IRequest } from '../../http';
 
 export interface IAuthenticator {
-    authenticate(request: Request): void;
+    authenticate(request: IRequest): void;
 }

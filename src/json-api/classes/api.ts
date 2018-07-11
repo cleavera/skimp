@@ -1,5 +1,5 @@
+import { IResponse, ResponseCode } from '../../http';
 import { IApi, Location, MODEL_REGISTER, NoLocationRegisteredException } from '../../router';
-import { Response, ResponseCode } from '../../server';
 import { Maybe, MissingCreatedDateException } from '../../shared';
 import { ValidationException } from '../../validation';
 
@@ -15,7 +15,7 @@ export class Api implements IApi {
         this.serialiser = new Serialiser();
     }
 
-    public respond(response: Response, model: Array<any> | any, _location: Location, created?: boolean): void {
+    public respond(response: IResponse, model: Array<any> | any, _location: Location, created?: boolean): void {
         if (Array.isArray(model)) {
             model = model.sort((a: any, b: any): number => {
                 const aCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(a);
@@ -71,7 +71,7 @@ export class Api implements IApi {
         response.commit();
     }
 
-    public error(response: Response, code: ResponseCode, errors?: Array<ValidationException>): void {
+    public error(response: IResponse, code: ResponseCode, errors?: Array<ValidationException>): void {
         response.statusCode = code;
 
         if (errors && errors.length) {
