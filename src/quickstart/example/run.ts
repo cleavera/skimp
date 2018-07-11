@@ -1,4 +1,4 @@
-import { init } from '../.dist';
+import { init } from '../index';
 import * as DATA_PATH from './data/path';
 import { PersonSchema } from './schemas/person';
 

@@ -1,4 +1,4 @@
-import { IOptions } from '../../src/';
+import { IOptions } from '../../src/schema';
 import { Gender } from './genders.constant';
 
 export const GENDER_OPTIONS: IOptions<string> = [

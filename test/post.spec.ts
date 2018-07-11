@@ -2,11 +2,13 @@ import { AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expe
 import { Response } from 'request';
 import * as request from 'request-promise-native';
 import { RequestPromiseOptions } from 'request-promise-native';
-import { init, Server } from '../src';
+
 import { LOGGER, LogLevel } from '../src/debug';
 import { FILE_SYSTEM } from '../src/file-system';
 import { IJsonApi } from '../src/json-api/interfaces/json-api.interface';
+import { init } from '../src/quickstart';
 import { ValidationExceptionCode } from '../src/schema';
+import { Server } from '../src/server';
 import { Gender } from './constants/genders.constant';
 import * as DATA_PATH from './data/path';
 import { $clearDB } from './helpers/clear-db.helper';

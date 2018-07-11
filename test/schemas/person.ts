@@ -1,4 +1,5 @@
-import { Boolean, Date, Field, Integer, Number, Options, Required, Schema, String } from '../../src';
+import { Field, Schema } from '../../src/schema';
+import { Boolean, Date, Integer, Number, Options, Required, String } from '../../src/validation';
 import { GENDER_OPTIONS } from '../constants/gender-options.constant';
 
 @Schema('person')

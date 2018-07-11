@@ -1,4 +1,4 @@
-import { Field, Schema } from '../../.dist';
+import { Field, Schema } from '../../../schema';
 
 @Schema('person')
 export class PersonSchema {

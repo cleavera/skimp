@@ -1,5 +1,6 @@
-import { Field, Required, Schema, String } from '../../src';
-import { Relationship } from '../../src/schema';
+
+import { Field, Relationship, Schema } from '../../src/schema';
+import { Required, String } from '../../src/validation';
 import { PersonSchema } from './person';
 
 @Schema('job')

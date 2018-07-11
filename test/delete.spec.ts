@@ -10,10 +10,12 @@ import {
 import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
 import * as request from 'request-promise-native';
-import { init, Server } from '../src';
+
 import { LOGGER, LogLevel } from '../src/debug';
 import { FILE_SYSTEM } from '../src/file-system';
 import { IJsonApi } from '../src/json-api/interfaces/json-api.interface';
+import { init } from '../src/quickstart';
+import { Server } from '../src/server';
 import * as DATA_PATH from './data/path';
 import { $clearDB } from './helpers/clear-db.helper';
 import { SCHEMAS } from './schemas';
