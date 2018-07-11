@@ -1,7 +1,5 @@
 import { createServer, IncomingMessage, Server as HttpServer, ServerResponse } from 'http';
 
-import { FILE_SYSTEM } from '../../file-system';
-
 import { IRouter } from '../interfaces/router.interface';
 import { Request } from './request';
 import { Response } from './response';
@@ -31,7 +29,6 @@ export class Server {
     public async close(): Promise<void> {
         await new Promise<void>((resolve: () => void): void => {
             this._server.close(() => {
-                FILE_SYSTEM.reset();
                 resolve();
             });
         });
