@@ -1,4 +1,4 @@
-export { Url } from './classes/url';
+export { Uri } from './classes/uri';
 export { IContent } from './interfaces/content.interface';
 export { ResponseType } from './constants/response-types.constant';
 export { ResponseCode } from './constants/response-code.constant';

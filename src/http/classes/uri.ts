@@ -1,20 +1,20 @@
-export class Url {
+export class Uri {
     public readonly parts: Array<string>;
     public readonly dirName: string;
     public readonly resourceName: string;
     public readonly resourceId: string;
-    private readonly _url: string;
+    private readonly _uri: string;
 
-    constructor(url: string) {
-        this._url = url;
-        this.parts = url.substring(1).split('/');
+    constructor(uri: string) {
+        this._uri = uri;
+        this.parts = uri.substring(1).split('/');
         this.resourceName = this.parts[0];
         this.resourceId = this.parts[1];
-        this.dirName = url.substr(0, url.lastIndexOf('/'));
+        this.dirName = uri.substr(0, uri.lastIndexOf('/'));
     }
 
     public toString(): string {
-        return this._url;
+        return this._uri;
     }
 
     public valueOf(): string {

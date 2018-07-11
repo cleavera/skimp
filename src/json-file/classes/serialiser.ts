@@ -1,4 +1,4 @@
-import { Url } from '../../http';
+import { Uri } from '../../http';
 import { FieldNotConfiguredException, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
 import { Location, Maybe, MODEL_REGISTER } from '../../shared';
 
@@ -70,7 +70,7 @@ export class Serialiser {
 
         if (json.relationships) {
             json.relationships.forEach((relationship: IRelationship) => {
-                MODEL_REGISTER.addRelationship(model, Location.fromUrl(new Url(relationship)));
+                MODEL_REGISTER.addRelationship(model, Location.fromUrl(new Uri(relationship)));
             });
         }
 

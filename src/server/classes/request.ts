@@ -1,12 +1,12 @@
 import { IncomingMessage } from 'http';
 
-import { IRequest, RequestMethod, Url } from '../../http';
+import { IRequest, RequestMethod, Uri } from '../../http';
 import { Maybe } from '../../shared';
 
 import { Content } from './content';
 
 export class Request implements IRequest {
-    public url: Url;
+    public url: Uri;
     public content: Maybe<Content>;
     public readonly method: string;
 
@@ -17,7 +17,7 @@ export class Request implements IRequest {
         this.content = content;
         this.method = (this._message.method || '').toUpperCase();
 
-        this.url = new Url(message.url || '');
+        this.url = new Uri(message.url || '');
     }
 
     public get isGet(): boolean {

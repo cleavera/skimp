@@ -1,4 +1,4 @@
-import { Url } from '../../http';
+import { Uri } from '../../http';
 import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException, ValidationException } from '../../schema';
 import { Location, Maybe, MODEL_REGISTER } from '../../shared';
 import { ModelValidationException } from '../../validation';
@@ -131,7 +131,7 @@ export class Serialiser {
                     throw new InvalidJSONRelationship(index);
                 }
 
-                MODEL_REGISTER.addRelationship(model, Location.fromUrl(new Url(relationship.href)));
+                MODEL_REGISTER.addRelationship(model, Location.fromUrl(new Uri(relationship.href)));
             });
         }
 

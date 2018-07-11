@@ -1,9 +1,9 @@
 import { Maybe } from '../../shared';
-import { Url } from '../classes/url';
+import { Uri } from '../classes/uri';
 import { IContent } from './content.interface';
 
 export interface IRequest {
-    url: Url;
+    url: Uri;
     content: Maybe<IContent>;
     method: string;
     readonly isGet: boolean;

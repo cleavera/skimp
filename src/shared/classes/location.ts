@@ -1,4 +1,4 @@
-import { Url } from '../../http';
+import { Uri } from '../../http';
 
 import { InvalidLocationException } from '../exceptions/invalid-location.exception';
 import { Maybe } from '../interfaces/maybe.interface';
@@ -20,8 +20,8 @@ export class Location {
         return `/${this.resourceName}/${this.resourceId}`;
     }
 
-    public toUrl(): Url {
-        return new Url(this.toString());
+    public toUrl(): Uri {
+        return new Uri(this.toString());
     }
 
     public isResource(): boolean {
@@ -32,7 +32,7 @@ export class Location {
         return !!this.resourceName && !!this.resourceId;
     }
 
-    public static fromUrl(url: Url): Location {
+    public static fromUrl(url: Uri): Location {
         if (url.parts.length === 0 || url.parts.length > 2) {
             throw new InvalidLocationException(url);
         }
