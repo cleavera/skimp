@@ -1,9 +1,9 @@
-import { Location } from '../classes/location';
+import { ResourceLocation } from '../classes/resource.location';
 
 export interface IDb {
-    exists(location: Location): Promise<boolean>;
-    get(location: Location): Promise<any>;
-    list(location: Location): Promise<Array<any>>;
-    delete(location: Location): Promise<void>;
-    set(location: Location, model: any): Promise<void>;
+    exists(location: ResourceLocation): Promise<boolean>;
+    get(location: ResourceLocation): Promise<any>;
+    list(location: ResourceLocation): Promise<Array<any>>;
+    delete(location: ResourceLocation): Promise<void>;
+    set(location: ResourceLocation, model: any): Promise<void>;
 }

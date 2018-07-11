@@ -1,6 +1,6 @@
 import { Entity } from '../../file-system';
 import { ResourceDoesNotExistException } from '../../router';
-import { IDb, Location, MODEL_REGISTER } from '../../shared';
+import { IDb, MODEL_REGISTER, ResourceLocation } from '../../shared';
 
 import { InvalidDatabaseFilePathException } from '../exceptions/invalid-database-file-path.exception';
 import { Serialiser } from './serialiser';
@@ -12,14 +12,14 @@ export class Db implements IDb {
         this.serialiser = new Serialiser();
     }
 
-    public async exists(location: Location): Promise<boolean> {
+    public async exists(location: ResourceLocation): Promise<boolean> {
         const filePath: string = location.toString() + '.json';
         const file: Entity = await Entity.fromPath(filePath);
 
         return file.exists();
     }
 
-    public async get(location: Location): Promise<any> {
+    public async get(location: ResourceLocation): Promise<any> {
         const filePath: string = location.toString() + '.json';
         const file: Entity = await Entity.fromPath(filePath);
 
@@ -35,7 +35,7 @@ export class Db implements IDb {
         return model;
     }
 
-    public async list(location: Location): Promise<Array<any>> {
+    public async list(location: ResourceLocation): Promise<Array<any>> {
         const entity: Entity = await Entity.fromPath(location.toString());
         const files: Array<string> = await entity.listChildren();
 
@@ -46,13 +46,13 @@ export class Db implements IDb {
                 throw new InvalidDatabaseFilePathException(filePath);
             }
 
-            const fileLocation: Location = new Location(pathParts[0], pathParts[1]);
+            const fileLocation: ResourceLocation = new ResourceLocation(pathParts[0], pathParts[1]);
 
             return this.get(fileLocation);
         }));
     }
 
-    public async delete(location: Location): Promise<void> {
+    public async delete(location: ResourceLocation): Promise<void> {
         const filePath: string = location.toString() + '.json';
         const file: Entity = await Entity.fromPath(filePath);
 
@@ -63,7 +63,7 @@ export class Db implements IDb {
         await file.delete();
     }
 
-    public async set(location: Location, model: any): Promise<void> {
+    public async set(location: ResourceLocation, model: any): Promise<void> {
         const filePath: string = location.toString() + '.json';
         const file: Entity = await Entity.fromPath(filePath);
 

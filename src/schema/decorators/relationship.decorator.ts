@@ -1,4 +1,4 @@
-import { DB_REGISTER, Location, MODEL_REGISTER } from '../../shared';
+import { DB_REGISTER, MODEL_REGISTER, ResourceLocation } from '../../shared';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { RelationshipCountExceedsLimitException } from '../exceptions/relationship-count-exceeds-limit.exception';
@@ -12,8 +12,8 @@ export function Relationship(schema: ISchema, limit?: number): ClassDecorator {
         SCHEMA_REGISTER.addSchemaRelationship(schema, target);
 
         SCHEMA_REGISTER.addValidation(target, async(model: any) => {
-            const allRelationships: Array<Location> = MODEL_REGISTER.getRelationships(model);
-            const relationships: Array<Location> = allRelationships.filter((relationship: Location) => {
+            const allRelationships: Array<ResourceLocation> = MODEL_REGISTER.getRelationships(model);
+            const relationships: Array<ResourceLocation> = allRelationships.filter((relationship: ResourceLocation) => {
                 return relationship.resourceName === SCHEMA_REGISTER.getSchemaResourceName(schema);
             });
 

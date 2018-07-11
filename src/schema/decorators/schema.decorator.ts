@@ -1,4 +1,4 @@
-import { Location, MODEL_REGISTER } from '../../shared';
+import { MODEL_REGISTER, ResourceLocation } from '../../shared';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { RelationshipTypeNotAllowedException } from '../exceptions/relationship-type-not-allowed.exception';
@@ -10,7 +10,7 @@ export function Schema(resourceName: string): ClassDecorator {
         SCHEMA_REGISTER.register(target, resourceName);
 
         SCHEMA_REGISTER.addValidation(target, async(model: any) => {
-            const relationships: Array<Location> = MODEL_REGISTER.getRelationships(model);
+            const relationships: Array<ResourceLocation> = MODEL_REGISTER.getRelationships(model);
 
             const allowedRelationships: Array<string> = (SCHEMA_REGISTER.getSchemaRelationships(target) || []).map((relationship: ISchema) => {
                 return SCHEMA_REGISTER.getSchemaResourceName(relationship) || '';

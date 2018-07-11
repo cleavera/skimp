@@ -7,7 +7,7 @@ export { API_REGISTER } from './constants/api-register.constant';
 export { DB_REGISTER } from './constants/db-register.constant';
 export { MODEL_REGISTER } from './constants/model-register.constant';
 export { IApi } from './interfaces/api.interface';
-export { Location } from './classes/location';
+export { ResourceLocation } from './classes/resource.location';
 export { IDb } from './interfaces/db.interface';
 export { ContentTypeNotSupportedException } from './exceptions/content-type-not-supported.exception';
 

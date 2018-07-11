@@ -3,7 +3,7 @@ import { Uri } from '../../http';
 import { InvalidLocationException } from '../exceptions/invalid-location.exception';
 import { Maybe } from '../interfaces/maybe.interface';
 
-export class Location {
+export class ResourceLocation {
     public readonly resourceName: string;
     public readonly resourceId: Maybe<string>;
 
@@ -32,11 +32,11 @@ export class Location {
         return !!this.resourceName && !!this.resourceId;
     }
 
-    public static fromUrl(url: Uri): Location {
+    public static fromUrl(url: Uri): ResourceLocation {
         if (url.parts.length === 0 || url.parts.length > 2) {
             throw new InvalidLocationException(url);
         }
 
-        return new Location(url.parts[0], url.parts[1]);
+        return new ResourceLocation(url.parts[0], url.parts[1]);
     }
 }

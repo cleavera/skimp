@@ -1,6 +1,6 @@
 import { Uri } from '../../http';
 import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException, ValidationException } from '../../schema';
-import { Location, Maybe, MODEL_REGISTER } from '../../shared';
+import { Maybe, MODEL_REGISTER, ResourceLocation } from '../../shared';
 import { ModelValidationException } from '../../validation';
 
 import { InvalidJSONRelationship } from '../exception/invalid-json-relationship.exception';
@@ -47,12 +47,12 @@ export class Serialiser {
         };
     }
 
-    public serialise(model: any, location: Location): IJsonData {
+    public serialise(model: any, location: ResourceLocation): IJsonData {
         const schema: ISchema = model.constructor;
         const fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
-        const relationships: Maybe<Array<Location>> = MODEL_REGISTER.getRelationships(model);
-        const links: Maybe<Array<Location>> = MODEL_REGISTER.getLinks(model);
+        const relationships: Maybe<Array<ResourceLocation>> = MODEL_REGISTER.getRelationships(model);
+        const links: Maybe<Array<ResourceLocation>> = MODEL_REGISTER.getLinks(model);
 
         if (!type) {
             throw new SchemaNotRegisteredException(schema);
@@ -77,7 +77,7 @@ export class Serialiser {
 
                     return result;
                 }, {}),
-                relationships: relationships && relationships.length ? relationships.map((relationship: Location): IRelationship => {
+                relationships: relationships && relationships.length ? relationships.map((relationship: ResourceLocation): IRelationship => {
                     return {
                         href: relationship.toString(),
                         type: relationship.resourceName,
@@ -91,7 +91,7 @@ export class Serialiser {
                         }
                     };
                 }) : undefined,
-                links: links && links.length ? links.reduce<ILinks>((acc: ILinks, relationship: Location): ILinks => {
+                links: links && links.length ? links.reduce<ILinks>((acc: ILinks, relationship: ResourceLocation): ILinks => {
                     acc[relationship.resourceName] = relationship.toString();
 
                     return acc;
@@ -131,7 +131,7 @@ export class Serialiser {
                     throw new InvalidJSONRelationship(index);
                 }
 
-                MODEL_REGISTER.addRelationship(model, Location.fromUrl(new Uri(relationship.href)));
+                MODEL_REGISTER.addRelationship(model, ResourceLocation.fromUrl(new Uri(relationship.href)));
             });
         }
 

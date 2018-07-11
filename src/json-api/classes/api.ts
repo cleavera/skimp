@@ -1,7 +1,7 @@
 import { IResponse, ResponseCode } from '../../http';
 import { NoLocationRegisteredException } from '../../router';
 import { ValidationException } from '../../schema';
-import { IApi, Location, Maybe, MissingCreatedDateException, MODEL_REGISTER } from '../../shared';
+import { IApi, Maybe, MissingCreatedDateException, MODEL_REGISTER, ResourceLocation } from '../../shared';
 
 import { RequestNotValidDataException } from '../exception/request-not-valid-data.exception';
 import { IJsonApi } from '../interfaces/json-api.interface';
@@ -15,7 +15,7 @@ export class Api implements IApi {
         this.serialiser = new Serialiser();
     }
 
-    public respond(response: IResponse, model: Array<any> | any, _location: Location, created?: boolean): void {
+    public respond(response: IResponse, model: Array<any> | any, _location: ResourceLocation, created?: boolean): void {
         if (Array.isArray(model)) {
             model = model.sort((a: any, b: any): number => {
                 const aCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(a);
@@ -39,7 +39,7 @@ export class Api implements IApi {
 
                 return 0;
             }).map((item: any) => {
-                const location: Maybe<Location> = MODEL_REGISTER.getLocation(item);
+                const location: Maybe<ResourceLocation> = MODEL_REGISTER.getLocation(item);
 
                 if (!location) {
                     throw new NoLocationRegisteredException(item);
@@ -50,7 +50,7 @@ export class Api implements IApi {
 
             response.setAllow(true, false, false);
         } else {
-            const location: Maybe<Location> = MODEL_REGISTER.getLocation(model);
+            const location: Maybe<ResourceLocation> = MODEL_REGISTER.getLocation(model);
 
             if (!location) {
                 throw new NoLocationRegisteredException(model);
@@ -81,7 +81,7 @@ export class Api implements IApi {
         response.commit();
     }
 
-    public deserialise(json: IJsonApi, location: Location): any {
+    public deserialise(json: IJsonApi, location: ResourceLocation): any {
         if (!Api.isData(json)) {
             throw new RequestNotValidDataException(json);
         }

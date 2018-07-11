@@ -1,9 +1,9 @@
 import { IResponse, ResponseCode } from '../../http';
 
-import { Location } from '../classes/location';
+import { ResourceLocation } from '../classes/resource.location';
 
 export interface IApi {
-    respond(response: IResponse, model: any, location: Location, created?: boolean): void;
-    deserialise(json: any, location: Location): any;
+    respond(response: IResponse, model: any, location: ResourceLocation, created?: boolean): void;
+    deserialise(json: any, location: ResourceLocation): any;
     error(response: IResponse, code: ResponseCode, errors?: Array<Error>): void;
 }

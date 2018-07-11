@@ -1,6 +1,6 @@
 import { Uri } from '../../http';
 import { FieldNotConfiguredException, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
-import { Location, Maybe, MODEL_REGISTER } from '../../shared';
+import { Maybe, MODEL_REGISTER, ResourceLocation } from '../../shared';
 
 import { IData } from '../interfaces/data.interface';
 import { IJsonFile } from '../interfaces/json-file.interface';
@@ -11,7 +11,7 @@ export class Serialiser {
         const schema: ISchema = model.constructor;
         const fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
-        const relationships: Maybe<Array<Location>> = MODEL_REGISTER.getRelationships(model);
+        const relationships: Maybe<Array<ResourceLocation>> = MODEL_REGISTER.getRelationships(model);
 
         if (!type) {
             throw new SchemaNotRegisteredException(schema);
@@ -34,7 +34,7 @@ export class Serialiser {
 
                 return result;
             }, {}),
-            relationships: relationships && relationships.length ? relationships.map((relationship: Location): IRelationship => {
+            relationships: relationships && relationships.length ? relationships.map((relationship: ResourceLocation): IRelationship => {
                 return relationship.toString();
             }) : undefined
         };
@@ -70,7 +70,7 @@ export class Serialiser {
 
         if (json.relationships) {
             json.relationships.forEach((relationship: IRelationship) => {
-                MODEL_REGISTER.addRelationship(model, Location.fromUrl(new Uri(relationship)));
+                MODEL_REGISTER.addRelationship(model, ResourceLocation.fromUrl(new Uri(relationship)));
             });
         }
 

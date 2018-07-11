@@ -4,7 +4,7 @@ import { LOGGER } from '../../debug';
 import { IRequest, IResponse, RequestMethod, ResponseCode } from '../../http';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException, ValidationExceptions } from '../../schema';
 import { IRouter } from '../../server';
-import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, Location, Maybe, MODEL_REGISTER } from '../../shared';
+import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, Maybe, MODEL_REGISTER, ResourceLocation } from '../../shared';
 
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { NotAuthorisedException } from '../exceptions/not-authorised.exception';
@@ -48,7 +48,7 @@ export class Router implements IRouter {
                 throw new ResourceDoesNotExistException(request.url);
             }
 
-            const location: Location = Location.fromUrl(request.url);
+            const location: ResourceLocation = ResourceLocation.fromUrl(request.url);
             let model: any = null;
 
             if (request.content) {
@@ -114,7 +114,7 @@ export class Router implements IRouter {
         }
     }
 
-    private async _get(location: Location, response: IResponse, api: IApi): Promise<void> {
+    private async _get(location: ResourceLocation, response: IResponse, api: IApi): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
@@ -130,7 +130,7 @@ export class Router implements IRouter {
         api.respond(response, await this._db.list(location), location);
     }
 
-    private async _post(location: Location, model: any, response: IResponse, api: IApi): Promise<void> {
+    private async _post(location: ResourceLocation, model: any, response: IResponse, api: IApi): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
@@ -145,7 +145,7 @@ export class Router implements IRouter {
             }
         }
 
-        const createdLocation: Location = new Location(location.resourceName, $uuid());
+        const createdLocation: ResourceLocation = new ResourceLocation(location.resourceName, $uuid());
 
         await this._db.set(createdLocation, model);
         await this._updateRelationships(createdLocation, model);
@@ -153,7 +153,7 @@ export class Router implements IRouter {
         api.respond(response, await this._db.get(createdLocation), location, true);
     }
 
-    private async _put(location: Location, model: any, response: IResponse, api: IApi): Promise<void> {
+    private async _put(location: ResourceLocation, model: any, response: IResponse, api: IApi): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
@@ -178,7 +178,7 @@ export class Router implements IRouter {
         api.respond(response, await this._db.get(location), location, isCreate);
     }
 
-    private async _delete(location: Location, response: IResponse): Promise<void> {
+    private async _delete(location: ResourceLocation, response: IResponse): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
@@ -197,7 +197,7 @@ export class Router implements IRouter {
         response.noContent();
     }
 
-    private async _options(location: Location, response: IResponse): Promise<void> {
+    private async _options(location: ResourceLocation, response: IResponse): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if (!schema) {
@@ -207,14 +207,14 @@ export class Router implements IRouter {
         response.noContent();
     }
 
-    private async _updateRelationships(location: Location, model?: any, previousModel?: any): Promise<void> {
-        const newRelationships: Array<Location> = MODEL_REGISTER.getRelationships(model);
-        const oldRelationships: Array<Location> = MODEL_REGISTER.getRelationships(previousModel);
-        const added: Array<Location> = newRelationships.filter((item: Location) => {
+    private async _updateRelationships(location: ResourceLocation, model?: any, previousModel?: any): Promise<void> {
+        const newRelationships: Array<ResourceLocation> = MODEL_REGISTER.getRelationships(model);
+        const oldRelationships: Array<ResourceLocation> = MODEL_REGISTER.getRelationships(previousModel);
+        const added: Array<ResourceLocation> = newRelationships.filter((item: ResourceLocation) => {
             return oldRelationships.indexOf(item) === -1;
         });
 
-        const removed: Array<Location> = oldRelationships.filter((item: Location) => {
+        const removed: Array<ResourceLocation> = oldRelationships.filter((item: ResourceLocation) => {
             return newRelationships.indexOf(item) === -1;
         });
 
@@ -237,7 +237,7 @@ export class Router implements IRouter {
 
     private async _root(response: IResponse, api: IApi): Promise<void> {
         const model: RootSchema = new RootSchema();
-        const location: Location = new Location('');
+        const location: ResourceLocation = new ResourceLocation('');
 
         model.version = this.version;
 
@@ -252,7 +252,7 @@ export class Router implements IRouter {
                 throw new SchemaNotRegisteredException(schema);
             }
 
-            MODEL_REGISTER.addLink(model, new Location(resourceName));
+            MODEL_REGISTER.addLink(model, new ResourceLocation(resourceName));
         });
 
         api.respond(response, model, location);
