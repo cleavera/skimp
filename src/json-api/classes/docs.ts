@@ -1,13 +1,14 @@
 import { IResponse, ResponseCode } from '../../http';
 import { IApi, Location, RequestBodyNotAllowedException, ResourceDoesNotExistException } from '../../router';
-import { FieldNotConfiguredException, FieldType, ISchema, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
+import { FieldNotConfiguredException, FieldType, IOptions, ISchema, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../schema';
 import { Maybe } from '../../shared';
-import { IOptions } from '../../validation';
+
 import { FieldTypeMapping } from '../constants/field-type-mapping.constant';
 import { ISchemaObject } from '../interfaces/schema-object.interface';
 import { ISchemaRoot } from '../interfaces/schema-root.interface';
 import { ISchemaTerminatingValue } from '../interfaces/schema-terminating-value.interface';
 import { ISchemaValue } from '../interfaces/schema-value.interface';
+
 import { Api } from './api';
 
 export class Docs implements IApi {

@@ -1,4 +1,3 @@
-export { IOptions } from './interfaces/options.interface';
 export { ValidationExceptions } from './exceptions/validation.exceptions';
 export { ValidationException } from './exceptions/validation.exception';
 export { Required } from './decorators/required.decorator';

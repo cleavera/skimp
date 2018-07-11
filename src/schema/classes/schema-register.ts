@@ -1,12 +1,13 @@
 import { LOGGER } from '../../debug';
 import { IMeta, Maybe, MetaKey } from '../../shared';
-import { IOptions, ValidationException, ValidationExceptions } from '../../validation';
+import { ValidationException, ValidationExceptions } from '../../validation';
 
 import { FieldType } from '../constants/field.type';
 import { DuplicateResourceNameException } from '../exceptions/duplicate-resource-name.exception';
 import { IValueDeserialiser } from '../exceptions/value-deserialiser.interface';
 import { IValueSerialiser } from '../exceptions/value-serialiser.interface';
 import { IFieldMeta } from '../interfaces/field-meta.interface';
+import { IOptions } from '../interfaces/options.interface';
 import { ISchema } from '../interfaces/schema.interface';
 import { IValidation } from '../interfaces/validation.interface';
 
