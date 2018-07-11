@@ -2,7 +2,6 @@ export { IAuthenticator } from './interfaces/authenticator.interface';
 export { RequestBodyNotAllowedException } from './exceptions/request-body-not-allowed.exception';
 export { API_REGISTER } from './constants/api-register.constant';
 export { DB_REGISTER } from './constants/db-register.constant';
-export { ValidationExceptionCode } from './constants/validation-exception-code.constant';
 export { IApi } from './interfaces/api.interface';
 export { IDb } from './interfaces/db.interface';
 export { NoLocationRegisteredException } from './exceptions/no-location-registered.exception';

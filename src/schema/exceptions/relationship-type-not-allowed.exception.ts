@@ -1,4 +1,4 @@
-import { ValidationExceptionCode } from '../../router';
+import { ValidationExceptionCode } from '../../validation';
 
 import { RelationshipPointer } from '../classes/relationship-pointer';
 import { RelationshipValidationException } from './relationship-validation.exception';
