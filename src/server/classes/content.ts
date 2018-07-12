@@ -1,7 +1,7 @@
 import { Readable } from 'stream';
 
+import { Maybe } from '../../core';
 import { IContent } from '../../http';
-import { Maybe } from '../../shared';
 
 export class Content implements IContent {
     public readonly raw: string;

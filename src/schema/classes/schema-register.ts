@@ -1,5 +1,5 @@
+import { IMeta, Maybe, MetaKey } from '../../core';
 import { LOGGER } from '../../debug';
-import { IMeta, Maybe, MetaKey } from '../../shared';
 
 import { FieldType } from '../constants/field.type';
 import { DuplicateResourceNameException } from '../exceptions/duplicate-resource-name.exception';

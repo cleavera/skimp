@@ -1,5 +1,5 @@
+import { Maybe } from '../../core';
 import { FieldType, ISchema, SCHEMA_REGISTER } from '../../schema';
-import { Maybe } from '../../shared';
 
 import { ValidationFieldInvalidDateException } from '../exceptions/validation-field-invalid-date.exception';
 

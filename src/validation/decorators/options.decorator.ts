@@ -1,5 +1,5 @@
+import { IJsonValue } from '../../core';
 import { IOptions, ISchema, SCHEMA_REGISTER } from '../../schema';
-import { IJsonValue } from '../../shared';
 
 import { ValidationFieldNotValidOptionException } from '../exceptions/validation-field-not-valid-option.exception';
 

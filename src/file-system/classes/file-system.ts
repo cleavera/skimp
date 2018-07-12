@@ -1,8 +1,8 @@
 import { mkdir } from 'fs';
 import { join } from 'path';
 
+import { Maybe } from '../../core';
 import { InvalidSchemaResourceNameException, SCHEMA_REGISTER } from '../../schema';
-import { Maybe } from '../../shared';
 
 import { FileSystemCannotBeReconfiguredException } from '../exceptions/file-system-cannot-be-reconfigured.exception';
 import { FileSystemNotConfiguredException } from '../exceptions/file-system-not-configured.exception';

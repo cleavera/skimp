@@ -1,4 +1,4 @@
-import { DB_REGISTER, MODEL_REGISTER, ResourceLocation } from '../../shared';
+import { DB_REGISTER, MODEL_REGISTER, ResourceLocation } from '../../core';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { RelationshipCountExceedsLimitException } from '../exceptions/relationship-count-exceeds-limit.exception';

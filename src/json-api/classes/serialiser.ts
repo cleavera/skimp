@@ -1,6 +1,6 @@
+import { Maybe, MODEL_REGISTER, ResourceLocation } from '../../core';
 import { Uri } from '../../http';
 import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException, ValidationException } from '../../schema';
-import { Maybe, MODEL_REGISTER, ResourceLocation } from '../../shared';
 import { ModelValidationException } from '../../validation';
 
 import { InvalidJSONRelationship } from '../exception/invalid-json-relationship.exception';

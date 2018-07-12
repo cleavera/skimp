@@ -1,3 +1,4 @@
+import { API_REGISTER, DB_REGISTER, Maybe } from '../core';
 import { ConsoleLogger, ILogger, LOGGER } from '../debug';
 import { FILE_SYSTEM } from '../file-system';
 import { Api, Docs } from '../json-api';
@@ -5,7 +6,6 @@ import { Db } from '../json-file';
 import { IAuthenticator, Router } from '../router';
 import { ISchema } from '../schema';
 import { Server } from '../server';
-import { API_REGISTER, DB_REGISTER, Maybe } from '../shared';
 
 export async function init(port: number, dataPath: string, _schemas: Array<ISchema>, cors: boolean | string | Array<string> = false, version: string = 'UNVERSIONED', authenticator: Maybe<IAuthenticator> = null, loggerClass: ILogger = new ConsoleLogger()): Promise<Server> {
     LOGGER.setLogger(loggerClass);

@@ -1,4 +1,4 @@
-import { IJsonValue, Maybe } from '../../shared';
+import { IJsonValue, Maybe } from '../../core';
 
 export interface IValueDeserialiser {
     (value?: Maybe<IJsonValue>): any;

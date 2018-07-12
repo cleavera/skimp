@@ -1,4 +1,4 @@
-import { MetaData } from '../../shared';
+import { MetaData } from '../../core';
 
 import { SchemaRegister } from '../classes/schema-register';
 

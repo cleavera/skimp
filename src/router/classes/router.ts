@@ -1,10 +1,10 @@
 import * as $uuid from 'uuid/v4';
 
+import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, Maybe, MODEL_REGISTER, ResourceLocation } from '../../core';
 import { LOGGER } from '../../debug';
 import { IRequest, IResponse, RequestMethod, ResponseCode } from '../../http';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException, ValidationExceptions } from '../../schema';
 import { IRouter } from '../../server';
-import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, Maybe, MODEL_REGISTER, ResourceLocation } from '../../shared';
 
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { NotAuthorisedException } from '../exceptions/not-authorised.exception';

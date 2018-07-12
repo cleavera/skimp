@@ -1,7 +1,7 @@
 import { IncomingMessage } from 'http';
 
+import { Maybe } from '../../core';
 import { IRequest, RequestMethod, Uri } from '../../http';
-import { Maybe } from '../../shared';
 
 import { Content } from './content';
 

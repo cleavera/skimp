@@ -1,4 +1,4 @@
-import { Maybe } from '../../shared';
+import { Maybe } from '../../core';
 import { Uri } from '../classes/uri';
 import { IContent } from './content.interface';
 

@@ -1,6 +1,6 @@
+import { IDb, MODEL_REGISTER, ResourceLocation } from '../../core';
 import { Entity } from '../../file-system';
 import { ResourceDoesNotExistException } from '../../router';
-import { IDb, MODEL_REGISTER, ResourceLocation } from '../../shared';
 
 import { InvalidDatabaseFilePathException } from '../exceptions/invalid-database-file-path.exception';
 import { Serialiser } from './serialiser';
