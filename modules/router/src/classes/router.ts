@@ -1,11 +1,10 @@
+import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
+import { LOGGER } from '@skimp/debug';
+import { IRequest, IResponse, RequestMethod, ResponseCode } from '@skimp/http';
+import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException, ValidationExceptions } from '@skimp/schema';
+import { IRouter } from '@skimp/server';
+import { Maybe } from '@skimp/shared';
 import * as $uuid from 'uuid/v4';
-
-import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, MODEL_REGISTER, ResourceLocation } from '../../../core/src/index';
-import { LOGGER } from '../../../debug/src/index';
-import { IRequest, IResponse, RequestMethod, ResponseCode } from '../../../http/src/index';
-import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException, ValidationExceptions } from '../../../schema/src/index';
-import { IRouter } from '../../../server/src/index';
-import { Maybe } from '../../../shared/src';
 
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { NotAuthorisedException } from '../exceptions/not-authorised.exception';

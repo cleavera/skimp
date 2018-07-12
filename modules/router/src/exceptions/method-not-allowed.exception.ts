@@ -1,4 +1,4 @@
-import { RequestMethod, Uri } from '../../../http/src/index';
+import { RequestMethod, Uri } from '@skimp/http';
 
 export class MethodNotAllowedException extends Error {
     constructor(method: RequestMethod, url: Uri) {

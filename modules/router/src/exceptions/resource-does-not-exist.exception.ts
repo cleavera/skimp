@@ -1,4 +1,4 @@
-import { Uri } from '../../../http/src/index';
+import { Uri } from '@skimp/http';
 
 export class ResourceDoesNotExistException extends Error {
     public path: string;
