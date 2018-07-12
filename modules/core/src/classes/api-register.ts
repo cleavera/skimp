@@ -1,6 +1,7 @@
+import { Maybe } from '../../../shared/src';
+
 import { ContentTypeNotSupportedException } from '../exceptions/content-type-not-supported.exception';
 import { IApi } from '../interfaces/api.interface';
-import { Maybe } from '../interfaces/maybe.interface';
 
 export class ApiRegister {
     public defaultContentType: string;

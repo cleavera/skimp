@@ -1,7 +1,7 @@
 import { Readable } from 'stream';
 
-import { Maybe } from '../../../core/src/index';
 import { IContent } from '../../../http/src/index';
+import { IPromiseRejector, IPromiseResolverWithValue, Maybe } from '../../../shared/src';
 
 export class Content implements IContent {
     public readonly raw: string;
@@ -15,7 +15,7 @@ export class Content implements IContent {
     }
 
     public static async fromStream(stream: Readable): Promise<Maybe<Content>> {
-        return new Promise<Maybe<Content>>((resolve: (content: Maybe<Content>) => void, reject: (bodyReadError: Error) => void): void => {
+        return new Promise<Maybe<Content>>((resolve: IPromiseResolverWithValue<Maybe<Content>>, reject: IPromiseRejector): void => {
             let body: string = '';
 
             stream.on('readable', (): void => {

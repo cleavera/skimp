@@ -1,4 +1,5 @@
 import { createServer, IncomingMessage, Server as HttpServer, ServerResponse } from 'http';
+import { IPromiseResolver } from '../../../shared/src';
 
 import { IRouter } from '../interfaces/router.interface';
 import { Request } from './request';
@@ -27,7 +28,7 @@ export class Server {
     }
 
     public async close(): Promise<void> {
-        await new Promise<void>((resolve: () => void): void => {
+        await new Promise<void>((resolve: IPromiseResolver<void>): void => {
             this._server.close(() => {
                 resolve();
             });

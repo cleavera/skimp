@@ -1,4 +1,4 @@
-import { Maybe } from '../../../core/src/index';
+import { Maybe } from '../../../shared/src';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { InvalidPointerException } from '../exceptions/invalid-pointer.exception';

@@ -1,5 +1,6 @@
-import { IMeta, Maybe, MetaKey } from '../../../core/src/index';
+import { IMeta, MetaKey } from '../../../core/src/index';
 import { LOGGER } from '../../../debug/src/index';
+import { Maybe } from '../../../shared/src';
 
 import { FieldType } from '../constants/field.type';
 import { DuplicateResourceNameException } from '../exceptions/duplicate-resource-name.exception';

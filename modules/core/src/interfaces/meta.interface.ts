@@ -1,4 +1,4 @@
-import { Maybe } from './maybe.interface';
+import { Maybe } from '../../../shared/src';
 
 export interface IMeta {
     get<T = any>(object: any, key: string): Maybe<T>;

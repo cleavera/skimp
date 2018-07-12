@@ -1,6 +1,4 @@
 export { MetaData } from './classes/meta-data';
-export { Maybe } from './interfaces/maybe.interface';
-export { IJsonValue } from './interfaces/json-value.interface';
 export { IMeta } from './interfaces/meta.interface';
 export { MissingCreatedDateException } from './exceptions/missing-created-date.exception';
 export { API_REGISTER } from './constants/api-register.constant';

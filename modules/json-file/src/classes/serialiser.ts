@@ -1,6 +1,7 @@
-import { Maybe, MODEL_REGISTER, ResourceLocation } from '../../../core/src/index';
+import { MODEL_REGISTER, ResourceLocation } from '../../../core/src/index';
 import { Uri } from '../../../http/src/index';
 import { FieldNotConfiguredException, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../../schema/src/index';
+import { Maybe } from '../../../shared/src';
 
 import { IData } from '../interfaces/data.interface';
 import { IJsonFile } from '../interfaces/json-file.interface';

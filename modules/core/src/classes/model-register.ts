@@ -1,5 +1,6 @@
+import { Maybe } from '../../../shared/src';
+
 import * as MetaKey from '../constants/meta-field-names.constant';
-import { Maybe } from '../interfaces/maybe.interface';
 import { IMeta } from '../interfaces/meta.interface';
 
 import { ResourceLocation } from './resource.location';

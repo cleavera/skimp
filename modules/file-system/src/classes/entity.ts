@@ -2,7 +2,7 @@ import { createReadStream, lstat, readdir, readFile, ReadStream, Stats, unlink, 
 import { join } from 'path';
 import { Writable } from 'stream';
 
-import { Maybe } from '../../../core/src/index';
+import { IPromiseRejector, IPromiseResolver, Maybe } from '../../../shared/src';
 
 import { FILE_SYSTEM } from '../constants/file-system.constant';
 import { EntityDoesNotExistException } from '../exceptions/entity-does-not-exist.exception';
@@ -13,6 +13,7 @@ import { EntityNotValidJsonException } from '../exceptions/entity-not-valid-json
 export class Entity {
     public readonly path: string;
     private _stats: Maybe<Stats>;
+
     private get _absolutePath(): string {
         return Entity.getAbsolutePath(this.path);
     }
@@ -45,7 +46,7 @@ export class Entity {
     }
 
     public async write(content: string): Promise<void> {
-        return new Promise<void>((resolve: () => void, reject: (reason: Error) => void): void => {
+        return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
             writeFile(this._absolutePath, content, 'utf-8', async(writeError: Error) => {
                 if (writeError) {
                     reject(writeError);
@@ -65,7 +66,7 @@ export class Entity {
     public async delete(): Promise<void> {
         this.assertExists();
 
-        return new Promise<void>((resolve: () => void, reject: (reason: Error) => void): void => {
+        return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
             unlink(this._absolutePath, (error: Error) => {
                 if (error) {
                     reject(error);
@@ -95,7 +96,7 @@ export class Entity {
             throw new EntityNotAFileException(this._absolutePath);
         }
 
-        return new Promise((resolve: (contents: string) => void, reject: (reason: Error) => void): void => {
+        return new Promise((resolve: IPromiseResolver<string>, reject: IPromiseRejector): void => {
             readFile(this._absolutePath, 'utf-8', (err: Error, data: string): void => {
                 if (err) {
                     reject(err);
@@ -113,7 +114,7 @@ export class Entity {
             throw new EntityNotADirectoryException(this._absolutePath);
         }
 
-        return new Promise((resolve: (children: Array<string>) => void, reject: (reason: Error) => void): void => {
+        return new Promise((resolve: IPromiseResolver<Array<string>>, reject: IPromiseRejector): void => {
             readdir(this._absolutePath, async(err: Error, files: Array<string>) => {
                 if (err) {
                     reject(err);
@@ -131,7 +132,7 @@ export class Entity {
     public async streamTo(stream: Writable): Promise<void> {
         this.assertExists();
 
-        return new Promise<void>((resolve: () => void, reject: (error: Error) => void): void => {
+        return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
             const readStream: ReadStream = createReadStream(this._absolutePath);
 
             readStream.on('open', () => {
@@ -167,7 +168,7 @@ export class Entity {
     }
 
     private static async getStats(path: string): Promise<Stats> {
-        return new Promise((resolve: (entity: Stats) => void, reject: (reason: Error) => void): void => {
+        return new Promise((resolve: IPromiseResolver<Stats>, reject: IPromiseRejector): void => {
             lstat(path, async(err: Error, stats: Stats): Promise<void> => {
                 if (err) {
                     reject(err);

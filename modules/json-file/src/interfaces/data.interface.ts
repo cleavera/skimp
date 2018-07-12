@@ -1,4 +1,4 @@
-import { IJsonValue } from '../../../core/src/index';
+import { IJsonValue } from '../../../shared/src';
 
 export interface IData {
     [attribute: string]: IJsonValue;

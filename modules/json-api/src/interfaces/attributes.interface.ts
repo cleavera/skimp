@@ -1,4 +1,4 @@
-import { IJsonValue, Maybe } from '../../../core/src/index';
+import { IJsonValue, Maybe } from '../../../shared/src';
 
 export interface IAttributes {
     [attribute: string]: Maybe<IJsonValue>;

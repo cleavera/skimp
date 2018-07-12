@@ -1,7 +1,8 @@
-import { IApi, Maybe, MissingCreatedDateException, MODEL_REGISTER, ResourceLocation } from '../../../core/src/index';
+import { IApi, MissingCreatedDateException, MODEL_REGISTER, ResourceLocation } from '../../../core/src/index';
 import { IResponse, ResponseCode } from '../../../http/src/index';
 import { NoLocationRegisteredException } from '../../../router/src/index';
 import { ValidationException } from '../../../schema/src/index';
+import { Maybe } from '../../../shared/src';
 
 import { RequestNotValidDataException } from '../exception/request-not-valid-data.exception';
 import { IJsonApi } from '../interfaces/json-api.interface';
