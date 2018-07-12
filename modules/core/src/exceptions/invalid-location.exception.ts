@@ -1,4 +1,4 @@
-import { Uri } from '../../../http/src/index';
+import { Uri } from '@skimp/http';
 
 export class InvalidLocationException extends Error {
     constructor(location: Uri) {

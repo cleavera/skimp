@@ -1,4 +1,4 @@
-import { IResponse, ResponseCode } from '../../../http/src/index';
+import { IResponse, ResponseCode } from '@skimp/http';
 
 import { ResourceLocation } from '../classes/resource.location';
 

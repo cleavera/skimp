@@ -1,5 +1,5 @@
-import { Uri } from '../../../http/src/index';
-import { Maybe } from '../../../shared/src';
+import { Uri } from '@skimp/http';
+import { Maybe } from '@skimp/shared';
 
 import { InvalidLocationException } from '../exceptions/invalid-location.exception';
 

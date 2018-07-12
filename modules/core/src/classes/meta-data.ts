@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import { Maybe } from '../../../shared/src';
+import { Maybe } from '@skimp/shared';
 import { IMeta } from '../interfaces/meta.interface';
 
 export class MetaData implements IMeta {

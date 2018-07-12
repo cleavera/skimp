@@ -1,4 +1,4 @@
-import { Maybe } from '../../../shared/src';
+import { Maybe } from '@skimp/shared';
 
 export interface IMeta {
     get<T = any>(object: any, key: string): Maybe<T>;

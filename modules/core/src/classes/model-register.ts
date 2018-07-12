@@ -1,4 +1,4 @@
-import { Maybe } from '../../../shared/src';
+import { Maybe } from '@skimp/shared';
 
 import * as MetaKey from '../constants/meta-field-names.constant';
 import { IMeta } from '../interfaces/meta.interface';

@@ -1,4 +1,4 @@
-import { Maybe } from '../../../shared/src';
+import { Maybe } from '@skimp/shared';
 
 import { ContentTypeNotSupportedException } from '../exceptions/content-type-not-supported.exception';
 import { IApi } from '../interfaces/api.interface';
