@@ -1,4 +1,5 @@
-import { Maybe } from '../../../shared/src';
+import { Maybe } from '@skimp/shared';
+
 import { Uri } from '../classes/uri';
 import { IContent } from './content.interface';
 

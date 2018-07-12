@@ -1,7 +1,7 @@
 {
-  "name": "@skimp/shared",
-  "version": "1.0.1",
-  "description": "The shared module for the skimp domain modelling framework",
+  "name": "@skimp/http",
+  "version": "1.0.0",
+  "description": "The http module for the skimp domain modelling framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "keywords": [
     "skimp",
-    "shared",
+    "http",
     "domain",
     "modelling",
     "framework"
@@ -19,5 +19,8 @@
   "license": "ISC",
   "devDependencies": {
     "typescript": "2.9.2"
+  },
+  "dependencies": {
+    "@skimp/shared": "^1.0.1"
   }
 }
