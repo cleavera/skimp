@@ -1,0 +1,28 @@
+{
+  "name": "@skimp/schema",
+  "version": "1.0.0",
+  "description": "The schema module for the skimp domain modelling framework",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Tests are run against the whole project\" && exit 1"
+  },
+  "keywords": [
+    "skimp",
+    "schema",
+    "domain",
+    "modelling",
+    "framework"
+  ],
+  "author": "Anthony Cleaver",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "2.9.2"
+  },
+  "dependencies": {
+    "@skimp/core": "^1.0.0",
+    "@skimp/debug": "^1.0.1",
+    "@skimp/shared": "^1.0.1"
+  }
+}

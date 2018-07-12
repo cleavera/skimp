@@ -1,6 +1,6 @@
-import { IMeta, MetaKey } from '../../../core/src/index';
-import { LOGGER } from '../../../debug/src/index';
-import { Maybe } from '../../../shared/src';
+import { IMeta, MetaKey } from '@skimp/core';
+import { LOGGER } from '@skimp/debug';
+import { Maybe } from '@skimp/shared';
 
 import { FieldType } from '../constants/field.type';
 import { DuplicateResourceNameException } from '../exceptions/duplicate-resource-name.exception';

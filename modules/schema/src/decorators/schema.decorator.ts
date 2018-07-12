@@ -1,4 +1,4 @@
-import { MODEL_REGISTER, ResourceLocation } from '../../../core/src/index';
+import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { RelationshipTypeNotAllowedException } from '../exceptions/relationship-type-not-allowed.exception';

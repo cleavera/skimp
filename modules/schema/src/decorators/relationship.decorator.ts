@@ -1,4 +1,4 @@
-import { DB_REGISTER, MODEL_REGISTER, ResourceLocation } from '../../../core/src/index';
+import { DB_REGISTER, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { RelationshipCountExceedsLimitException } from '../exceptions/relationship-count-exceeds-limit.exception';

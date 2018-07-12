@@ -1,4 +1,4 @@
-import { MetaData } from '../../../core/src/index';
+import { MetaData } from '@skimp/core';
 
 import { SchemaRegister } from '../classes/schema-register';
 
