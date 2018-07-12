@@ -1,4 +1,4 @@
-import { Field, Schema } from '../../../schema/src/index';
+import { Field, Schema } from '@skimp/schema';
 
 @Schema('person')
 export class PersonSchema {
