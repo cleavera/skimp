@@ -1,4 +1,4 @@
-import { ISchema, SCHEMA_REGISTER } from '../../../schema/src/index';
+import { ISchema, SCHEMA_REGISTER } from '@skimp/schema';
 
 import { ValidationFieldRequiredException } from '../exceptions/validation-field-required.exception';
 

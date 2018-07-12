@@ -1,4 +1,4 @@
-import { FieldType, ISchema, SCHEMA_REGISTER } from '../../../schema/src/index';
+import { FieldType, ISchema, SCHEMA_REGISTER } from '@skimp/schema';
 
 import { ValidationFieldInvalidIntegerException } from '../exceptions/validation-field-invalid-integer.exception';
 

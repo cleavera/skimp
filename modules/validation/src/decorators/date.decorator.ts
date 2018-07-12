@@ -1,5 +1,5 @@
-import { FieldType, ISchema, SCHEMA_REGISTER } from '../../../schema/src/index';
-import { Maybe } from '../../../shared/src/index';
+import { FieldType, ISchema, SCHEMA_REGISTER } from '@skimp/schema';
+import { Maybe } from '@skimp/shared';
 
 import { ValidationFieldInvalidDateException } from '../exceptions/validation-field-invalid-date.exception';
 

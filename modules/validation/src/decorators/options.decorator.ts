@@ -1,5 +1,5 @@
-import { IOptions, ISchema, SCHEMA_REGISTER } from '../../../schema/src/index';
-import { IJsonValue } from '../../../shared/src';
+import { IOptions, ISchema, SCHEMA_REGISTER } from '@skimp/schema';
+import { IJsonValue } from '@skimp/shared';
 
 import { ValidationFieldNotValidOptionException } from '../exceptions/validation-field-not-valid-option.exception';
 

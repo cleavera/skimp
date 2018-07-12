@@ -1,4 +1,4 @@
-import { ModelPointer, ValidationExceptionCode } from '../../../schema/src/index';
+import { ModelPointer, ValidationExceptionCode } from '@skimp/schema';
 
 import { ModelValidationException } from './model-validation.exception';
 
