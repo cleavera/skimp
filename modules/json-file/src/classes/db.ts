@@ -1,6 +1,6 @@
-import { IDb, MODEL_REGISTER, ResourceLocation } from '../../../core/src/index';
-import { Entity } from '../../../file-system/src/index';
-import { ResourceDoesNotExistException } from '../../../router/src/index';
+import { IDb, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
+import { Entity } from '@skimp/file-system';
+import { ResourceDoesNotExistException } from '@skimp/router';
 
 import { InvalidDatabaseFilePathException } from '../exceptions/invalid-database-file-path.exception';
 import { Serialiser } from './serialiser';

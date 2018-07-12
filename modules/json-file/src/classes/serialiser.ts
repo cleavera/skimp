@@ -1,7 +1,7 @@
-import { MODEL_REGISTER, ResourceLocation } from '../../../core/src/index';
-import { Uri } from '../../../http/src/index';
-import { FieldNotConfiguredException, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '../../../schema/src/index';
-import { Maybe } from '../../../shared/src';
+import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
+import { Uri } from '@skimp/http';
+import { FieldNotConfiguredException, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '@skimp/schema';
+import { Maybe } from '@skimp/shared';
 
 import { IData } from '../interfaces/data.interface';
 import { IJsonFile } from '../interfaces/json-file.interface';

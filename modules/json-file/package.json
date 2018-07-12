@@ -1,0 +1,31 @@
+{
+  "name": "@skimp/json-file",
+  "version": "1.0.0",
+  "description": "The json-file module for the skimp domain modelling framework",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Tests are run against the whole project\" && exit 1"
+  },
+  "keywords": [
+    "skimp",
+    "json-file",
+    "domain",
+    "modelling",
+    "framework"
+  ],
+  "author": "Anthony Cleaver",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "2.9.2"
+  },
+  "dependencies": {
+    "@skimp/core": "^1.0.0",
+    "@skimp/file-system": "^1.0.0",
+    "@skimp/http": "^1.0.0",
+    "@skimp/router": "^1.0.0",
+    "@skimp/schema": "^1.0.0",
+    "@skimp/shared": "^1.0.1"
+  }
+}
