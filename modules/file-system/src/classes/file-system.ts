@@ -1,7 +1,7 @@
+import { InvalidSchemaResourceNameException, SCHEMA_REGISTER } from '@skimp/schema';
+import { IPromiseRejector, IPromiseResolver, Maybe } from '@skimp/shared';
 import { mkdir } from 'fs';
 import { join } from 'path';
-import { InvalidSchemaResourceNameException, SCHEMA_REGISTER } from '../../../schema/src/index';
-import { IPromiseRejector, IPromiseResolver, Maybe } from '../../../shared/src';
 
 import { FileSystemCannotBeReconfiguredException } from '../exceptions/file-system-cannot-be-reconfigured.exception';
 import { FileSystemNotConfiguredException } from '../exceptions/file-system-not-configured.exception';
