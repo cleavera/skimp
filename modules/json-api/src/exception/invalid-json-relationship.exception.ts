@@ -1,4 +1,4 @@
-import { RelationshipPointer, RelationshipValidationException, ValidationExceptionCode } from '../../../schema/src/index';
+import { RelationshipPointer, RelationshipValidationException, ValidationExceptionCode } from '@skimp/schema';
 
 export class InvalidJSONRelationship extends RelationshipValidationException {
     constructor(relationship: number) {

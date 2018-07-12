@@ -1,4 +1,4 @@
-import { FieldType } from '../../../schema/src/index';
+import { FieldType } from '@skimp/schema';
 
 export const FieldTypeMapping: { [type: string]: 'number' | 'string' | 'boolean' } = {
     [FieldType.INTEGER]: 'number',

@@ -1,8 +1,8 @@
-import { MODEL_REGISTER, ResourceLocation } from '../../../core/src/index';
-import { Uri } from '../../../http/src/index';
-import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException, ValidationException } from '../../../schema/src/index';
-import { Maybe } from '../../../shared/src';
-import { ModelValidationException } from '../../../validation/src/index';
+import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
+import { Uri } from '@skimp/http';
+import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException, ValidationException } from '@skimp/schema';
+import { Maybe } from '@skimp/shared';
+import { ModelValidationException } from '@skimp/validation';
 
 import { InvalidJSONRelationship } from '../exception/invalid-json-relationship.exception';
 import { IAttributes } from '../interfaces/attributes.interface';

@@ -1,0 +1,31 @@
+{
+  "name": "@skimp/json-api",
+  "version": "1.0.0",
+  "description": "The json-api module for the skimp domain modelling framework",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Tests are run against the whole project\" && exit 1"
+  },
+  "keywords": [
+    "skimp",
+    "json-api",
+    "domain",
+    "modelling",
+    "framework"
+  ],
+  "author": "Anthony Cleaver",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "2.9.2"
+  },
+  "dependencies": {
+    "@skimp/core": "^1.0.0",
+    "@skimp/http": "^1.0.0",
+    "@skimp/router": "^1.0.0",
+    "@skimp/schema": "^1.0.0",
+    "@skimp/shared": "^1.0.1",
+    "@skimp/validation": "^1.0.0"
+  }
+}

@@ -1,4 +1,4 @@
-import { ValidationException, ValidationExceptionCode } from '../../../schema/src/index';
+import { ValidationException, ValidationExceptionCode } from '@skimp/schema';
 
 export class RequestNotValidDataException extends ValidationException {
     constructor(json: any) {

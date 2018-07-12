@@ -1,4 +1,4 @@
-import { IJsonValue, Maybe } from '../../../shared/src';
+import { IJsonValue, Maybe } from '@skimp/shared';
 
 export interface IAttributes {
     [attribute: string]: Maybe<IJsonValue>;

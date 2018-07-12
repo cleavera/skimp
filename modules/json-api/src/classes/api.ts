@@ -1,8 +1,8 @@
-import { IApi, MissingCreatedDateException, MODEL_REGISTER, ResourceLocation } from '../../../core/src/index';
-import { IResponse, ResponseCode } from '../../../http/src/index';
-import { NoLocationRegisteredException } from '../../../router/src/index';
-import { ValidationException } from '../../../schema/src/index';
-import { Maybe } from '../../../shared/src';
+import { IApi, MissingCreatedDateException, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
+import { IResponse, ResponseCode } from '@skimp/http';
+import { NoLocationRegisteredException } from '@skimp/router';
+import { ValidationException } from '@skimp/schema';
+import { Maybe } from '@skimp/shared';
 
 import { RequestNotValidDataException } from '../exception/request-not-valid-data.exception';
 import { IJsonApi } from '../interfaces/json-api.interface';
