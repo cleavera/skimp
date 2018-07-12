@@ -1,5 +1,5 @@
-import { Entity } from '../../src/file-system';
-import { SCHEMA_REGISTER } from '../../src/schema';
+import { Entity } from '../../modules/file-system';
+import { SCHEMA_REGISTER } from '../../modules/schema';
 
 export async function $clearDB(): Promise<void> {
     let files: Array<string> = [];
