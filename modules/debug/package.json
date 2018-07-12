@@ -1,0 +1,15 @@
+{
+  "name": "@skimp/debug",
+  "version": "1.0.0",
+  "description": "Debug module for the skimp domain modelling framework",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Tests are run against the whole project\" && exit 1"
+  },
+  "author": "Anthony Cleaver",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "2.9.2"
+  }
+}

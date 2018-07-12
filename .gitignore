@@ -2,5 +2,7 @@
 node_modules
 .dist
 .test
-src/quickstart/example/data
-!src/quickstart/example/data/path.ts
+modules/*/dist
+modules/*/node_modules
+modules/quickstart/example/data
+!modules/quickstart/example/data/path.ts
