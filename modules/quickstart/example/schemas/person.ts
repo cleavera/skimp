@@ -1,4 +1,4 @@
-import { Field, Schema } from '../../../schema';
+import { Field, Schema } from '../../../schema/src/index';
 
 @Schema('person')
 export class PersonSchema {

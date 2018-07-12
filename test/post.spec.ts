@@ -3,12 +3,12 @@ import { Response } from 'request';
 import * as request from 'request-promise-native';
 import { RequestPromiseOptions } from 'request-promise-native';
 
-import { LOGGER, LogLevel } from '../modules/debug';
-import { FILE_SYSTEM } from '../modules/file-system';
-import { IJsonApi } from '../modules/json-api/interfaces/json-api.interface';
-import { init } from '../modules/quickstart';
-import { ValidationExceptionCode } from '../modules/schema';
-import { Server } from '../modules/server';
+import { LOGGER, LogLevel } from '../modules/debug/src/index';
+import { FILE_SYSTEM } from '../modules/file-system/src/index';
+import { IJsonApi } from '../modules/json-api/src/interfaces/json-api.interface';
+import { init } from '../modules/quickstart/src/index';
+import { ValidationExceptionCode } from '../modules/schema/src/index';
+import { Server } from '../modules/server/src/index';
 import { Gender } from './constants/genders.constant';
 import * as DATA_PATH from './data/path';
 import { $clearDB } from './helpers/clear-db.helper';

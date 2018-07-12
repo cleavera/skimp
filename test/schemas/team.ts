@@ -1,5 +1,5 @@
-import { Field, Relationship, Schema } from '../../modules/schema';
-import { Required, String } from '../../modules/validation';
+import { Field, Relationship, Schema } from '../../modules/schema/src/index';
+import { Required, String } from '../../modules/validation/src/index';
 import { PersonSchema } from './person';
 
 @Schema('team')

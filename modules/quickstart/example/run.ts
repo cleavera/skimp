@@ -1,4 +1,4 @@
-import { init } from '../index';
+import { init } from '../src/index';
 import * as DATA_PATH from './data/path';
 import { PersonSchema } from './schemas/person';
 

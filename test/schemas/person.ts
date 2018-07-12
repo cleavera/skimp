@@ -1,5 +1,5 @@
-import { Field, Schema } from '../../modules/schema';
-import { Boolean, Date, Integer, Number, Options, Required, String } from '../../modules/validation';
+import { Field, Schema } from '../../modules/schema/src/index';
+import { Boolean, Date, Integer, Number, Options, Required, String } from '../../modules/validation/src/index';
 import { GENDER_OPTIONS } from '../constants/gender-options.constant';
 
 @Schema('person')
