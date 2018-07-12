@@ -1,7 +1,6 @@
+import { IContent } from '@skimp/http';
+import { IPromiseRejector, IPromiseResolverWithValue, Maybe } from '@skimp/shared';
 import { Readable } from 'stream';
-
-import { IContent } from '../../../http/src/index';
-import { IPromiseRejector, IPromiseResolverWithValue, Maybe } from '../../../shared/src';
 
 export class Content implements IContent {
     public readonly raw: string;

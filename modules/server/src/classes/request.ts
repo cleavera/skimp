@@ -1,7 +1,6 @@
+import { IRequest, RequestMethod, Uri } from '@skimp/http';
+import { Maybe } from '@skimp/shared';
 import { IncomingMessage } from 'http';
-
-import { IRequest, RequestMethod, Uri } from '../../../http/src/index';
-import { Maybe } from '../../../shared/src/index';
 
 import { Content } from './content';
 

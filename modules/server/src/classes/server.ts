@@ -1,5 +1,5 @@
+import { IPromiseResolver } from '@skimp/shared';
 import { createServer, IncomingMessage, Server as HttpServer, ServerResponse } from 'http';
-import { IPromiseResolver } from '../../../shared/src';
 
 import { IRouter } from '../interfaces/router.interface';
 import { Request } from './request';

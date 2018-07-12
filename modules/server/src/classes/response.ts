@@ -1,8 +1,7 @@
+import { LOGGER } from '@skimp/debug';
+import { IResponse, ResponseCode, ResponseType } from '@skimp/http';
 import { ServerResponse } from 'http';
 import { Writable } from 'stream';
-
-import { LOGGER } from '../../../debug/src/index';
-import { IResponse, ResponseCode, ResponseType } from '../../../http/src/index';
 
 export class Response implements IResponse {
     private readonly _response: ServerResponse;
