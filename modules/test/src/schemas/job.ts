@@ -1,6 +1,5 @@
-
-import { Field, Relationship, Schema } from '../../modules/schema/src/index';
-import { Required, String } from '../../modules/validation/src/index';
+import { Field, Relationship, Schema } from '@skimp/schema';
+import { Required, String } from '@skimp/validation';
 import { PersonSchema } from './person';
 
 @Schema('job')

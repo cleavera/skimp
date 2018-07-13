@@ -1,0 +1,40 @@
+{
+  "name": "@skimp/test",
+  "version": "1.0.0",
+  "description": "Testing module for skimp",
+  "scripts": {
+    "build": "tsc -p \"./tsconfig.json\"",
+    "clean": "del-cli \"./.test/**/*.*\" && del-cli \"./.artifacts/**/*.*\"",
+    "lint": "tslint --project ./tsconfig.json",
+    "sync": "node ./scripts/install",
+    "test": "npm run clean && npm run sync && npm run build && alsatian ./.test/**/*.spec.js --tap"
+  },
+  "author": "Anthony Cleaver",
+  "license": "ISC",
+  "private": true,
+  "devDependencies": {
+    "@types/node": "10.5.2",
+    "@types/request": "2.47.1",
+    "@types/request-promise-native": "1.0.15",
+    "alsatian": "2.2.1",
+    "del-cli": "1.1.0",
+    "glob": "7.1.2",
+    "request": "2.87.0",
+    "request-promise-native": "1.0.5",
+    "typescript": "2.9.2"
+  },
+  "peerDependencies": {
+    "@skimp/core": "*",
+    "@skimp/debug": "*",
+    "@skimp/file-system": "*",
+    "@skimp/http": "*",
+    "@skimp/json-api": "*",
+    "@skimp/json-file": "*",
+    "@skimp/quickstart": "*",
+    "@skimp/router": "*",
+    "@skimp/schema": "*",
+    "@skimp/server": "*",
+    "@skimp/shared": "*",
+    "@skimp/validation": "*"
+  }
+}

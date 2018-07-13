@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Tests are run against the whole project\" && exit 1"
+    "lint": "tslint --project ./tsconfig.json",
+    "test": "echo \"Tests are run in the testing module\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -37,8 +38,7 @@
     "@skimp/http": "^1.0.0",
     "@skimp/schema": "^1.0.0",
     "@skimp/server": "^1.0.0",
-    "@skimp/shared": "^1.0.1",
-    "@types/uuid": "^3.4.3"
+    "@skimp/shared": "^1.0.1"
   },
   "dependencies": {
     "uuid": "^3.3.2"

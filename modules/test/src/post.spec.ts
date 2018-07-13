@@ -1,18 +1,18 @@
+import { LOGGER, LogLevel } from '@skimp/debug';
+import { FILE_SYSTEM } from '@skimp/file-system';
+import { IJsonApi } from '@skimp/json-api';
+import { init } from '@skimp/quickstart';
+import { ValidationExceptionCode } from '@skimp/schema';
+import { Server } from '@skimp/server';
 import { AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestCase, TestFixture } from 'alsatian';
 import { Response } from 'request';
-import * as request from 'request-promise-native';
 import { RequestPromiseOptions } from 'request-promise-native';
+import * as request from 'request-promise-native';
 
-import { LOGGER, LogLevel } from '../modules/debug/src/index';
-import { FILE_SYSTEM } from '../modules/file-system/src/index';
-import { IJsonApi } from '../modules/json-api/src/interfaces/json-api.interface';
-import { init } from '../modules/quickstart/src/index';
-import { ValidationExceptionCode } from '../modules/schema/src/index';
-import { Server } from '../modules/server/src/index';
 import { Gender } from './constants/genders.constant';
 import * as DATA_PATH from './data/path';
 import { $clearDB } from './helpers/clear-db.helper';
-import { SCHEMAS } from './schemas';
+import { SCHEMAS } from './schemas/index';
 
 @TestFixture('Post')
 export class PostSpec {

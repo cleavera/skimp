@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Tests are run against the whole project\" && exit 1"
+    "lint": "tslint --project ./tsconfig.json",
+    "test": "echo \"Tests are run in the testing module\" && exit 1"
   },
   "repository": {
     "type": "git",
