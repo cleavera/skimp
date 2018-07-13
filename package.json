@@ -4,8 +4,6 @@
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "example": "ts-node ./src/quickstart/example/run",
     "lint": "tslint --project ./tsconfig.json",
     "test": "del-cli \"./.test/**/*.*\" && tsc -p \"./tsconfig-test.json\" && alsatian ./.test/**/*.spec.js --tap"
   },
