@@ -1,6 +1,6 @@
 {
   "name": "@skimp/quickstart",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The quickstart module for the skimp domain modelling framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,6 +8,10 @@
     "build": "tsc",
     "example": "ts-node ./example/run",
     "test": "echo \"Tests are run against the whole project\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cleavera/skimp.git"
   },
   "keywords": [
     "skimp",
@@ -19,10 +23,19 @@
   "author": "Anthony Cleaver",
   "license": "ISC",
   "devDependencies": {
+    "@skimp/core": "^1.0.0",
+    "@skimp/debug": "^1.0.1",
+    "@skimp/file-system": "^1.0.0",
+    "@skimp/json-api": "^1.0.0",
+    "@skimp/json-file": "^1.0.0",
+    "@skimp/router": "^1.0.0",
+    "@skimp/schema": "^1.0.0",
+    "@skimp/server": "^1.0.0",
+    "@skimp/shared": "^1.0.1",
     "ts-node": "7.0.0",
     "typescript": "2.9.2"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@skimp/core": "^1.0.0",
     "@skimp/debug": "^1.0.1",
     "@skimp/file-system": "^1.0.0",

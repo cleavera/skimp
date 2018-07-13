@@ -1,12 +1,16 @@
 {
   "name": "@skimp/shared",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "The shared module for the skimp domain modelling framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "echo \"Tests are run against the whole project\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cleavera/skimp.git"
   },
   "keywords": [
     "skimp",

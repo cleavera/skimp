@@ -1,12 +1,16 @@
 {
   "name": "@skimp/router",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The router module for the skimp domain modelling framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "echo \"Tests are run against the whole project\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cleavera/skimp.git"
   },
   "keywords": [
     "skimp",
@@ -18,9 +22,6 @@
   "author": "Anthony Cleaver",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "2.9.2"
-  },
-  "dependencies": {
     "@skimp/core": "^1.0.0",
     "@skimp/debug": "^1.0.1",
     "@skimp/http": "^1.0.0",
@@ -28,6 +29,18 @@
     "@skimp/server": "^1.0.0",
     "@skimp/shared": "^1.0.1",
     "@types/uuid": "^3.4.3",
+    "typescript": "2.9.2"
+  },
+  "peerDependencies": {
+    "@skimp/core": "^1.0.0",
+    "@skimp/debug": "^1.0.1",
+    "@skimp/http": "^1.0.0",
+    "@skimp/schema": "^1.0.0",
+    "@skimp/server": "^1.0.0",
+    "@skimp/shared": "^1.0.1",
+    "@types/uuid": "^3.4.3"
+  },
+  "dependencies": {
     "uuid": "^3.3.2"
   }
 }

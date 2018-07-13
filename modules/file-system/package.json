@@ -1,12 +1,16 @@
 {
   "name": "@skimp/file-system",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The file-system module for the skimp domain modelling framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "echo \"Tests are run against the whole project\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cleavera/skimp.git"
   },
   "keywords": [
     "skimp",
@@ -18,9 +22,11 @@
   "author": "Anthony Cleaver",
   "license": "ISC",
   "devDependencies": {
+    "@skimp/schema": "^1.0.0",
+    "@skimp/shared": "^1.0.1",
     "typescript": "2.9.2"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@skimp/schema": "^1.0.0",
     "@skimp/shared": "^1.0.1"
   }
