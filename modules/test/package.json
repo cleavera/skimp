@@ -6,6 +6,7 @@
     "build": "tsc -p \"./tsconfig.json\"",
     "clean": "del-cli \"./.test/**/*.*\" && del-cli \"./.artifacts/**/*.*\"",
     "lint": "tslint --project ./tsconfig.json",
+    "postinstall": "npm run sync",
     "sync": "node ./scripts/install",
     "test": "npm run clean && npm run sync && npm run build && alsatian ./.test/**/*.spec.js --tap"
   },
@@ -16,12 +17,14 @@
     "@types/node": "10.5.2",
     "@types/request": "2.47.1",
     "@types/request-promise-native": "1.0.15",
+    "@types/uuid": "3.4.3",
     "alsatian": "2.2.1",
     "del-cli": "1.1.0",
     "glob": "7.1.2",
     "request": "2.87.0",
     "request-promise-native": "1.0.5",
-    "typescript": "2.9.2"
+    "typescript": "2.9.2",
+    "uuid": "3.3.2"
   },
   "peerDependencies": {
     "@skimp/core": "*",

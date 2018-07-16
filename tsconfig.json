@@ -20,8 +20,5 @@
   },
   "include": [
     "modules/**/*"
-  ],
-  "exclude": [
-    "*.spec.ts"
   ]
 }

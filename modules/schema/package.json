@@ -26,6 +26,7 @@
     "@skimp/core": "^1.0.0",
     "@skimp/debug": "^1.0.1",
     "@skimp/shared": "^1.0.1",
+    "@types/node": "^10.5.2",
     "typescript": "2.9.2"
   },
   "peerDependencies": {

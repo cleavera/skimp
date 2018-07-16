@@ -30,5 +30,8 @@
   "peerDependencies": {
     "@skimp/schema": "^1.0.0",
     "@skimp/shared": "^1.0.1"
+  },
+  "dependencies": {
+    "@types/node": "^10.5.2"
   }
 }

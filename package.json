@@ -1,25 +1,14 @@
 {
   "name": "skimp",
   "version": "1.0.0",
-  "description": "",
-  "main": "./dist/index.js",
+  "description": "Build tasks for skimp",
   "scripts": {
-    "lint": "tslint --project ./tsconfig.json"
+    "lint": "node scripts/with-modules \"npm run lint\""
   },
   "private": true,
   "author": "Anthony Cleaver",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^9.6.2",
-    "@types/request": "^2.47.0",
-    "@types/request-promise-native": "^1.0.14",
-    "alsatian": "^2.2.1",
-    "request": "^2.85.0",
-    "request-promise-native": "^1.0.5",
-    "tslint": "^5.9.1",
-    "typescript": "^2.8.1"
-  },
-  "dependencies": {
-    "del-cli": "^1.1.0"
+    "glob": "7.1.2"
   }
 }

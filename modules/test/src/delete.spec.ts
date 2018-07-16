@@ -5,11 +5,11 @@ import { init } from '@skimp/quickstart';
 import { Server } from '@skimp/server';
 import { AsyncSetup, AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestFixture } from 'alsatian';
 import { Response } from 'request';
-import * as request from 'request-promise-native';
 import { RequestPromiseOptions } from 'request-promise-native';
 
 import * as DATA_PATH from './data/path';
 import { $clearDB } from './helpers/clear-db.helper';
+import { $request } from './helpers/request.helper';
 import { SCHEMAS } from './schemas';
 
 @TestFixture('Delete')
@@ -54,7 +54,7 @@ export class DeleteSpec {
             } as IJsonApi
         });
 
-        const postResponse: Response = await request('/job', postOptions);
+        const postResponse: Response = await $request('/job', postOptions);
         const location: string = postResponse.headers.location || '';
 
         Expect(postResponse.body).toEqual({
@@ -81,7 +81,7 @@ export class DeleteSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await request('/job', baseOptions);
+        const getResponse: Response = await $request('/job', baseOptions);
 
         Expect(getResponse.body).toEqual([{
             data: {
@@ -107,7 +107,7 @@ export class DeleteSpec {
             }
         } as IJsonApi]);
 
-        const getSingleResponse: Response = await request(location, baseOptions);
+        const getSingleResponse: Response = await $request(location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
@@ -133,7 +133,7 @@ export class DeleteSpec {
             }
         } as IJsonApi);
 
-        const getSinglePersonResponse: Response = await request(this.location, baseOptions);
+        const getSinglePersonResponse: Response = await $request(this.location, baseOptions);
 
         Expect(getSinglePersonResponse.body).toEqual({
             data: {
@@ -187,7 +187,7 @@ export class DeleteSpec {
             } as IJsonApi
         });
 
-        const postResponse: Response = await request('/person', postOptions);
+        const postResponse: Response = await $request('/person', postOptions);
         this.location = postResponse.headers.location || '';
 
         Expect(postResponse.body).toEqual({
@@ -205,7 +205,7 @@ export class DeleteSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([{
             data: {
@@ -241,19 +241,19 @@ export class DeleteSpec {
             method: 'DELETE'
         });
 
-        const deleteResponse: Response = await request(this.location, deleteOptions);
+        const deleteResponse: Response = await ($request(this.location, deleteOptions) as Promise<Response>);
 
         Expect(deleteResponse.body).not.toBeDefined();
         Expect(deleteResponse.statusCode).toBe(204);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
 
         let success: boolean = false;
 
         try {
-            await request(this.location, baseOptions);
+            await $request(this.location, baseOptions);
 
             success = true;
         } catch (e) {
@@ -262,7 +262,7 @@ export class DeleteSpec {
 
         Expect(success).toBe(false);
 
-        const getSingleJobResponse: Response = await request(jobLocation, baseOptions);
+        const getSingleJobResponse: Response = await $request(jobLocation, baseOptions);
 
         Expect(getSingleJobResponse.body).toEqual({
             data: {
@@ -290,7 +290,7 @@ export class DeleteSpec {
         let success: boolean = false;
 
         try {
-            await request('/person', deleteOptions);
+            await $request('/person', deleteOptions);
 
             success = true;
         } catch (e) {
@@ -300,7 +300,7 @@ export class DeleteSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([{
             data: {
@@ -333,7 +333,7 @@ export class DeleteSpec {
         let success: boolean = false;
 
         try {
-            await request('/person/12345', deleteOptions);
+            await $request('/person/12345', deleteOptions);
 
             success = true;
         } catch (e) {
@@ -343,7 +343,7 @@ export class DeleteSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([{
             data: {

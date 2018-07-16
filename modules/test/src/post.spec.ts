@@ -7,11 +7,11 @@ import { Server } from '@skimp/server';
 import { AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestCase, TestFixture } from 'alsatian';
 import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
-import * as request from 'request-promise-native';
 
 import { Gender } from './constants/genders.constant';
 import * as DATA_PATH from './data/path';
 import { $clearDB } from './helpers/clear-db.helper';
+import { $request } from './helpers/request.helper';
 import { SCHEMAS } from './schemas/index';
 
 @TestFixture('Post')
@@ -60,7 +60,7 @@ export class PostSpec {
             } as IJsonApi
         });
 
-        const postResponse: Response = await request('/person', postOptions);
+        const postResponse: Response = await $request('/person', postOptions);
         const location: string = postResponse.headers.location || '';
 
         Expect(postResponse.body).toEqual({
@@ -78,7 +78,7 @@ export class PostSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([
             {
@@ -111,7 +111,7 @@ export class PostSpec {
             } as IJsonApi
         ]);
 
-        const getSingleResponse: Response = await request(location, baseOptions);
+        const getSingleResponse: Response = await $request(location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
@@ -150,7 +150,7 @@ export class PostSpec {
             } as IJsonApi
         });
 
-        const postResponse: Response = await request('/job', postOptions);
+        const postResponse: Response = await $request('/job', postOptions);
         const location: string = postResponse.headers.location || '';
 
         Expect(postResponse.body).toEqual({
@@ -163,7 +163,7 @@ export class PostSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await request('/job', baseOptions);
+        const getResponse: Response = await $request('/job', baseOptions);
 
         Expect(getResponse.body).toEqual([{
             data: {
@@ -175,7 +175,7 @@ export class PostSpec {
             }
         } as IJsonApi]);
 
-        const getSingleResponse: Response = await request(location, baseOptions);
+        const getSingleResponse: Response = await $request(location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
@@ -214,7 +214,7 @@ export class PostSpec {
             } as IJsonApi
         });
 
-        const postResponse: Response = await request('/person', postOptions);
+        const postResponse: Response = await $request('/person', postOptions);
         this.location = postResponse.headers.location || '';
 
         Expect(postResponse.body).toEqual({
@@ -232,7 +232,7 @@ export class PostSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([{
             data: {
@@ -249,7 +249,7 @@ export class PostSpec {
             }
         } as IJsonApi]);
 
-        const getSingleResponse: Response = await request(this.location, baseOptions);
+        const getSingleResponse: Response = await $request(this.location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
@@ -290,7 +290,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/person', postOptions);
+            await $request('/person', postOptions);
 
             success = true;
         } catch (e) {
@@ -309,7 +309,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
@@ -337,7 +337,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/person', postOptions);
+            await $request('/person', postOptions);
 
             success = true;
         } catch (e) {
@@ -356,7 +356,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
@@ -386,7 +386,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/person', postOptions);
+            await $request('/person', postOptions);
 
             success = true;
         } catch (e) {
@@ -405,7 +405,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
@@ -436,7 +436,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/person', postOptions);
+            await $request('/person', postOptions);
 
             success = true;
         } catch (e) {
@@ -455,7 +455,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
@@ -487,7 +487,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/person', postOptions);
+            await $request('/person', postOptions);
 
             success = true;
         } catch (e) {
@@ -506,7 +506,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
@@ -537,7 +537,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/person', postOptions);
+            await $request('/person', postOptions);
 
             success = true;
         } catch (e) {
@@ -556,7 +556,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
@@ -587,7 +587,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/person', postOptions);
+            await $request('/person', postOptions);
 
             success = true;
         } catch (e) {
@@ -606,7 +606,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
@@ -656,7 +656,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/person', postOptions);
+            await $request('/person', postOptions);
 
             success = true;
         } catch (e) {
@@ -675,7 +675,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
@@ -703,7 +703,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/invalid', postOptions);
+            await $request('/invalid', postOptions);
 
             success = true;
         } catch (e) {
@@ -712,7 +712,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
@@ -740,7 +740,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/person/123', postOptions);
+            await $request('/person/123', postOptions);
 
             success = true;
         } catch (e) {
@@ -749,7 +749,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
@@ -779,7 +779,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request(this.location, postOptions);
+            await $request(this.location, postOptions);
 
             success = true;
         } catch (e) {
@@ -788,7 +788,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([{
             data: {
@@ -833,7 +833,7 @@ export class PostSpec {
             } as IJsonApi
         });
 
-        const postResponse: Response = await request('/job', postOptions);
+        const postResponse: Response = await $request('/job', postOptions);
         const location: string = postResponse.headers.location || '';
 
         Expect(postResponse.body).toEqual({
@@ -860,7 +860,7 @@ export class PostSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await request('/job', baseOptions);
+        const getResponse: Response = await $request('/job', baseOptions);
 
         Expect(getResponse.body).toEqual([{
             data: {
@@ -886,7 +886,7 @@ export class PostSpec {
             }
         } as IJsonApi]);
 
-        const getSingleResponse: Response = await request(location, baseOptions);
+        const getSingleResponse: Response = await $request(location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
@@ -912,7 +912,7 @@ export class PostSpec {
             }
         } as IJsonApi);
 
-        const getSinglePersonResponse: Response = await request(this.location, baseOptions);
+        const getSinglePersonResponse: Response = await $request(this.location, baseOptions);
 
         Expect(getSinglePersonResponse.body).toEqual({
             data: {
@@ -976,7 +976,7 @@ export class PostSpec {
             } as IJsonApi
         });
 
-        const postResponse: Response = await request('/person', postOptions);
+        const postResponse: Response = await $request('/person', postOptions);
         this.location = postResponse.headers.location || '';
 
         Expect(postResponse.body).toEqual({
@@ -1008,7 +1008,7 @@ export class PostSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await request('/person', baseOptions);
+        const getResponse: Response = await $request('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([{
             data: {
@@ -1039,7 +1039,7 @@ export class PostSpec {
             }
         } as IJsonApi]);
 
-        const getSingleResponse: Response = await request(this.location, baseOptions);
+        const getSingleResponse: Response = await $request(this.location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
@@ -1099,7 +1099,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/job', postOptions);
+            await $request('/job', postOptions);
 
             success = true;
         } catch (e) {
@@ -1118,7 +1118,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/job', baseOptions);
+        const getResponse: Response = await $request('/job', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
@@ -1151,7 +1151,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/job', postOptions);
+            await $request('/job', postOptions);
 
             success = true;
         } catch (e) {
@@ -1170,7 +1170,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/job', baseOptions);
+        const getResponse: Response = await $request('/job', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
@@ -1208,7 +1208,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/team', postOptions);
+            await $request('/team', postOptions);
 
             success = true;
         } catch (e) {
@@ -1233,7 +1233,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/team', baseOptions);
+        const getResponse: Response = await $request('/team', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
@@ -1272,7 +1272,7 @@ export class PostSpec {
         let success: boolean = false;
 
         try {
-            await request('/job', postOptions);
+            await $request('/job', postOptions);
 
             success = true;
         } catch (e) {
@@ -1291,7 +1291,7 @@ export class PostSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await request('/job', baseOptions);
+        const getResponse: Response = await $request('/job', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }
