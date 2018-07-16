@@ -4,7 +4,7 @@ Skimp is a domain modelling framework. It can be used for defining and storing a
 
 ## Quick start
 
-The easiest way to get set up is to install the quickstart module and the required dependencies. Then define your schemas and pass it to the init function. Quickstart will store the data as JSON files. The quickstart module accepts two media types on requests: 'application/json' and 'documentation/json'. 'application/json' outputs JSON api, 'documentation/json' outputs json swagger.
+The easiest way to get set up is to install the quickstart module and the required dependencies. Then define your schemas and pass it to the init function. Quickstart will store the data as JSON files. The quickstart module accepts two media types on requests: 'application/json' and 'documentation/json'. 'application/json' outputs hypermedia compliant JSON api, 'documentation/json' outputs json swagger.
 
 ### Example
 
@@ -51,6 +51,121 @@ const portNumber: number = 1337;
 const dataBasePath: string = resolve('../data');
 
 await init(portNumber, dataBasePath, [PersonSchema]);
+```
+
+Making a request to `http://localhost:1337/person` with an accept header of `documentation/json` returns the following:
+
+```json
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "required": [
+        "data"
+    ],
+    "properties": {
+        "data": {
+            "type": "object",
+            "required": [
+                "type",
+                "id",
+                "attributes"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "person"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "attributes": {
+                    "type": "object",
+                    "required": [
+                        "fullName"
+                    ],
+                    "properties": {
+                        "fullName": {
+                            "type": "string"
+                        },
+                        "dateOfBirth": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        },
+                        "height": {
+                            "type": [
+                                "number",
+                                "null"
+                            ]
+                        },
+                        "weight": {
+                            "type": [
+                                "number",
+                                "null"
+                            ]
+                        },
+                        "employed": {
+                            "type": [
+                                "boolean",
+                                "null"
+                            ]
+                        },
+                        "gender": {
+                            "type": [
+                                "string",
+                                "null"
+                            ],
+                            "enum": [
+                                "Gender.FEMALE",
+                                "Gender.MALE"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+Using this we can construct our model to send to the API. So we can post the following with an accept header of `application/json`:
+
+```
+{
+  "data": {
+    "attributes": {
+      "fullName": "Anthony Cleaver",
+      "dateOfBirth": "1990-05-03",
+      "height": 180,
+      "weight": 78,
+      "employed": true,
+      "gender": "Gender.MALE"
+    },
+    "type": "person"
+  }
+}
+```
+
+Doing a get on `/person` with an accept header of `application/json` now returns the following:
+
+```
+[
+   {
+      "data":{
+         "type":"person",
+         "id":"/person/23826d5d-0cb5-4db8-9fc0-f5ff944e941f",
+         "attributes":{
+            "fullName":"Anthony Cleaver",
+            "dateOfBirth":"1990-05-03",
+            "height":180,
+            "weight":78,
+            "employed":true,
+            "gender":"Gender.MALE"
+         }
+      }
+   }
+]
 ```
 
 ### Parameters
