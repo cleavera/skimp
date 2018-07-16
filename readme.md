@@ -131,7 +131,7 @@ Making a request to `http://localhost:1337/person` with an accept header of `doc
 
 Using this we can construct our model to send to the API. So we can post the following with an accept header of `application/json`:
 
-```
+```json
 {
   "data": {
     "attributes": {
@@ -149,7 +149,7 @@ Using this we can construct our model to send to the API. So we can post the fol
 
 Doing a get on `/person` with an accept header of `application/json` now returns the following:
 
-```
+```json
 [
    {
       "data":{
@@ -172,7 +172,7 @@ Doing a get on `/person` with an accept header of `application/json` now returns
 
 The init function takes the following parameters
 
-```
+```typescript
 init(
     port: number,
     dataPath: string,
@@ -205,7 +205,7 @@ init(
 
 If not using the quickstart as a minimum you will need to include the schemas you wish to use (the schema decorator handles registering them with the app so they merely need to be loaded), register a data storage mechanism, register an api serialiser with a media type, and create a router and pipe a server's requests to it.
 
-```
+```javascript
 import { API_REGISTER, DB_REGISTER } from '@skimp/core';
 import { ConsoleLogger, LOGGER } from '@skimp/debug';
 import { Api } from '@skimp/json-api';
@@ -218,7 +218,7 @@ import * as SCHEMAS from './schemas';
 LOGGER.setLogger(new ConsoleLogger());
 DB_REGISTER.configure(new Db());
 API_REGISTER.configure(new Api(), 'application/json');
-const server: Server = new Server(port, new Router(version, cors));
+const server = new Server(port, new Router(version, cors));
 ```
 
 ## Todo
