@@ -216,14 +216,13 @@ import { Server } from '@skimp/server';
 import * as SCHEMAS from './schemas';
 
 LOGGER.setLogger(new ConsoleLogger());
-DB_REGISTER.configure(new Db());
+DB_REGISTER.configure(await Db.create(resolve('../data')));
 API_REGISTER.configure(new Api(), 'application/json');
 const server = new Server(port, new Router(version, cors));
 ```
 
 ## Todo
 
-- Move filesystem configuration into DB
 - Azure function app as server alternative
 - Azure blob storage support
 - ETag

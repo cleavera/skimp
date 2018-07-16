@@ -10,8 +10,7 @@ import { Maybe } from '@skimp/shared';
 
 export async function init(port: number, dataPath: string, _schemas: Array<ISchema>, cors: boolean | string | Array<string> = false, version: string = 'UNVERSIONED', authenticator: Maybe<IAuthenticator> = null, loggerClass: ILogger = new ConsoleLogger()): Promise<Server> {
     LOGGER.setLogger(loggerClass);
-    await FILE_SYSTEM.configure(dataPath);
-    DB_REGISTER.configure(new Db());
+    DB_REGISTER.configure(await Db.create(dataPath));
     API_REGISTER.configure(new Api(), 'application/json');
     API_REGISTER.configure(new Docs(), 'documentation/json');
     const server: Server = new Server(port, new Router(version, cors, authenticator));

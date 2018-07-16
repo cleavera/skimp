@@ -1,5 +1,5 @@
 import { IDb, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
-import { Entity } from '@skimp/file-system';
+import { Entity, FILE_SYSTEM } from '@skimp/file-system';
 import { ResourceDoesNotExistException } from '@skimp/router';
 
 import { InvalidDatabaseFilePathException } from '../exceptions/invalid-database-file-path.exception';
@@ -8,7 +8,7 @@ import { Serialiser } from './serialiser';
 export class Db implements IDb {
     public serialiser: Serialiser;
 
-    constructor() {
+    private constructor() {
         this.serialiser = new Serialiser();
     }
 
@@ -70,5 +70,11 @@ export class Db implements IDb {
         MODEL_REGISTER.setLocation(model, location);
 
         await file.write(this.serialiser.serialise(model));
+    }
+
+    public static async create(dataPath: string): Promise<Db> {
+        await FILE_SYSTEM.configure(dataPath);
+
+        return new Db();
     }
 }
