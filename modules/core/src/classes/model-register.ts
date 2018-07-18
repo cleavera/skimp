@@ -3,7 +3,7 @@ import { Maybe } from '@skimp/shared';
 import * as MetaKey from '../constants/meta-field-names.constant';
 import { IMeta } from '../interfaces/meta.interface';
 
-import { ResourceLocation } from './resource.location';
+import { ResourceLocation } from './resource-location';
 
 export class ModelRegister {
     private readonly _meta: IMeta;

@@ -1,4 +1,4 @@
-import { ResourceLocation } from '../classes/resource.location';
+import { ResourceLocation } from '../classes/resource-location';
 
 export interface IDb {
     exists(location: ResourceLocation): Promise<boolean>;
