@@ -15,9 +15,9 @@ import { SCHEMAS } from './schemas';
 
 @TestFixture('Get')
 export class GetSpec {
-    public personLocation: string;
-    public jobLocation: string;
-    private _server: Server;
+    public personLocation!: string;
+    public jobLocation!: string;
+    private _server!: Server;
 
     @AsyncSetupFixture
     public async setup(): Promise<void> {

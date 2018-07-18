@@ -1,7 +1,7 @@
 import { FieldType } from '../constants/field.type';
-import { IValueDeserialiser } from '../exceptions/value-deserialiser.interface';
-import { IValueSerialiser } from '../exceptions/value-serialiser.interface';
 import { IOptions } from './options.interface';
+import { IValueDeserialiser } from './value-deserialiser.interface';
+import { IValueSerialiser } from './value-serialiser.interface';
 
 export interface IFieldMeta {
     mappedName?: string;

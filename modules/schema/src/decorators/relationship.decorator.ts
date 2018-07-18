@@ -1,4 +1,5 @@
 import { DB_REGISTER, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
+import { $isNull, Maybe } from '@skimp/shared';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { RelationshipCountExceedsLimitException } from '../exceptions/relationship-count-exceeds-limit.exception';
@@ -6,7 +7,7 @@ import { RelationshipNotFoundException } from '../exceptions/relationship-not-fo
 import { ValidationExceptions } from '../exceptions/validation.exceptions';
 import { ISchema } from '../interfaces/schema.interface';
 
-export function Relationship(schema: ISchema, limit?: number): ClassDecorator {
+export function Relationship(schema: ISchema, limit: Maybe<number> = null): ClassDecorator {
     return (target: any): void => {
         SCHEMA_REGISTER.addSchemaRelationship(target, schema);
         SCHEMA_REGISTER.addSchemaRelationship(schema, target);
@@ -19,7 +20,7 @@ export function Relationship(schema: ISchema, limit?: number): ClassDecorator {
 
             const errors: ValidationExceptions = new ValidationExceptions();
 
-            if (limit && relationships.length > limit) {
+            if (!$isNull(limit) && relationships.length > limit) {
                 errors.push(new RelationshipCountExceedsLimitException(allRelationships.indexOf(relationships[relationships.length - 1])));
             }
 

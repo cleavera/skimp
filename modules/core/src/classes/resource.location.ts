@@ -1,5 +1,5 @@
 import { Uri } from '@skimp/http';
-import { Maybe } from '@skimp/shared';
+import { $isNull, Maybe } from '@skimp/shared';
 
 import { InvalidLocationException } from '../exceptions/invalid-location.exception';
 
@@ -13,7 +13,7 @@ export class ResourceLocation {
     }
 
     public toString(): string {
-        if (!this.resourceId) {
+        if ($isNull(this.resourceId)) {
             return `/${this.resourceName}`;
         }
 
@@ -25,11 +25,11 @@ export class ResourceLocation {
     }
 
     public isResource(): boolean {
-        return !!this.resourceName && !this.resourceId;
+        return !$isNull(this.resourceName) && $isNull(this.resourceId);
     }
 
     public isEntity(): boolean {
-        return !!this.resourceName && !!this.resourceId;
+        return !$isNull(this.resourceName) && !$isNull(this.resourceId);
     }
 
     public static fromUrl(url: Uri): ResourceLocation {

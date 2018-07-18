@@ -8,6 +8,7 @@ export { IApi } from './interfaces/api.interface';
 export { ResourceLocation } from './classes/resource.location';
 export { IDb } from './interfaces/db.interface';
 export { ContentTypeNotSupportedException } from './exceptions/content-type-not-supported.exception';
+export { NoContentTypesConfiguredException } from './exceptions/no-content-types-configured.exception';
 
 import * as MetaKey from './constants/meta-field-names.constant';
 

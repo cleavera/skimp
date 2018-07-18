@@ -1,4 +1,4 @@
-import { Maybe } from '@skimp/shared';
+import { $isNull, Maybe } from '@skimp/shared';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { InvalidPointerException } from '../exceptions/invalid-pointer.exception';
@@ -10,7 +10,7 @@ export class ModelPointer {
     constructor(model: any, property: string) {
         const field: Maybe<string> = SCHEMA_REGISTER.mapToField(model.constructor, property);
 
-        if (!field) {
+        if ($isNull(field)) {
             throw new InvalidPointerException(model, property);
         }
 

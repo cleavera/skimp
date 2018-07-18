@@ -1,5 +1,5 @@
 import { IRequest, RequestMethod, Uri } from '@skimp/http';
-import { Maybe } from '@skimp/shared';
+import { $isNull, Maybe } from '@skimp/shared';
 import { IncomingMessage } from 'http';
 
 import { Content } from './content';
@@ -74,10 +74,10 @@ export class Request implements IRequest {
     public static async fromIncomingMessage(message: IncomingMessage): Promise<Request> {
         const content: Maybe<Content> = await Content.fromStream(message);
 
-        if (content) {
-            return new Request(message, content);
+        if ($isNull(content)) {
+            return new Request(message);
         }
 
-        return new Request(message);
+        return new Request(message, content);
     }
 }

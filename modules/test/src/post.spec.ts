@@ -16,8 +16,8 @@ import { SCHEMAS } from './schemas/index';
 
 @TestFixture('Post')
 export class PostSpec {
-    public location: string;
-    private _server: Server;
+    public location!: string;
+    private _server!: Server;
 
     @AsyncSetupFixture
     public async setup(): Promise<void> {

@@ -1,13 +1,17 @@
-import { FieldType, ISchema, SCHEMA_REGISTER } from '@skimp/schema';
-import { Maybe } from '@skimp/shared';
+import { FieldCannotBeSymbolException, FieldType, ISchema, SCHEMA_REGISTER } from '@skimp/schema';
+import { $isBoolean, $isDate, $isNull, $isSymbol, IJsonValue, Maybe } from '@skimp/shared';
 
 import { ValidationFieldInvalidDateException } from '../exceptions/validation-field-invalid-date.exception';
 
-export function DateType(target: any, propertyKey: string): void {
+export const DateType: PropertyDecorator = (target: any, propertyKey: string | symbol): void => {
     const schema: ISchema = target.constructor;
 
+    if ($isSymbol(propertyKey)) {
+        throw new FieldCannotBeSymbolException(propertyKey);
+    }
+
     SCHEMA_REGISTER.addValidation(schema, async(model: any) => {
-        if (!(model[propertyKey] instanceof Date) && model[propertyKey] !== null) {
+        if (!$isDate(model[propertyKey]) && !$isNull(model[propertyKey])) {
             throw new ValidationFieldInvalidDateException(propertyKey, model);
         }
     });
@@ -18,9 +22,13 @@ export function DateType(target: any, propertyKey: string): void {
         }
 
         return deserialisedValue.toISOString().split('T')[0];
-    }, (serialisedValue: Maybe<string> = null): Maybe<Date> | null => {
-        if (serialisedValue === null || serialisedValue === '') {
+    }, (serialisedValue: Maybe<IJsonValue> = null): Maybe<Date> => {
+        if ($isNull(serialisedValue) || serialisedValue === '') {
             return null;
+        }
+
+        if ($isBoolean(serialisedValue)) {
+            throw new ValidationFieldInvalidDateException(propertyKey, target);
         }
 
         const deserialisedValue: Date = new Date(serialisedValue);
@@ -33,4 +41,4 @@ export function DateType(target: any, propertyKey: string): void {
     });
 
     SCHEMA_REGISTER.setFieldType(schema, propertyKey, FieldType.DATE);
-}
+};

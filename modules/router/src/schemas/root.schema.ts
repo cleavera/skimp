@@ -1,3 +1,3 @@
 export class RootSchema {
-    public version: string;
+    public version!: string;
 }

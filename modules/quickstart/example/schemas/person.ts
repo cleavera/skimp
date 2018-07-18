@@ -1,32 +1,32 @@
 import { Field, Schema } from '@skimp/schema';
-import { Boolean, Date, Integer, Number, Options, Required, String } from '@skimp/validation';
+import { BooleanType, DateType, IntegerType, NumberType, Options, Required, StringType } from '@skimp/validation';
 import { GENDER_OPTIONS } from '../constants/gender-options.constant';
 
 @Schema('person')
 export class PersonSchema {
     @Required
-    @String
+    @StringType
     @Field('fullName')
-    public name: string;
+    public name!: string;
 
-    @Date
+    @DateType
     @Field()
-    public dateOfBirth: Date;
+    public dateOfBirth!: Date;
 
-    @Number
+    @NumberType
     @Field()
-    public height: number;
+    public height!: number;
 
-    @Integer
+    @IntegerType
     @Field()
-    public weight: number;
+    public weight!: number;
 
-    @Boolean
+    @BooleanType
     @Field()
-    public employed: boolean;
+    public employed!: boolean;
 
-    @String
+    @StringType
     @Options(GENDER_OPTIONS)
     @Field()
-    public gender: string;
+    public gender!: string;
 }

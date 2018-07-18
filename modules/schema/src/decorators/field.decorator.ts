@@ -1,8 +1,14 @@
+import { $isNull, $isSymbol, Maybe } from '@skimp/shared';
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
+import { FieldCannotBeSymbolException } from '../exceptions/field-cannot-be-symbol.exception';
 
-export function Field(alias?: string): PropertyDecorator {
-    return (target: any, propertyKey: string): void => { // tslint:disable-line no-any
-        if (!alias) {
+export function Field(alias: Maybe<string> = null): PropertyDecorator {
+    return (target: any, propertyKey: string | symbol): void => { // tslint:disable-line no-any
+        if ($isSymbol(propertyKey)) {
+            throw new FieldCannotBeSymbolException(propertyKey);
+        }
+
+        if ($isNull(alias)) {
             alias = propertyKey;
         }
 

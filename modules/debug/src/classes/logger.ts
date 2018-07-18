@@ -1,10 +1,16 @@
+import { $isNull, Maybe } from '@skimp/shared';
+
 import { LogLevel } from '../constants/log-level.constant';
 import { NoLoggerException } from '../exceptions/no-logger.exception';
 import { ILogger } from '../interfaces/logger.interface';
 
 export class Logger implements ILogger {
-    private _logger: ILogger;
+    private _logger: Maybe<ILogger> = null;
     private _logLevel: LogLevel;
+
+    constructor() {
+        this._logLevel = LogLevel.DEBUG;
+    }
 
     public setLogger(loggerClass: ILogger): void {
         this._logger = loggerClass;
@@ -15,7 +21,7 @@ export class Logger implements ILogger {
     }
 
     public debug(...messages: Array<any>): void {
-        if (!this._logger) {
+        if ($isNull(this._logger)) {
             throw new NoLoggerException();
         }
 
@@ -27,7 +33,7 @@ export class Logger implements ILogger {
     }
 
     public warn(...exceptions: Array<Error>): void {
-        if (!this._logger) {
+        if ($isNull(this._logger)) {
             throw new NoLoggerException();
         }
 
@@ -39,7 +45,7 @@ export class Logger implements ILogger {
     }
 
     public error(...exception: Array<Error>): void {
-        if (!this._logger) {
+        if ($isNull(this._logger)) {
             throw new NoLoggerException();
         }
 

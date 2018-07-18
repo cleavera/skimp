@@ -1,17 +1,17 @@
 import { IMeta, MetaKey } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
-import { Maybe } from '@skimp/shared';
+import { $isNull, $isUndefined, Maybe } from '@skimp/shared';
 
 import { FieldType } from '../constants/field.type';
 import { DuplicateResourceNameException } from '../exceptions/duplicate-resource-name.exception';
 import { ValidationException } from '../exceptions/validation.exception';
 import { ValidationExceptions } from '../exceptions/validation.exceptions';
-import { IValueDeserialiser } from '../exceptions/value-deserialiser.interface';
-import { IValueSerialiser } from '../exceptions/value-serialiser.interface';
 import { IFieldMeta } from '../interfaces/field-meta.interface';
 import { IOptions } from '../interfaces/options.interface';
 import { ISchema } from '../interfaces/schema.interface';
 import { IValidation } from '../interfaces/validation.interface';
+import { IValueDeserialiser } from '../interfaces/value-deserialiser.interface';
+import { IValueSerialiser } from '../interfaces/value-serialiser.interface';
 
 export class SchemaRegister {
     private readonly _schemas: { [key: string]: ISchema };
@@ -29,11 +29,11 @@ export class SchemaRegister {
     }
 
     public register(schema: ISchema, resourceName: string, isPrivate?: boolean): void {
-        if (this._schemas[resourceName] && !isPrivate) {
+        if (!($isNull(this._schemas[resourceName]) || $isUndefined(this._schemas[resourceName])) && !isPrivate) {
             throw new DuplicateResourceNameException(resourceName);
         }
 
-        if (!this._schemas[resourceName] && !isPrivate) {
+        if (!isPrivate) {
             this._schemas[resourceName] = schema;
         }
 
@@ -163,7 +163,7 @@ export class SchemaRegister {
     public getFieldType(schema: ISchema, propertyName: string): Maybe<FieldType> {
         const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
 
-        if (!('type' in field) || field === void 0) {
+        if (!('type' in field)) {
             return null;
         }
 
@@ -187,7 +187,7 @@ export class SchemaRegister {
     public getFields(schema: ISchema): Maybe<Array<string>> {
         const fields: Maybe<{ [field: string]: IFieldMeta }> = this._meta.get(schema, MetaKey.FIELDS);
 
-        if (!fields) {
+        if ($isNull(fields)) {
             return null;
         }
 
@@ -197,11 +197,7 @@ export class SchemaRegister {
     public mapToField(schema: ISchema, property: string): Maybe<string> {
         const field: IFieldMeta = this.getFieldMeta(schema, property);
 
-        if (!field) {
-            return null;
-        }
-
-        if (!field.mappedName) {
+        if (!field || !field.mappedName) {
             return null;
         }
 

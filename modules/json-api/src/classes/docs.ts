@@ -2,7 +2,7 @@ import { IApi, ResourceLocation } from '@skimp/core';
 import { IResponse, ResponseCode } from '@skimp/http';
 import { RequestBodyNotAllowedException, ResourceDoesNotExistException } from '@skimp/router';
 import { FieldNotConfiguredException, FieldType, IOptions, ISchema, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '@skimp/schema';
-import { Maybe } from '@skimp/shared';
+import { $isNull, Maybe } from '@skimp/shared';
 
 import { FieldTypeMapping } from '../constants/field-type-mapping.constant';
 import { ISchemaObject } from '../interfaces/schema-object.interface';
@@ -22,7 +22,7 @@ export class Docs implements IApi {
     public respond(response: IResponse, _model: Array<any> | any, location: ResourceLocation): void {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
-        if (!schema) {
+        if ($isNull(schema)) {
             throw new ResourceDoesNotExistException(location.toUrl());
         }
 
@@ -35,7 +35,7 @@ export class Docs implements IApi {
         throw new RequestBodyNotAllowedException();
     }
 
-    public error(response: IResponse, code: ResponseCode, errors?: Array<Error>): void {
+    public error(response: IResponse, code: ResponseCode, errors: Maybe<Array<Error>> = null): void {
         this._jsonAPI.error(response, code, errors);
     }
 
@@ -44,11 +44,11 @@ export class Docs implements IApi {
         const fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const relationships: Maybe<Array<ISchema>> = SCHEMA_REGISTER.getSchemaRelationships(schema);
 
-        if (!type) {
+        if ($isNull(type)) {
             throw new SchemaNotRegisteredException(schema);
         }
 
-        if (!fields || !fields.length) {
+        if ($isNull(fields) || !fields.length) {
             throw new SchemaHasNoFieldsException(schema);
         }
 
@@ -74,7 +74,7 @@ export class Docs implements IApi {
                                 const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
                                 const isRequired: boolean = SCHEMA_REGISTER.getFieldRequired(schema, field);
 
-                                if (!mappedField) {
+                                if ($isNull(mappedField)) {
                                     throw new FieldNotConfiguredException(schema, field);
                                 }
 
@@ -90,7 +90,7 @@ export class Docs implements IApi {
                                 const isRequired: boolean = SCHEMA_REGISTER.getFieldRequired(schema, field);
                                 const options: Maybe<IOptions> = SCHEMA_REGISTER.getFieldOptions(schema, field);
 
-                                if (!mappedField || fieldType === null) {
+                                if ($isNull(mappedField) || $isNull(fieldType)) {
                                     throw new FieldNotConfiguredException(schema, field);
                                 }
 
@@ -98,7 +98,7 @@ export class Docs implements IApi {
                                     type: isRequired ? FieldTypeMapping[fieldType] : [FieldTypeMapping[fieldType], 'null']
                                 } as ISchemaTerminatingValue;
 
-                                if (options) {
+                                if (!$isNull(options)) {
                                     (result[mappedField] as ISchemaTerminatingValue).enum = options as any;
                                 }
 
@@ -110,7 +110,7 @@ export class Docs implements IApi {
                             items: relationships.map((relationship: ISchema): ISchemaObject => {
                                 const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(relationship);
 
-                                if (!resourceName) {
+                                if ($isNull(resourceName)) {
                                     throw new SchemaNotRegisteredException(relationship);
                                 }
 

@@ -2,7 +2,7 @@ import { createReadStream, lstat, readdir, readFile, ReadStream, Stats, unlink, 
 import { join } from 'path';
 import { Writable } from 'stream';
 
-import { IPromiseRejector, IPromiseResolver, Maybe } from '@skimp/shared';
+import { $isNull, IPromiseRejector, IPromiseResolver, Maybe } from '@skimp/shared';
 
 import { FILE_SYSTEM } from '../constants/file-system.constant';
 import { EntityDoesNotExistException } from '../exceptions/entity-does-not-exist.exception';
@@ -24,7 +24,7 @@ export class Entity {
     }
 
     public exists(): boolean {
-        return !!this._stats;
+        return !$isNull(this._stats);
     }
 
     public isDirectory(): boolean {

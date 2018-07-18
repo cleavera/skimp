@@ -7,7 +7,7 @@ export interface IJsonData {
         attributes: IAttributes;
         id?: string;
         type: string;
-        relationships?: Array<IRelationship | IJsonData>,
+        relationships?: Array<IRelationship>,
         links?: ILinks
     };
 }

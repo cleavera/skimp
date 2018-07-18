@@ -1,5 +1,5 @@
 import { InvalidSchemaResourceNameException, SCHEMA_REGISTER } from '@skimp/schema';
-import { IPromiseRejector, IPromiseResolver, Maybe } from '@skimp/shared';
+import { $isNull, IPromiseRejector, IPromiseResolver, Maybe } from '@skimp/shared';
 import { mkdir } from 'fs';
 import { join } from 'path';
 
@@ -8,10 +8,10 @@ import { FileSystemNotConfiguredException } from '../exceptions/file-system-not-
 import ErrnoException = NodeJS.ErrnoException;
 
 export class FileSystem {
-    private _path: string;
+    private _path: Maybe<string> = null;
 
     public get path(): string {
-        if (!this._path) {
+        if ($isNull(this._path)) {
             throw new FileSystemNotConfiguredException();
         }
 
@@ -19,7 +19,7 @@ export class FileSystem {
     }
 
     public set path(path: string) {
-        if (this._path) {
+        if (!$isNull(this._path)) {
             throw new FileSystemCannotBeReconfiguredException();
         }
 
@@ -27,7 +27,7 @@ export class FileSystem {
     }
 
     public async configure(path: string): Promise<void> {
-        if (this._path) {
+        if (!$isNull(this._path)) {
             throw new FileSystemCannotBeReconfiguredException();
         }
 
@@ -36,7 +36,7 @@ export class FileSystem {
         for (const schema of SCHEMA_REGISTER.schemas) {
             const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
 
-            if (!resourceName) {
+            if ($isNull(resourceName)) {
                 throw new InvalidSchemaResourceNameException(schema);
             }
 
@@ -57,6 +57,6 @@ export class FileSystem {
     }
 
     public reset(): void {
-        delete this._path;
+        this._path = null;
     }
 }

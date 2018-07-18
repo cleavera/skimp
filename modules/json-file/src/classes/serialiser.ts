@@ -1,7 +1,7 @@
 import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 import { Uri } from '@skimp/http';
 import { FieldNotConfiguredException, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '@skimp/schema';
-import { Maybe } from '@skimp/shared';
+import { $isNull, Maybe } from '@skimp/shared';
 
 import { IData } from '../interfaces/data.interface';
 import { IJsonFile } from '../interfaces/json-file.interface';
@@ -14,11 +14,11 @@ export class Serialiser {
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
         const relationships: Maybe<Array<ResourceLocation>> = MODEL_REGISTER.getRelationships(model);
 
-        if (!type) {
+        if ($isNull(type)) {
             throw new SchemaNotRegisteredException(schema);
         }
 
-        if (!fields || !fields.length) {
+        if ($isNull(fields) || !fields.length) {
             throw new SchemaHasNoFieldsException(schema);
         }
 
@@ -27,7 +27,7 @@ export class Serialiser {
             data: fields.reduce<IData>((result: IData, field: string): IData => {
                 const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
 
-                if (!mappedField) {
+                if ($isNull(mappedField)) {
                     throw new FieldNotConfiguredException(schema, field);
                 }
 
@@ -47,13 +47,13 @@ export class Serialiser {
         const json: IJsonFile = JSON.parse(body);
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(json.type);
 
-        if (!schema) {
+        if ($isNull(schema)) {
             throw new ResourceNotRegisteredException(json.type);
         }
 
         const fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
 
-        if (!fields || !fields.length) {
+        if ($isNull(fields) || !fields.length) {
             throw new SchemaHasNoFieldsException(schema);
         }
 
@@ -62,7 +62,7 @@ export class Serialiser {
         fields.forEach((field: string) => {
             const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
 
-            if (!mappedField) {
+            if ($isNull(mappedField)) {
                 throw new FieldNotConfiguredException(schema, field);
             }
 

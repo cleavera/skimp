@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "outDir": ".dist",
     "target": "es6",
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "alwaysStrict": true,
+    "strict": true,
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

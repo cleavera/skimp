@@ -14,8 +14,8 @@ import { SCHEMAS } from './schemas';
 
 @TestFixture('Delete')
 export class DeleteSpec {
-    public location: string;
-    private _server: Server;
+    public location!: string;
+    private _server!: Server;
 
     @AsyncSetupFixture
     public async setup(): Promise<void> {

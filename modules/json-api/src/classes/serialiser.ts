@@ -1,7 +1,7 @@
 import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 import { Uri } from '@skimp/http';
 import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException, ValidationException } from '@skimp/schema';
-import { Maybe } from '@skimp/shared';
+import { $isNull, $isString, Maybe } from '@skimp/shared';
 import { ModelValidationException } from '@skimp/validation';
 
 import { InvalidJSONRelationship } from '../exception/invalid-json-relationship.exception';
@@ -55,11 +55,11 @@ export class Serialiser {
         const relationships: Maybe<Array<ResourceLocation>> = MODEL_REGISTER.getRelationships(model);
         const links: Maybe<Array<ResourceLocation>> = MODEL_REGISTER.getLinks(model);
 
-        if (!type) {
+        if ($isNull(type)) {
             throw new SchemaNotRegisteredException(schema);
         }
 
-        if (!fields || !fields.length) {
+        if ($isNull(fields) || !fields.length) {
             throw new SchemaHasNoFieldsException(schema);
         }
 
@@ -70,7 +70,7 @@ export class Serialiser {
                 attributes: fields.reduce<IAttributes>((result: IAttributes, field: string): IAttributes => {
                     const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
 
-                    if (!mappedField) {
+                    if ($isNull(mappedField)) {
                         throw new FieldNotConfiguredException(schema, field);
                     }
 
@@ -104,13 +104,13 @@ export class Serialiser {
     public deserialise(json: IJsonData): any {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(json.data.type);
 
-        if (!schema) {
+        if ($isNull(schema)) {
             throw new ResourceNotRegisteredException(json.data.type);
         }
 
         const fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
 
-        if (!fields || !fields.length) {
+        if ($isNull(fields) || !fields.length) {
             throw new SchemaHasNoFieldsException(schema);
         }
 
@@ -119,7 +119,7 @@ export class Serialiser {
         fields.forEach((field: string) => {
             const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
 
-            if (!mappedField) {
+            if ($isNull(mappedField)) {
                 throw new FieldNotConfiguredException(schema, field);
             }
 
@@ -128,7 +128,7 @@ export class Serialiser {
 
         if (json.data.relationships) {
             json.data.relationships.forEach((relationship: IRelationship, index: number) => {
-                if (!relationship.href) {
+                if (!relationship.href || !$isString(relationship.href)) {
                     throw new InvalidJSONRelationship(index);
                 }
 

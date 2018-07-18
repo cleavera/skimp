@@ -2,7 +2,7 @@ import { IApi, MissingCreatedDateException, MODEL_REGISTER, ResourceLocation } f
 import { IResponse, ResponseCode } from '@skimp/http';
 import { NoLocationRegisteredException } from '@skimp/router';
 import { ValidationException } from '@skimp/schema';
-import { Maybe } from '@skimp/shared';
+import { $isNull, Maybe } from '@skimp/shared';
 
 import { RequestNotValidDataException } from '../exception/request-not-valid-data.exception';
 import { IJsonApi } from '../interfaces/json-api.interface';
@@ -22,11 +22,11 @@ export class Api implements IApi {
                 const aCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(a);
                 const bCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(b);
 
-                if (!aCreated) {
+                if ($isNull(aCreated)) {
                     throw new MissingCreatedDateException(a);
                 }
 
-                if (!bCreated) {
+                if ($isNull(bCreated)) {
                     throw new MissingCreatedDateException(b);
                 }
 
@@ -42,7 +42,7 @@ export class Api implements IApi {
             }).map((item: any) => {
                 const location: Maybe<ResourceLocation> = MODEL_REGISTER.getLocation(item);
 
-                if (!location) {
+                if ($isNull(location)) {
                     throw new NoLocationRegisteredException(item);
                 }
 
@@ -53,7 +53,7 @@ export class Api implements IApi {
         } else {
             const location: Maybe<ResourceLocation> = MODEL_REGISTER.getLocation(model);
 
-            if (!location) {
+            if ($isNull(location)) {
                 throw new NoLocationRegisteredException(model);
             }
 
@@ -72,10 +72,10 @@ export class Api implements IApi {
         response.commit();
     }
 
-    public error(response: IResponse, code: ResponseCode, errors?: Array<ValidationException>): void {
+    public error(response: IResponse, code: ResponseCode, errors: Maybe<Array<ValidationException>> = null): void {
         response.statusCode = code;
 
-        if (errors && errors.length) {
+        if (!$isNull(errors) && errors.length) {
             response.json(this.serialiser.error(errors));
         }
 

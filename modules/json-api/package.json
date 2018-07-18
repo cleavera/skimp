@@ -1,6 +1,6 @@
 {
   "name": "@skimp/json-api",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "The json-api module for the skimp domain modelling framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,20 +23,22 @@
   "author": "Anthony Cleaver",
   "license": "ISC",
   "devDependencies": {
-    "@skimp/core": "^1.0.0",
+    "@skimp/core": "^2.0.0",
+    "@skimp/debug": "^1.1.0",
     "@skimp/http": "^1.0.0",
-    "@skimp/router": "^1.0.0",
-    "@skimp/schema": "^1.0.0",
-    "@skimp/shared": "^1.0.1",
-    "@skimp/validation": "^1.0.0",
+    "@skimp/router": "^1.2.0",
+    "@skimp/schema": "^2.0.0",
+    "@skimp/server": "^1.2.0",
+    "@skimp/shared": "^1.4.0",
+    "@skimp/validation": "^2.0.0",
     "typescript": "2.9.2"
   },
   "peerDependencies": {
-    "@skimp/core": "^1.0.0",
+    "@skimp/core": "^2.0.0",
     "@skimp/http": "^1.0.0",
-    "@skimp/router": "^1.0.0",
-    "@skimp/schema": "^1.0.0",
-    "@skimp/shared": "^1.0.1",
-    "@skimp/validation": "^1.0.0"
+    "@skimp/router": "^1.2.0",
+    "@skimp/schema": "^2.0.0",
+    "@skimp/shared": "^1.4.0",
+    "@skimp/validation": "^2.0.0"
   }
 }

@@ -3,7 +3,7 @@ import { LOGGER } from '@skimp/debug';
 import { IRequest, IResponse, RequestMethod, ResponseCode } from '@skimp/http';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException, ValidationExceptions } from '@skimp/schema';
 import { IRouter } from '@skimp/server';
-import { Maybe } from '@skimp/shared';
+import { $isNull, Maybe } from '@skimp/shared';
 import * as $uuid from 'uuid/v4';
 
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
@@ -30,7 +30,7 @@ export class Router implements IRouter {
         try {
             const api: IApi = API_REGISTER.get(request.accepts);
 
-            if (this.authenticator) {
+            if (!$isNull(this.authenticator)) {
                 try {
                     this.authenticator.authenticate(request);
                 } catch (e) {
@@ -51,7 +51,7 @@ export class Router implements IRouter {
             const location: ResourceLocation = ResourceLocation.fromUrl(request.url);
             let model: any = null;
 
-            if (request.content) {
+            if (!$isNull(request.content)) {
                 model = API_REGISTER.get(request.contentType).deserialise(request.content.json(), location);
 
                 const validationIssues: ValidationExceptions = await SCHEMA_REGISTER.validate(model);
@@ -117,11 +117,11 @@ export class Router implements IRouter {
     private async _get(location: ResourceLocation, response: IResponse, api: IApi): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
-        if (!schema) {
+        if ($isNull(schema)) {
             throw new ResourceDoesNotExistException(location.toUrl());
         }
 
-        if (location.resourceId) {
+        if (location.isEntity()) {
             api.respond(response, await this._db.get(location), location);
 
             return;
@@ -133,11 +133,11 @@ export class Router implements IRouter {
     private async _post(location: ResourceLocation, model: any, response: IResponse, api: IApi): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
-        if (!schema) {
+        if ($isNull(schema)) {
             throw new ResourceDoesNotExistException(location.toUrl());
         }
 
-        if (location.resourceId) {
+        if (location.isEntity()) {
             if (await this._db.exists(location)) {
                 throw new MethodNotAllowedException(RequestMethod.POST, location.toUrl());
             } else {
@@ -156,11 +156,11 @@ export class Router implements IRouter {
     private async _put(location: ResourceLocation, model: any, response: IResponse, api: IApi): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
-        if (!schema) {
+        if ($isNull(schema)) {
             throw new ResourceDoesNotExistException(location.toUrl());
         }
 
-        if (!location.resourceId) {
+        if (!location.isEntity()) {
             throw new MethodNotAllowedException(RequestMethod.PUT, location.toUrl());
         }
 
@@ -181,11 +181,11 @@ export class Router implements IRouter {
     private async _delete(location: ResourceLocation, response: IResponse): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
-        if (!schema) {
+        if ($isNull(schema)) {
             throw new ResourceDoesNotExistException(location.toUrl());
         }
 
-        if (!location.resourceId) {
+        if (!location.isEntity()) {
             throw new MethodNotAllowedException(RequestMethod.DELETE, location.toUrl());
         }
 
@@ -200,7 +200,7 @@ export class Router implements IRouter {
     private async _options(location: ResourceLocation, response: IResponse): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
-        if (!schema) {
+        if ($isNull(schema)) {
             throw new ResourceDoesNotExistException(location.toUrl());
         }
 
