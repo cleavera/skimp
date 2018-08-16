@@ -1,4 +1,3 @@
-export { IAttributes } from './interfaces/attributes.interface';
 export { ILinks } from './interfaces/links.interface';
 export { IRelationship } from './interfaces/relationship.interface';
 export { IJsonData } from './interfaces/json-data.interface';
