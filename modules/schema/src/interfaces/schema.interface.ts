@@ -1,3 +1,3 @@
-export interface ISchema {
-    new(): object;
+export interface ISchema<T = object> {
+    new(): T;
 }
