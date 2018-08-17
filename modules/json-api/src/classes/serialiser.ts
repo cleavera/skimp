@@ -48,7 +48,7 @@ export class Serialiser {
         };
     }
 
-    public serialise(model: any, location: ResourceLocation): IJsonData {
+    public serialise(model: any, location: Maybe<ResourceLocation> = null): IJsonData {
         const schema: ISchema = model.constructor;
         const fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
@@ -66,7 +66,7 @@ export class Serialiser {
         return {
             data: {
                 type,
-                id: location.toString(),
+                id: $isNull(location) ? undefined : location.toString(),
                 attributes: fields.reduce<IAttributes>((result: IAttributes, field: string): IAttributes => {
                     const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
 
