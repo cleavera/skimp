@@ -28,6 +28,8 @@ export class Router implements IRouter {
 
     public async route(request: IRequest, response: IResponse): Promise<void> {
         try {
+            this._assignCors(request, response);
+
             const api: IApi = API_REGISTER.get(request.accepts);
 
             if (!$isNull(this.authenticator)) {
@@ -60,8 +62,6 @@ export class Router implements IRouter {
                     throw validationIssues;
                 }
             }
-
-            this._assignCors(request, response);
 
             if (request.isGet) {
                 await this._get(location, response, api);
