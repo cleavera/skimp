@@ -1,4 +1,4 @@
-import { $isNull, Maybe } from '@skimp/shared';
+import { $isNull, Maybe } from '@cleavera/utils';
 
 import { LogLevel } from '../constants/log-level.constant';
 import { NoLoggerException } from '../exceptions/no-logger.exception';

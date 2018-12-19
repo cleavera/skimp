@@ -1,5 +1,5 @@
+import { $isNull, Maybe } from '@cleavera/utils';
 import { IRequest, RequestMethod, Uri } from '@skimp/http';
-import { $isNull, Maybe } from '@skimp/shared';
 import { IncomingMessage } from 'http';
 
 import { Content } from './content';

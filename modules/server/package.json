@@ -25,15 +25,14 @@
   "devDependencies": {
     "@skimp/debug": "^1.1.0",
     "@skimp/http": "^1.0.0",
-    "@skimp/shared": "^1.4.0",
-    "typescript": "2.9.2"
+    "typescript": "^3.2.2"
   },
   "peerDependencies": {
     "@skimp/debug": "^1.1.0",
-    "@skimp/http": "^1.0.0",
-    "@skimp/shared": "^1.4.0"
+    "@skimp/http": "^1.0.0"
   },
   "dependencies": {
+    "@cleavera/utils": "^2.4.0",
     "@types/node": "^10.5.2"
   }
 }

@@ -1,6 +1,6 @@
+import { $isNull, $isUndefined, Maybe } from '@cleavera/utils';
 import { IMeta, MetaKey } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
-import { $isNull, $isUndefined, Maybe } from '@skimp/shared';
 
 import { FieldType } from '../constants/field.type';
 import { DuplicateResourceNameException } from '../exceptions/duplicate-resource-name.exception';

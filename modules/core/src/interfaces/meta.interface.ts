@@ -1,4 +1,4 @@
-import { Maybe } from '@skimp/shared';
+import { Maybe } from '@cleavera/utils';
 
 export interface IMeta {
     get<T = any>(object: any, key: string): Maybe<T>;

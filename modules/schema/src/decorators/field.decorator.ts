@@ -1,4 +1,4 @@
-import { $isNull, $isSymbol, Maybe } from '@skimp/shared';
+import { $isNull, $isSymbol, Maybe } from '@cleavera/utils';
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { FieldCannotBeSymbolException } from '../exceptions/field-cannot-be-symbol.exception';
 

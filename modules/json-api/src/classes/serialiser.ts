@@ -1,7 +1,7 @@
+import { $isNull, $isString, Maybe } from '@cleavera/utils';
 import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 import { Uri } from '@skimp/http';
 import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException, ValidationException } from '@skimp/schema';
-import { $isNull, $isString, Maybe } from '@skimp/shared';
 import { ModelValidationException } from '@skimp/validation';
 
 import { InvalidJSONRelationship } from '../exception/invalid-json-relationship.exception';

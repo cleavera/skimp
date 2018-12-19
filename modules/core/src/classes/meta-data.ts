@@ -1,4 +1,4 @@
-import { $isNull, $isUndefined, Maybe } from '@skimp/shared';
+import { $isNull, $isUndefined, Maybe } from '@cleavera/utils';
 import { v4 as uuid } from 'uuid';
 
 import { IMeta } from '../interfaces/meta.interface';

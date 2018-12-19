@@ -1,5 +1,5 @@
+import { $isNull, IPromiseRejector, IPromiseResolver, Maybe } from '@cleavera/utils';
 import { InvalidSchemaResourceNameException, SCHEMA_REGISTER } from '@skimp/schema';
-import { $isNull, IPromiseRejector, IPromiseResolver, Maybe } from '@skimp/shared';
 import { mkdir } from 'fs';
 import { join } from 'path';
 

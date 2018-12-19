@@ -23,11 +23,10 @@
   "author": "Anthony Cleaver",
   "license": "ISC",
   "devDependencies": {
-    "@skimp/shared": "^1.0.1",
     "@types/node": "10.5.2",
-    "typescript": "2.9.2"
+    "typescript": "^3.2.2"
   },
-  "peerDependencies": {
-    "@skimp/shared": "^1.0.1"
+  "dependencies": {
+    "@cleavera/utils": "^2.4.0"
   }
 }

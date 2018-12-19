@@ -1,8 +1,8 @@
+import { $isNull, Maybe } from '@cleavera/utils';
 import { IApi, ResourceLocation } from '@skimp/core';
 import { IResponse, ResponseCode } from '@skimp/http';
 import { RequestBodyNotAllowedException, ResourceDoesNotExistException } from '@skimp/router';
 import { FieldNotConfiguredException, FieldType, IOptions, ISchema, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '@skimp/schema';
-import { $isNull, Maybe } from '@skimp/shared';
 
 import { FieldTypeMapping } from '../constants/field-type-mapping.constant';
 import { ISchemaObject } from '../interfaces/schema-object.interface';

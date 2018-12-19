@@ -1,5 +1,5 @@
+import { $isBoolean, $isDate, $isNull, $isSymbol, IJsonValue, Maybe } from '@cleavera/utils';
 import { FieldCannotBeSymbolException, FieldType, ISchema, SCHEMA_REGISTER } from '@skimp/schema';
-import { $isBoolean, $isDate, $isNull, $isSymbol, IJsonValue, Maybe } from '@skimp/shared';
 
 import { ValidationFieldInvalidDateException } from '../exceptions/validation-field-invalid-date.exception';
 

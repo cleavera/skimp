@@ -1,5 +1,5 @@
+import { $isNull, $isNumber, $isSymbol } from '@cleavera/utils';
 import { FieldCannotBeSymbolException, FieldType, ISchema, SCHEMA_REGISTER } from '@skimp/schema';
-import { $isNull, $isNumber, $isSymbol } from '@skimp/shared';
 
 import { ValidationFieldInvalidIntegerException } from '../exceptions/validation-field-invalid-integer.exception';
 

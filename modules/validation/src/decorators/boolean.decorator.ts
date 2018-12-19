@@ -1,5 +1,5 @@
+import { $isBoolean, $isNull, $isSymbol } from '@cleavera/utils';
 import { FieldCannotBeSymbolException, FieldType, ISchema, SCHEMA_REGISTER } from '@skimp/schema';
-import { $isBoolean, $isNull, $isSymbol } from '@skimp/shared';
 
 import { ValidationFieldInvalidBooleanException } from '../exceptions/validation-field-invalid-boolean.exception';
 

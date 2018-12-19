@@ -1,5 +1,6 @@
+import { IPromiseRejector, Maybe } from '@cleavera/utils';
+import { IPromiseResolverWithValue } from '@cleavera/utils/dist/interfaces/promise-resolver.interface';
 import { IContent } from '@skimp/http';
-import { IPromiseRejector, IPromiseResolverWithValue, Maybe } from '@skimp/shared';
 import { Readable } from 'stream';
 
 export class Content implements IContent {

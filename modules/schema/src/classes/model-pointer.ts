@@ -1,4 +1,4 @@
-import { $isNull, Maybe } from '@skimp/shared';
+import { $isNull, Maybe } from '@cleavera/utils';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { InvalidPointerException } from '../exceptions/invalid-pointer.exception';

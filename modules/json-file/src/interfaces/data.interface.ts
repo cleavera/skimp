@@ -1,4 +1,4 @@
-import { IJsonValue } from '@skimp/shared';
+import { IJsonValue } from '@cleavera/utils';
 
 export interface IData {
     [attribute: string]: IJsonValue;

@@ -1,5 +1,5 @@
+import { $isNull, $isSymbol, IJsonValue } from '@cleavera/utils';
 import { FieldCannotBeSymbolException, IOptions, ISchema, SCHEMA_REGISTER } from '@skimp/schema';
-import { $isNull, $isSymbol, IJsonValue } from '@skimp/shared';
 
 import { ValidationFieldNotValidOptionException } from '../exceptions/validation-field-not-valid-option.exception';
 

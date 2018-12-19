@@ -1,4 +1,4 @@
-import { $isNull, $isUndefined, Maybe } from '@skimp/shared';
+import { $isNull, $isUndefined, Maybe } from '@cleavera/utils';
 
 import { ContentTypeNotSupportedException } from '../exceptions/content-type-not-supported.exception';
 import { NoContentTypesConfiguredException } from '../exceptions/no-content-types-configured.exception';

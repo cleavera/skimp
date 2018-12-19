@@ -1,4 +1,4 @@
-import { IJsonValue, Maybe } from '@skimp/shared';
+import { IJsonValue, Maybe } from '@cleavera/utils';
 
 export interface IValueDeserialiser {
     (value?: Maybe<IJsonValue>): any;

@@ -2,7 +2,7 @@ import { createReadStream, lstat, readdir, readFile, ReadStream, Stats, unlink, 
 import { join } from 'path';
 import { Writable } from 'stream';
 
-import { $isNull, IPromiseRejector, IPromiseResolver, Maybe } from '@skimp/shared';
+import { $isNull, IPromiseRejector, IPromiseResolver, Maybe } from '@cleavera/utils';
 
 import { FILE_SYSTEM } from '../constants/file-system.constant';
 import { EntityDoesNotExistException } from '../exceptions/entity-does-not-exist.exception';

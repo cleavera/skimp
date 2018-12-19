@@ -1,5 +1,5 @@
+import { $isNull, Maybe } from '@cleavera/utils';
 import { DB_REGISTER, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
-import { $isNull, Maybe } from '@skimp/shared';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { RelationshipCountExceedsLimitException } from '../exceptions/relationship-count-exceeds-limit.exception';

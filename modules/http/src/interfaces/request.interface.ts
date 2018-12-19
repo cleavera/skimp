@@ -1,4 +1,4 @@
-import { Maybe } from '@skimp/shared';
+import { Maybe } from '@cleavera/utils';
 
 import { Uri } from '../classes/uri';
 import { IContent } from './content.interface';

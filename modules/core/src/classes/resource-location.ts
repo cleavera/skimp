@@ -1,5 +1,5 @@
+import { $isNull, Maybe } from '@cleavera/utils';
 import { Uri } from '@skimp/http';
-import { $isNull, Maybe } from '@skimp/shared';
 
 import { InvalidLocationException } from '../exceptions/invalid-location.exception';
 

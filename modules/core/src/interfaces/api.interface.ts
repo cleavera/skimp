@@ -1,5 +1,5 @@
+import { Maybe } from '@cleavera/utils';
 import { IResponse, ResponseCode } from '@skimp/http';
-import { Maybe } from '@skimp/shared';
 
 import { ResourceLocation } from '../classes/resource-location';
 

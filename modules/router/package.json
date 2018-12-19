@@ -28,19 +28,18 @@
     "@skimp/http": "^1.0.0",
     "@skimp/schema": "^2.0.0",
     "@skimp/server": "^1.2.0",
-    "@skimp/shared": "^1.4.0",
     "@types/uuid": "^3.4.3",
-    "typescript": "2.9.2"
+    "typescript": "^3.2.2"
   },
   "peerDependencies": {
     "@skimp/core": "^2.0.0",
     "@skimp/debug": "^1.1.0",
     "@skimp/http": "^1.0.0",
     "@skimp/schema": "^2.0.0",
-    "@skimp/server": "^1.2.0",
-    "@skimp/shared": "^1.4.0"
+    "@skimp/server": "^1.2.0"
   },
   "dependencies": {
+    "@cleavera/utils": "^2.4.0",
     "uuid": "^3.3.2"
   }
 }
