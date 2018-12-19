@@ -1,13 +1,14 @@
 {
   "name": "@skimp/schema",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "The schema module for the skimp domain modelling framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "lint": "tslint --project ./tsconfig.json",
-    "test": "echo \"Tests are run in the testing module\" && exit 1"
+    "test": "echo \"Tests are run in the testing module\" && exit 1",
+    "prepack": "npm run lint && npm run build"
   },
   "repository": {
     "type": "git",
@@ -23,15 +24,15 @@
   "author": "Anthony Cleaver",
   "license": "ISC",
   "devDependencies": {
-    "@skimp/core": "^2.0.0",
-    "@skimp/debug": "^1.1.0",
-    "@skimp/http": "^1.0.0",
+    "@skimp/core": "^2.1.0",
+    "@skimp/debug": "^1.2.0",
+    "@skimp/http": "^1.2.0",
     "@types/node": "^10.5.2",
     "typescript": "^3.2.2"
   },
   "peerDependencies": {
-    "@skimp/core": "^2.0.0",
-    "@skimp/debug": "^1.1.0"
+    "@skimp/core": "^2.1.0",
+    "@skimp/debug": "^1.2.0"
   },
   "dependencies": {
     "@cleavera/utils": "^2.4.0"

@@ -8,7 +8,8 @@
     "build": "tsc",
     "example": "ts-node ./example/run",
     "lint": "tslint --project ./tsconfig.json",
-    "test": "echo \"Tests are run in the testing module\" && exit 1"
+    "test": "echo \"Tests are run in the testing module\" && exit 1",
+    "prepack": "npm run lint && npm run build"
   },
   "repository": {
     "type": "git",
