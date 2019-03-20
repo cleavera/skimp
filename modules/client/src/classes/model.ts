@@ -1,5 +1,6 @@
 import { $isNull, Maybe } from '@cleavera/utils';
 import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
+import { NoLocationRegisteredException } from '@skimp/router';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '@skimp/schema';
 
 export class Model {
@@ -26,5 +27,15 @@ export class Model {
         return relationships.filter((relationship: ResourceLocation) => {
             return relationship.resourceName === resourceName;
         }) || null;
+    }
+
+    public static addRelationship(model1: unknown, model2: unknown): void {
+        const location: Maybe<ResourceLocation> = this.getLocation(model2);
+
+        if ($isNull(location)) {
+            throw new NoLocationRegisteredException(model2);
+        }
+
+        MODEL_REGISTER.addRelationship(model1, location);
     }
 }
