@@ -2,7 +2,7 @@ import { $isNull, Maybe } from '@cleavera/utils';
 import { IApi, ResourceLocation } from '@skimp/core';
 import { IResponse, ResponseCode } from '@skimp/http';
 import { RequestBodyNotAllowedException, ResourceDoesNotExistException } from '@skimp/router';
-import { FieldNotConfiguredException, FieldType, IOptions, ISchema, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException } from '@skimp/schema';
+import { FieldNotConfiguredException, FieldType, IOptions, ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '@skimp/schema';
 
 import { FieldTypeMapping } from '../constants/field-type-mapping.constant';
 import { ISchemaObject } from '../interfaces/schema-object.interface';
@@ -41,15 +41,15 @@ export class Docs implements IApi {
 
     private _documentSchema(schema: ISchema): ISchemaRoot<ISchemaObject> {
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
-        const fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
+        let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const relationships: Maybe<Array<ISchema>> = SCHEMA_REGISTER.getSchemaRelationships(schema);
 
         if ($isNull(type)) {
             throw new SchemaNotRegisteredException(schema);
         }
 
-        if ($isNull(fields) || !fields.length) {
-            throw new SchemaHasNoFieldsException(schema);
+        if ($isNull(fields)) {
+            fields = [];
         }
 
         return {

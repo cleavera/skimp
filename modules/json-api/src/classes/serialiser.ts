@@ -1,7 +1,7 @@
 import { $isNull, $isString, Maybe } from '@cleavera/utils';
 import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 import { Uri } from '@skimp/http';
-import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaHasNoFieldsException, SchemaNotRegisteredException, ValidationException } from '@skimp/schema';
+import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException } from '@skimp/schema';
 import { ModelValidationException } from '@skimp/validation';
 
 import { InvalidJSONRelationship } from '../exception/invalid-json-relationship.exception';
@@ -50,7 +50,7 @@ export class Serialiser {
 
     public serialise(model: any, location: Maybe<ResourceLocation> = null): IJsonData {
         const schema: ISchema = model.constructor;
-        const fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
+        let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
         const relationships: Maybe<Array<ResourceLocation>> = MODEL_REGISTER.getRelationships(model);
         const links: Maybe<Array<ResourceLocation>> = MODEL_REGISTER.getLinks(model);
@@ -59,8 +59,8 @@ export class Serialiser {
             throw new SchemaNotRegisteredException(schema);
         }
 
-        if ($isNull(fields) || !fields.length) {
-            throw new SchemaHasNoFieldsException(schema);
+        if ($isNull(fields)) {
+            fields = [];
         }
 
         return {
@@ -108,10 +108,10 @@ export class Serialiser {
             throw new ResourceNotRegisteredException(json.data.type);
         }
 
-        const fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
+        let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
 
-        if ($isNull(fields) || !fields.length) {
-            throw new SchemaHasNoFieldsException(schema);
+        if ($isNull(fields)) {
+            fields = [];
         }
 
         const model: any = new schema();
