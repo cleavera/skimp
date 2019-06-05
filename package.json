@@ -9,6 +9,6 @@
   "author": "Anthony Cleaver",
   "license": "ISC",
   "devDependencies": {
-    "glob": "7.1.2"
+    "glob": "^7.1.4"
   }
 }

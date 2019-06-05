@@ -24,7 +24,8 @@
   "author": "Anthony Cleaver",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^3.2.2"
+    "tslint": "^5.17.0",
+    "typescript": "^3.5.1"
   },
   "dependencies": {
     "@cleavera/utils": "^2.4.0"

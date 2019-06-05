@@ -30,7 +30,8 @@
     "@skimp/schema": "^2.4.0",
     "@skimp/server": "^1.5.0",
     "@types/uuid": "^3.4.3",
-    "typescript": "^3.2.2"
+    "tslint": "^5.17.0",
+    "typescript": "^3.5.1"
   },
   "peerDependencies": {
     "@skimp/core": "^2.2.0",
