@@ -1,38 +1,39 @@
 import { $isNull, IPromiseRejector, IPromiseResolver, Maybe } from '@cleavera/utils';
+import { Db } from '@skimp/json-file';
 import { InvalidSchemaResourceNameException, SCHEMA_REGISTER } from '@skimp/schema';
 import { mkdir } from 'fs';
 import { join } from 'path';
-
-import { FileSystemCannotBeReconfiguredException } from '../exceptions/file-system-cannot-be-reconfigured.exception';
-import { FileSystemNotConfiguredException } from '../exceptions/file-system-not-configured.exception';
+import { EntityFactory } from './entity-factory';
 import ErrnoException = NodeJS.ErrnoException;
 
 export class FileSystem {
-    private _path: Maybe<string> = null;
+    public readonly path: string;
+    private readonly _entityFactory: EntityFactory;
 
-    public get path(): string {
-        if ($isNull(this._path)) {
-            throw new FileSystemNotConfiguredException();
-        }
-
-        return this._path;
+    constructor(basePath: string) {
+        this.path = basePath;
+        this._entityFactory = new EntityFactory(basePath);
     }
 
-    public set path(path: string) {
-        if (!$isNull(this._path)) {
-            throw new FileSystemCannotBeReconfiguredException();
+    public async wipeData(): Promise<void> {
+        let files: Array<string> = [];
+
+        for (const schema of SCHEMA_REGISTER.schemas) {
+            files = files.concat(await (await this._entityFactory.fromPath(`/${SCHEMA_REGISTER.getSchemaResourceName(schema)}`)).listChildren());
         }
 
-        this._path = path;
+        await Promise.all(files.map(async(file: string) => {
+            await (await this._entityFactory.fromPath(file)).delete();
+        }));
     }
 
-    public async configure(path: string): Promise<void> {
-        if (!$isNull(this._path)) {
-            throw new FileSystemCannotBeReconfiguredException();
-        }
+    public async createDb(): Promise<Db> {
+        await this._initialise();
 
-        this._path = path;
+        return Db.create(this._entityFactory);
+    }
 
+    public async _initialise(): Promise<void> {
         for (const schema of SCHEMA_REGISTER.schemas) {
             const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
 
@@ -56,7 +57,7 @@ export class FileSystem {
         }
     }
 
-    public reset(): void {
-        this._path = null;
+    public static create(basePath: string): FileSystem {
+        return new FileSystem(basePath);
     }
 }

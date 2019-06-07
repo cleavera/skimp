@@ -1,14 +1,11 @@
 import { LOGGER, LogLevel } from '@skimp/debug';
-import { FILE_SYSTEM } from '@skimp/file-system';
 import { IJsonApi } from '@skimp/json-api';
-import { Server } from '@skimp/server';
 import { AsyncSetup, AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestFixture } from 'alsatian';
 import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
+import { TestServer } from './classes/test-server';
 
 import * as DATA_PATH from './data/path';
-import { $clearDB } from './helpers/clear-db.helper';
-import { init } from './helpers/init.helper';
 import { $request } from './helpers/request.helper';
 import { SCHEMAS } from './schemas';
 import uuid = require('uuid');
@@ -16,18 +13,17 @@ import uuid = require('uuid');
 @TestFixture('Update')
 export class UpdateSpec {
     public location!: string;
-    private _server!: Server;
+    private _server!: TestServer;
 
     @AsyncSetupFixture
     public async setup(): Promise<void> {
-        this._server = await init(1338, DATA_PATH, SCHEMAS);
+        this._server = await TestServer.create(1338, DATA_PATH, SCHEMAS);
         LOGGER.setLogLevel(LogLevel.ERROR);
     }
 
     @AsyncTeardownFixture
     public async teardown(): Promise<void> {
         await this._server.close();
-        FILE_SYSTEM.reset();
     }
 
     public async createJob(): Promise<string> {
@@ -226,7 +222,7 @@ export class UpdateSpec {
 
     @AsyncTeardown
     public async clear(): Promise<void> {
-        await $clearDB();
+        await this._server.clearData();
     }
 
     @AsyncTest('When putting an existing resource')

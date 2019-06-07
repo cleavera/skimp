@@ -7,7 +7,25 @@ import { IAuthenticator, Router } from '@skimp/router';
 import { ISchema } from '@skimp/schema';
 import { Server } from '@skimp/server';
 
-export async function init(port: number, dataPath: string, _schemas: Array<ISchema>, cors: boolean | string | Array<string> = false, version: string = 'UNVERSIONED', authenticator: Maybe<IAuthenticator> = null, loggerClass: ILogger = new ConsoleLogger()): Promise<Server> {
+export class TestServer {
+    private _server: Server;
+    private _fileSystem: FileSystem;
+
+    constructor(server: Server, fileSystem: FileSystem) {
+        this._server = server;
+        this._fileSystem = fileSystem;
+    }
+
+    public async clearData(): Promise<void> {
+        await this._fileSystem.wipeData();
+    }
+
+    public async close(): Promise<void> {
+        await this._server.close();
+        await this.clearData();
+    }
+
+    public static async create(port: number, dataPath: string, _schemas: Array<ISchema>, cors: boolean | string | Array<string> = false, version: string = 'UNVERSIONED', authenticator: Maybe<IAuthenticator> = null, loggerClass: ILogger = new ConsoleLogger()): Promise<TestServer> {
     LOGGER.setLogger(loggerClass);
 
     const fileSystem: FileSystem = FileSystem.create(dataPath);
@@ -21,5 +39,7 @@ export async function init(port: number, dataPath: string, _schemas: Array<ISche
     LOGGER.debug(`Server started on port ${server.port}`);
     LOGGER.debug(`Loading data from  ${fileSystem.path}`);
 
-    return server;
+    return new TestServer(server, fileSystem);
+}
+
 }

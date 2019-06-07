@@ -3,20 +3,16 @@ import { join } from 'path';
 import { Writable } from 'stream';
 
 import { $isNull, IPromiseRejector, IPromiseResolver, Maybe } from '@cleavera/utils';
+import { IEntity } from '@skimp/json-file';
 
-import { FILE_SYSTEM } from '../constants/file-system.constant';
 import { EntityDoesNotExistException } from '../exceptions/entity-does-not-exist.exception';
 import { EntityNotADirectoryException } from '../exceptions/entity-not-a-directory.exception';
 import { EntityNotAFileException } from '../exceptions/entity-not-a-file.exception';
 import { EntityNotValidJsonException } from '../exceptions/entity-not-valid-json.exception';
 
-export class Entity {
+export class Entity implements IEntity {
     public readonly path: string;
     private _stats: Maybe<Stats>;
-
-    private get _absolutePath(): string {
-        return Entity.getAbsolutePath(this.path);
-    }
 
     private constructor(path: string, stats: Maybe<Stats> = null) {
         this.path = path;
@@ -47,7 +43,7 @@ export class Entity {
 
     public async write(content: string): Promise<void> {
         return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
-            writeFile(this._absolutePath, content, 'utf-8', async(writeError: Error) => {
+            writeFile(this.path, content, 'utf-8', async(writeError: Error) => {
                 if (writeError) {
                     reject(writeError);
 
@@ -55,7 +51,7 @@ export class Entity {
                 }
 
                 if (!this.exists()) {
-                    this._stats = await Entity.getStats(this._absolutePath);
+                    this._stats = await Entity.getStats(this.path);
                 }
 
                 resolve();
@@ -67,7 +63,7 @@ export class Entity {
         this.assertExists();
 
         return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
-            unlink(this._absolutePath, (error: Error) => {
+            unlink(this.path, (error: Error) => {
                 if (error) {
                     reject(error);
 
@@ -85,7 +81,7 @@ export class Entity {
         try {
             return JSON.parse(content);
         } catch (e) {
-            throw new EntityNotValidJsonException(this._absolutePath, content);
+            throw new EntityNotValidJsonException(this.path, content);
         }
     }
 
@@ -93,11 +89,11 @@ export class Entity {
         this.assertExists();
 
         if (!this.isFile()) {
-            throw new EntityNotAFileException(this._absolutePath);
+            throw new EntityNotAFileException(this.path);
         }
 
         return new Promise((resolve: IPromiseResolver<string>, reject: IPromiseRejector): void => {
-            readFile(this._absolutePath, 'utf-8', (err: Error, data: string): void => {
+            readFile(this.path, 'utf-8', (err: Error, data: string): void => {
                 if (err) {
                     reject(err);
                 }
@@ -111,11 +107,11 @@ export class Entity {
         this.assertExists();
 
         if (!this.isDirectory()) {
-            throw new EntityNotADirectoryException(this._absolutePath);
+            throw new EntityNotADirectoryException(this.path);
         }
 
         return new Promise((resolve: IPromiseResolver<Array<string>>, reject: IPromiseRejector): void => {
-            readdir(this._absolutePath, async(err: Error, files: Array<string>) => {
+            readdir(this.path, async(err: Error, files: Array<string>) => {
                 if (err) {
                     reject(err);
                 }
@@ -133,7 +129,7 @@ export class Entity {
         this.assertExists();
 
         return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
-            const readStream: ReadStream = createReadStream(this._absolutePath);
+            const readStream: ReadStream = createReadStream(this.path);
 
             readStream.on('open', () => {
                 readStream.pipe(stream);
@@ -151,20 +147,16 @@ export class Entity {
 
     private assertExists(): void {
         if (!this.exists()) {
-            throw new EntityDoesNotExistException(this._absolutePath);
+            throw new EntityDoesNotExistException(this.path);
         }
     }
 
     public static async fromPath(path: string): Promise<Entity> {
         try {
-            return new Entity(path, await this.getStats(this.getAbsolutePath(path)));
+            return new Entity(path, await this.getStats(path));
         } catch (e) {
             return new Entity(path);
         }
-    }
-
-    private static getAbsolutePath(path: string): string {
-        return join(FILE_SYSTEM.path, path);
     }
 
     private static async getStats(path: string): Promise<Stats> {

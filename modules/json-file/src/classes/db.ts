@@ -1,27 +1,29 @@
 import { IDb, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
-import { Entity, FILE_SYSTEM } from '@skimp/file-system';
 import { ResourceDoesNotExistException } from '@skimp/router';
 
-import { InvalidDatabaseFilePathException } from '../exceptions/invalid-database-file-path.exception';
+import { IEntityFactory } from '../interfaces/entity-factory.interface';
+import { IEntity } from '../interfaces/entity.interface';
 import { Serialiser } from './serialiser';
 
 export class Db implements IDb {
     public serialiser: Serialiser;
+    public entityFactory: IEntityFactory;
 
-    private constructor() {
+    private constructor(entityFactory: IEntityFactory) {
         this.serialiser = new Serialiser();
+        this.entityFactory = entityFactory;
     }
 
     public async exists(location: ResourceLocation): Promise<boolean> {
         const filePath: string = location.toString() + '.json';
-        const file: Entity = await Entity.fromPath(filePath);
+        const file: IEntity = await this.entityFactory.fromPath(filePath);
 
         return file.exists();
     }
 
     public async get(location: ResourceLocation): Promise<any> {
         const filePath: string = location.toString() + '.json';
-        const file: Entity = await Entity.fromPath(filePath);
+        const file: IEntity = await this.entityFactory.fromPath(filePath);
 
         if (!file.exists()) {
             throw new ResourceDoesNotExistException(location.toUrl());
@@ -36,25 +38,17 @@ export class Db implements IDb {
     }
 
     public async list(location: ResourceLocation): Promise<Array<any>> {
-        const entity: Entity = await Entity.fromPath(location.toString());
+        const entity: IEntity = await this.entityFactory.fromPath(location.toString());
         const files: Array<string> = await entity.listChildren();
 
         return Promise.all(files.map(async(filePath: string) => {
-            const pathParts: Array<string> = filePath.substring(1, filePath.lastIndexOf('.')).split('\\');
-
-            if (pathParts.length !== 2) {
-                throw new InvalidDatabaseFilePathException(filePath);
-            }
-
-            const fileLocation: ResourceLocation = new ResourceLocation(pathParts[0], pathParts[1]);
-
-            return this.get(fileLocation);
+            return this.get(this.entityFactory.parseResourceLocation(filePath));
         }));
     }
 
     public async delete(location: ResourceLocation): Promise<void> {
         const filePath: string = location.toString() + '.json';
-        const file: Entity = await Entity.fromPath(filePath);
+        const file: IEntity = await this.entityFactory.fromPath(filePath);
 
         if (!file.exists()) {
             throw new ResourceDoesNotExistException(location.toUrl());
@@ -65,16 +59,14 @@ export class Db implements IDb {
 
     public async set(location: ResourceLocation, model: any): Promise<void> {
         const filePath: string = location.toString() + '.json';
-        const file: Entity = await Entity.fromPath(filePath);
+        const file: IEntity = await this.entityFactory.fromPath(filePath);
 
         MODEL_REGISTER.setLocation(model, location);
 
         await file.write(this.serialiser.serialise(model));
     }
 
-    public static async create(dataPath: string): Promise<Db> {
-        await FILE_SYSTEM.configure(dataPath);
-
-        return new Db();
+    public static create(entityFactory: IEntityFactory): Db {
+        return new Db(entityFactory);
     }
 }

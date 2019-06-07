@@ -1,15 +1,12 @@
 import { LOGGER, LogLevel } from '@skimp/debug';
-import { FILE_SYSTEM } from '@skimp/file-system';
 import { IJsonApi, ISchemaObject, ISchemaRoot } from '@skimp/json-api';
-import { Server } from '@skimp/server';
 import { AsyncSetup, AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestFixture } from 'alsatian';
 import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
+import { TestServer } from './classes/test-server';
 
 import { Gender } from './constants/genders.constant';
 import * as DATA_PATH from './data/path';
-import { $clearDB } from './helpers/clear-db.helper';
-import { init } from './helpers/init.helper';
 import { $request } from './helpers/request.helper';
 import { SCHEMAS } from './schemas';
 
@@ -17,18 +14,17 @@ import { SCHEMAS } from './schemas';
 export class GetSpec {
     public personLocation!: string;
     public jobLocation!: string;
-    private _server!: Server;
+    private _server!: TestServer;
 
     @AsyncSetupFixture
     public async setup(): Promise<void> {
-        this._server = await init(1338, DATA_PATH, SCHEMAS, true);
+        this._server = await TestServer.create(1338, DATA_PATH, SCHEMAS, true);
         LOGGER.setLogLevel(LogLevel.ERROR);
     }
 
     @AsyncTeardownFixture
     public async teardown(): Promise<void> {
         await this._server.close();
-        FILE_SYSTEM.reset();
     }
 
     public async createJob(): Promise<void> {
@@ -230,7 +226,7 @@ export class GetSpec {
 
     @AsyncTeardown
     public async clear(): Promise<void> {
-        await $clearDB();
+        await this._server.clearData();
     }
 
     @AsyncTest('When getting the root resource')
