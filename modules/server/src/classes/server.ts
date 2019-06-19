@@ -1,7 +1,7 @@
 import { IPromiseResolver } from '@cleavera/utils';
+import { IRouter } from '@skimp/core';
 import { createServer, IncomingMessage, Server as HttpServer, ServerResponse } from 'http';
 
-import { IRouter } from '../interfaces/router.interface';
 import { Request } from './request';
 import { Response } from './response';
 
