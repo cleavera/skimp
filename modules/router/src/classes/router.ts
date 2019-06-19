@@ -1,9 +1,8 @@
 import { $isNull, Maybe } from '@cleavera/utils';
-import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
+import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, IRouter, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
 import { IRequest, IResponse, RequestMethod, ResponseCode } from '@skimp/http';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException, ValidationExceptions } from '@skimp/schema';
-import { IRouter } from '@skimp/server';
 import * as $uuid from 'uuid/v4';
 
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
