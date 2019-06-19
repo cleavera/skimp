@@ -209,14 +209,14 @@ If not using the quickstart as a minimum you will need to include the schemas yo
 import { API_REGISTER, DB_REGISTER } from '@skimp/core';
 import { ConsoleLogger, LOGGER } from '@skimp/debug';
 import { Api } from '@skimp/json-api';
-import { Db } from '@skimp/json-file';
-import { IAuthenticator, Router } from '@skimp/router';
+import { FileSystem } from '@skimp/file-system';
+import { Router } from '@skimp/router';
 import { Server } from '@skimp/server';
 
 import * as SCHEMAS from './schemas';
 
 LOGGER.setLogger(new ConsoleLogger());
-DB_REGISTER.configure(await Db.create(resolve('../data')));
+DB_REGISTER.configure(await FileSystem.create(dataPath).createDb());
 API_REGISTER.configure(new Api(), 'application/json');
 const server = new Server(port, new Router(version, cors));
 ```

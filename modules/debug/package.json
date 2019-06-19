@@ -25,9 +25,9 @@
   "license": "ISC",
   "devDependencies": {
     "tslint": "^5.17.0",
-    "typescript": "^3.5.1"
+    "typescript": "^3.5.2"
   },
   "dependencies": {
-    "@cleavera/utils": "^2.4.0"
+    "@cleavera/utils": "^2.6.0"
   }
 }
