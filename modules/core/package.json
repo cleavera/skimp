@@ -1,6 +1,6 @@
 {
   "name": "@skimp/core",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "The core module for the skimp domain modelling framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
