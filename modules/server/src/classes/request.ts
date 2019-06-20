@@ -1,4 +1,4 @@
-import { $isNull, Maybe } from '@cleavera/utils';
+import { $isNull, IDict, Maybe } from '@cleavera/utils';
 import { IRequest, RequestMethod, Uri } from '@skimp/http';
 import { IncomingMessage } from 'http';
 
@@ -9,14 +9,14 @@ export class Request implements IRequest {
     public content: Maybe<Content>;
     public readonly method: string;
 
-    private _message: IncomingMessage;
+    private readonly _headers: IDict<string>;
 
-    constructor(message: IncomingMessage, content: Maybe<Content> = null) {
-        this._message = message;
+    private constructor(uri: Uri, headers: IDict<string>, method: string, content: Maybe<Content> = null) {
+        this._headers = headers;
         this.content = content;
-        this.method = (this._message.method || '').toUpperCase();
+        this.method = method;
 
-        this.url = new Uri(message.url || '');
+        this.url = uri;
     }
 
     public get isGet(): boolean {
@@ -60,24 +60,25 @@ export class Request implements IRequest {
     }
 
     public get accepts(): Maybe<string> {
-        return this._message.headers.accept || null;
+        return this._headers.accept || null;
     }
 
     public get origin(): Maybe<string | Array<string>> {
-        return this._message.headers.origin || null;
+        return this._headers.origin || null;
     }
 
     public get contentType(): Maybe<string> {
-        return this._message.headers['content-type'] || null;
+        return this._headers['content-type'] || null;
     }
 
     public static async fromIncomingMessage(message: IncomingMessage): Promise<Request> {
         const content: Maybe<Content> = await Content.fromStream(message);
+        const uri: Uri = new Uri(message.url || '');
 
         if ($isNull(content)) {
-            return new Request(message);
+            return new Request(uri, message.headers as IDict<string>, (message.method || '').toUpperCase());
         }
 
-        return new Request(message, content);
+        return new Request(uri, message.headers as IDict<string>, (message.method || '').toUpperCase(), content);
     }
 }

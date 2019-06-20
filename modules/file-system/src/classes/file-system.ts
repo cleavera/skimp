@@ -44,8 +44,8 @@ export class FileSystem {
             const resourcePath: string = join(this.path, resourceName);
 
             await new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector<ErrnoException>): void => {
-                mkdir(resourcePath, { recursive: true }, (err: ErrnoException) => {
-                    if (err && err.code !== 'EEXIST') {
+                mkdir(resourcePath, { recursive: true }, (err: Maybe<ErrnoException>): void => {
+                    if (!$isNull(err) && err.code !== 'EEXIST') {
                         reject(err);
 
                         return;

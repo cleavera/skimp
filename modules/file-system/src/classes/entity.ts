@@ -9,6 +9,7 @@ import { EntityDoesNotExistException } from '../exceptions/entity-does-not-exist
 import { EntityNotADirectoryException } from '../exceptions/entity-not-a-directory.exception';
 import { EntityNotAFileException } from '../exceptions/entity-not-a-file.exception';
 import { EntityNotValidJsonException } from '../exceptions/entity-not-valid-json.exception';
+import ErrnoException = NodeJS.ErrnoException;
 
 export class Entity implements IEntity {
     public readonly path: string;
@@ -43,8 +44,8 @@ export class Entity implements IEntity {
 
     public async write(content: string): Promise<void> {
         return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
-            writeFile(this.path, content, 'utf-8', async(writeError: Error) => {
-                if (writeError) {
+            writeFile(this.path, content, 'utf-8', async(writeError: Maybe<ErrnoException>): Promise<void> => {
+                if (!$isNull(writeError)) {
                     reject(writeError);
 
                     return;
@@ -63,8 +64,8 @@ export class Entity implements IEntity {
         this.assertExists();
 
         return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
-            unlink(this.path, (error: Error) => {
-                if (error) {
+            unlink(this.path, (error: Maybe<ErrnoException>): void => {
+                if (!$isNull(error)) {
                     reject(error);
 
                     return;
@@ -93,8 +94,8 @@ export class Entity implements IEntity {
         }
 
         return new Promise((resolve: IPromiseResolver<string>, reject: IPromiseRejector): void => {
-            readFile(this.path, 'utf-8', (err: Error, data: string): void => {
-                if (err) {
+            readFile(this.path, 'utf-8', (err: Maybe<ErrnoException>, data: string): void => {
+                if (!$isNull(err)) {
                     reject(err);
                 }
 
@@ -111,8 +112,8 @@ export class Entity implements IEntity {
         }
 
         return new Promise((resolve: IPromiseResolver<Array<string>>, reject: IPromiseRejector): void => {
-            readdir(this.path, async(err: Error, files: Array<string>) => {
-                if (err) {
+            readdir(this.path, async(err: Maybe<ErrnoException>, files: Array<string>): Promise<void> => {
+                if (!$isNull(err)) {
                     reject(err);
                 }
 
@@ -161,8 +162,8 @@ export class Entity implements IEntity {
 
     private static async getStats(path: string): Promise<Stats> {
         return new Promise((resolve: IPromiseResolver<Stats>, reject: IPromiseRejector): void => {
-            lstat(path, async(err: Error, stats: Stats): Promise<void> => {
-                if (err) {
+            lstat(path, async(err: Maybe<ErrnoException>, stats: Stats): Promise<void> => {
+                if (!$isNull(err)) {
                     reject(err);
 
                     return;
