@@ -1,6 +1,6 @@
 {
   "name": "@skimp/quickstart",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "The quickstart module for the skimp domain modelling framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -26,19 +26,19 @@
   "license": "ISC",
   "devDependencies": {
     "ts-node": "^7.0.1",
-    "tslint": "^5.17.0",
-    "typescript": "^3.5.2"
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
   },
   "dependencies": {
     "@cleavera/utils": "^2.6.0",
-    "@skimp/core": "^2.3.0",
+    "@skimp/core": "^2.4.0",
     "@skimp/debug": "^1.3.0",
     "@skimp/file-system": "^2.0.0",
-    "@skimp/http": "^1.3.0",
-    "@skimp/json-api": "^2.3.0",
-    "@skimp/json-file": "^3.0.0",
-    "@skimp/router": "^1.4.0",
-    "@skimp/schema": "^2.4.0",
+    "@skimp/http": "^2.0.0",
+    "@skimp/json-api": "^2.4.0",
+    "@skimp/json-file": "^3.1.0",
+    "@skimp/router": "^1.5.0",
+    "@skimp/schema": "^2.4.1",
     "@skimp/server": "^2.0.0",
     "@skimp/validation": "^2.1.0"
   }
