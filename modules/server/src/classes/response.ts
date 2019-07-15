@@ -1,7 +1,6 @@
 import { LOGGER } from '@skimp/debug';
 import { IResponse, ResponseCode, ResponseType } from '@skimp/http';
 import { ServerResponse } from 'http';
-import { Writable } from 'stream';
 
 export class Response implements IResponse {
     private readonly _response: ServerResponse;
@@ -36,10 +35,6 @@ export class Response implements IResponse {
 
     public set location(location: string) {
         this._response.setHeader('location', location);
-    }
-
-    public get stream(): Writable {
-        return this._response;
     }
 
     public setAllow(post: boolean, put: boolean, remove: boolean): void {
