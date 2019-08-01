@@ -1,5 +1,4 @@
 import { $isNull, Maybe } from '@cleavera/utils';
-import { Uri } from '@skimp/http';
 
 import { InvalidLocationException } from '../exceptions/invalid-location.exception';
 
@@ -20,10 +19,6 @@ export class ResourceLocation {
         return `/${this.resourceName}/${this.resourceId}`;
     }
 
-    public toUrl(): Uri {
-        return new Uri(this.toString());
-    }
-
     public isResource(): boolean {
         return !$isNull(this.resourceName) && $isNull(this.resourceId);
     }
@@ -32,11 +27,13 @@ export class ResourceLocation {
         return !$isNull(this.resourceName) && !$isNull(this.resourceId);
     }
 
-    public static fromUrl(url: Uri): ResourceLocation {
-        if (url.parts.length === 0 || url.parts.length > 2) {
-            throw new InvalidLocationException(url);
+    public static FromString(str: string): ResourceLocation {
+        const parts: Array<string> = str.split('/');
+
+        if (parts.length === 0 || parts.length > 2) {
+            throw new InvalidLocationException(str);
         }
 
-        return new ResourceLocation(url.parts[0], url.parts[1]);
+        return new ResourceLocation(parts[0], parts[1]);
     }
 }
