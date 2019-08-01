@@ -1,6 +1,5 @@
 import { $isNull, Maybe } from '@cleavera/utils';
 import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
-import { Uri } from '@skimp/http';
 import { IJsonData, Serialiser } from '@skimp/json-api';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '@skimp/schema';
 import { HttpRequest } from './http-request';
@@ -38,7 +37,7 @@ export class Api {
         return json.map<T>((data: IJsonData) => {
             const model: T = this._serialiser.deserialise(data);
 
-            const modelLocation: ResourceLocation = ResourceLocation.fromUrl(new Uri(data.data.id as string));
+            const modelLocation: ResourceLocation = ResourceLocation.FromString(data.data.id as string);
 
             MODEL_REGISTER.setLocation(model, modelLocation);
 
@@ -59,7 +58,7 @@ export class Api {
 
         if ($isNull(location)) {
             json = await HttpRequest.post<IJsonData>(this._constructUrl(new ResourceLocation(resourceName)), this._serialiser.serialise(model));
-            location = ResourceLocation.fromUrl(new Uri(json.data.id as string));
+            location = ResourceLocation.FromString(json.data.id as string);
         } else {
             json = await HttpRequest.put<IJsonData>(this._constructUrl(location), this._serialiser.serialise(model));
         }

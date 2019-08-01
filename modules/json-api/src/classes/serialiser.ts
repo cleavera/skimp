@@ -1,6 +1,5 @@
 import { $isNull, $isString, Maybe } from '@cleavera/utils';
 import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
-import { Uri } from '@skimp/http';
 import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException } from '@skimp/schema';
 import { ModelValidationException } from '@skimp/validation';
 
@@ -132,7 +131,7 @@ export class Serialiser {
                     throw new InvalidJSONRelationship(index);
                 }
 
-                MODEL_REGISTER.addRelationship(model, ResourceLocation.fromUrl(new Uri(relationship.href)));
+                MODEL_REGISTER.addRelationship(model, ResourceLocation.FromString(relationship.href));
             });
         }
 

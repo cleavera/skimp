@@ -45,11 +45,12 @@ export class Router implements IRouter {
                 return;
             }
 
-            if (!SCHEMA_REGISTER.getSchema(request.url.resourceName)) {
-                throw new ResourceDoesNotExistException(request.url);
+            const location: ResourceLocation = new ResourceLocation(request.url.resourceName, request.url.resourceId);
+
+            if (!SCHEMA_REGISTER.getSchema(location.resourceName)) {
+                throw new ResourceDoesNotExistException(location);
             }
 
-            const location: ResourceLocation = ResourceLocation.fromUrl(request.url);
             let model: any = null;
 
             if (!$isNull(request.content)) {
@@ -83,7 +84,7 @@ export class Router implements IRouter {
 
                 return;
             } else {
-                throw new MethodNotAllowedException(request.method as RequestMethod, request.url);
+                throw new MethodNotAllowedException(request.method as RequestMethod, location);
             }
         } catch (e) {
             if (e instanceof ResourceDoesNotExistException) {
@@ -117,7 +118,7 @@ export class Router implements IRouter {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if ($isNull(schema)) {
-            throw new ResourceDoesNotExistException(location.toUrl());
+            throw new ResourceDoesNotExistException(location);
         }
 
         if (location.isEntity()) {
@@ -133,14 +134,14 @@ export class Router implements IRouter {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if ($isNull(schema)) {
-            throw new ResourceDoesNotExistException(location.toUrl());
+            throw new ResourceDoesNotExistException(location);
         }
 
         if (location.isEntity()) {
             if (await this._db.exists(location)) {
-                throw new MethodNotAllowedException(RequestMethod.POST, location.toUrl());
+                throw new MethodNotAllowedException(RequestMethod.POST, location);
             } else {
-                throw new ResourceDoesNotExistException(location.toUrl());
+                throw new ResourceDoesNotExistException(location);
             }
         }
 
@@ -156,11 +157,11 @@ export class Router implements IRouter {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if ($isNull(schema)) {
-            throw new ResourceDoesNotExistException(location.toUrl());
+            throw new ResourceDoesNotExistException(location);
         }
 
         if (!location.isEntity()) {
-            throw new MethodNotAllowedException(RequestMethod.PUT, location.toUrl());
+            throw new MethodNotAllowedException(RequestMethod.PUT, location);
         }
 
         const isCreate: boolean = !await this._db.exists(location);
@@ -181,11 +182,11 @@ export class Router implements IRouter {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if ($isNull(schema)) {
-            throw new ResourceDoesNotExistException(location.toUrl());
+            throw new ResourceDoesNotExistException(location);
         }
 
         if (!location.isEntity()) {
-            throw new MethodNotAllowedException(RequestMethod.DELETE, location.toUrl());
+            throw new MethodNotAllowedException(RequestMethod.DELETE, location);
         }
 
         const oldModel: any = await this._db.get(location);
@@ -200,7 +201,7 @@ export class Router implements IRouter {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if ($isNull(schema)) {
-            throw new ResourceDoesNotExistException(location.toUrl());
+            throw new ResourceDoesNotExistException(location);
         }
 
         response.noContent();
