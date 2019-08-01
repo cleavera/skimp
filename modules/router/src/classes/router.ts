@@ -1,7 +1,7 @@
 import { $isNull, Maybe } from '@cleavera/utils';
-import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, IRequest, IRouter, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
+import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, IRequest, IResponse, IRouter, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
-import { IResponse, RequestMethod, ResponseCode } from '@skimp/http';
+import { RequestMethod, ResponseCode } from '@skimp/http';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException, ValidationExceptions } from '@skimp/schema';
 import * as $uuid from 'uuid/v4';
 
@@ -45,7 +45,7 @@ export class Router implements IRouter {
                 throw new ResourceDoesNotExistException(request.location);
             }
 
-            let model: any = null;
+            let model: Maybe<unknown> = null;
 
             if (!$isNull(request.content)) {
                 model = API_REGISTER.get(request.content.type).deserialise(request.content.raw, request.location);

@@ -1,7 +1,8 @@
 import { Maybe } from '@cleavera/utils';
-import { IResponse, ResponseCode } from '@skimp/http';
+import { ResponseCode } from '@skimp/http';
 
 import { ResourceLocation } from '../classes/resource-location';
+import { IResponse } from './response.interface';
 
 export interface IApi {
     respond(response: IResponse, model: any, location: ResourceLocation, created?: boolean): void;

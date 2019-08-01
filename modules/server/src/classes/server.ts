@@ -24,7 +24,7 @@ export class Server {
             try {
                 await router.route(request, response);
             } catch (e) {
-                response.serverError(e);
+                response.error(e);
             }
         });
 

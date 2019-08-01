@@ -1,6 +1,6 @@
 import { $isNull, Maybe } from '@cleavera/utils';
-import { IApi, ResourceLocation } from '@skimp/core';
-import { IResponse, ResponseCode } from '@skimp/http';
+import { IApi, IResponse, ResourceLocation } from '@skimp/core';
+import { ResponseCode } from '@skimp/http';
 import { RequestBodyNotAllowedException, ResourceDoesNotExistException } from '@skimp/router';
 import { FieldNotConfiguredException, FieldType, IOptions, ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '@skimp/schema';
 
@@ -27,7 +27,7 @@ export class Docs implements IApi {
         }
 
         response.setAllow(false, false, false);
-        response.json(this._documentSchema(schema));
+        response.write(JSON.stringify(this._documentSchema(schema)));
         response.commit();
     }
 
