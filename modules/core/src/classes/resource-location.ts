@@ -28,7 +28,7 @@ export class ResourceLocation {
     }
 
     public static FromString(str: string): ResourceLocation {
-        const parts: Array<string> = str.split('/');
+        const parts: Array<string> = str.substring(1).split('/');
 
         if (parts.length === 0 || parts.length > 2) {
             throw new InvalidLocationException(str);

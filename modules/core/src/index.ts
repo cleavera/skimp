@@ -11,6 +11,7 @@ export { ContentTypeNotSupportedException } from './exceptions/content-type-not-
 export { NoContentTypesConfiguredException } from './exceptions/no-content-types-configured.exception';
 export { IRequest } from './interfaces/request.interface';
 export { IContent } from './interfaces/content.interface';
+export { IRouter } from './interfaces/router.interface';
 
 import * as MetaKey from './constants/meta-field-names.constant';
 

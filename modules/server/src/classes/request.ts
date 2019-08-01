@@ -68,6 +68,7 @@ export class Request implements IRequest {
     public get origin(): Maybe<string | Array<string>> {
         return this._headers.origin || null;
     }
+
     public static async fromIncomingMessage(message: IncomingMessage): Promise<Request> {
         const content: Maybe<Content> = await Content.fromStream(message);
         const location: Maybe<ResourceLocation> = LocationFactory.FromUrl(message.url || '');

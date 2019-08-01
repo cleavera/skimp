@@ -34,7 +34,7 @@ export class TestServer {
     API_REGISTER.configure(new Api(), '*/*');
     API_REGISTER.configure(new Api(), 'application/json');
     API_REGISTER.configure(new Docs(), 'documentation/json');
-    const server: Server = new Server(port, new Router(version, cors, authenticator));
+    const server: Server = new Server(port, new Router(version, authenticator), cors);
 
     LOGGER.debug(`Server started on port ${server.port}`);
     LOGGER.debug(`Loading data from  ${fileSystem.path}`);

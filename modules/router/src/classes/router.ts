@@ -1,7 +1,7 @@
 import { $isNull, Maybe } from '@cleavera/utils';
-import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, IRouter, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
+import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, IRequest, IRouter, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
-import { IRequest, IResponse, RequestMethod, ResponseCode } from '@skimp/http';
+import { IResponse, RequestMethod, ResponseCode } from '@skimp/http';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException, ValidationExceptions } from '@skimp/schema';
 import * as $uuid from 'uuid/v4';
 
@@ -13,23 +13,19 @@ import { RootSchema } from '../schemas/root.schema';
 
 export class Router implements IRouter {
     public version: string;
-    public cors: string | boolean | Array<string>;
     public authenticator: Maybe<IAuthenticator>;
 
     private _db: IDb;
 
-    constructor(version: string, cors: string | boolean | Array<string>, authenticator: Maybe<IAuthenticator> = null) {
+    constructor(version: string, authenticator: Maybe<IAuthenticator> = null) {
         this.authenticator = authenticator;
         this._db = DB_REGISTER.get();
-        this.cors = cors;
         this.version = version;
     }
 
     public async route(request: IRequest, response: IResponse): Promise<void> {
         try {
-            this._assignCors(request, response);
-
-            const api: IApi = API_REGISTER.get(request.accepts);
+            const api: IApi = API_REGISTER.get(request.type);
 
             if (!$isNull(this.authenticator)) {
                 try {
@@ -39,22 +35,20 @@ export class Router implements IRouter {
                 }
             }
 
-            if (request.url.toString() === '/') {
+            if ($isNull(request.location)) {
                 await this._root(response, api);
 
                 return;
             }
 
-            const location: ResourceLocation = new ResourceLocation(request.url.resourceName, request.url.resourceId);
-
-            if (!SCHEMA_REGISTER.getSchema(location.resourceName)) {
-                throw new ResourceDoesNotExistException(location);
+            if (!SCHEMA_REGISTER.getSchema(request.location.resourceName)) {
+                throw new ResourceDoesNotExistException(request.location);
             }
 
             let model: any = null;
 
             if (!$isNull(request.content)) {
-                model = API_REGISTER.get(request.contentType).deserialise(request.content.json(), location);
+                model = API_REGISTER.get(request.content.type).deserialise(request.content.raw, request.location);
 
                 const validationIssues: ValidationExceptions = await SCHEMA_REGISTER.validate(model);
 
@@ -64,27 +58,27 @@ export class Router implements IRouter {
             }
 
             if (request.isGet) {
-                await this._get(location, response, api);
+                await this._get(request.location, response, api);
 
                 return;
             } else if (request.isPut) {
-                await this._put(location, model, response, api);
+                await this._put(request.location, model, response, api);
 
                 return;
             } else if (request.isPost) {
-                await this._post(location, model, response, api);
+                await this._post(request.location, model, response, api);
 
                 return;
             } else if (request.isDelete) {
-                await this._delete(location, response);
+                await this._delete(request.location, response);
 
                 return;
             } else if (request.isOptions) {
-                await this._options(location, response);
+                await this._options(request.location, response);
 
                 return;
             } else {
-                throw new MethodNotAllowedException(request.method as RequestMethod, location);
+                throw new MethodNotAllowedException(request.method as RequestMethod, request.location);
             }
         } catch (e) {
             if (e instanceof ResourceDoesNotExistException) {
@@ -256,15 +250,5 @@ export class Router implements IRouter {
         });
 
         api.respond(response, model, location);
-    }
-
-    private _assignCors(request: IRequest, response: IResponse): void {
-        if (this.cors === false) {
-            return;
-        } else if (this.cors === true) {
-            response.corsHeader = request.origin || '*';
-        } else {
-            response.corsHeader = this.cors;
-        }
     }
 }

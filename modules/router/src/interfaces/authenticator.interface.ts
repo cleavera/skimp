@@ -1,4 +1,4 @@
-import { IRequest } from '@skimp/http';
+import { IRequest } from '@skimp/core';
 
 export interface IAuthenticator {
     authenticate(request: IRequest): void;

@@ -82,7 +82,9 @@ export class Api implements IApi {
         response.commit();
     }
 
-    public deserialise(json: IJsonApi, location: ResourceLocation): any {
+    public deserialise(content: string, location: ResourceLocation): any {
+        const json: IJsonApi = JSON.parse(content);
+
         if (!Api.isData(json)) {
             throw new RequestNotValidDataException(json);
         }
