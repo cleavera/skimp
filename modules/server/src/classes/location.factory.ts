@@ -1,5 +1,4 @@
-import { Maybe } from '@cleavera/utils';
-import { $isNull } from '@cleavera/utils/dist';
+import { $isNull, Maybe } from '@cleavera/utils';
 import { ResourceLocation } from '@skimp/core';
 
 export class LocationFactory {

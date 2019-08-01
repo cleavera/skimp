@@ -1,8 +1,8 @@
 import { ResourceLocation } from '@skimp/core';
-import { RequestMethod } from '@skimp/http';
+import { Action } from '../constants/action.contant';
 
 export class MethodNotAllowedException extends Error {
-    constructor(method: RequestMethod, url: ResourceLocation) {
+    constructor(method: Action, url: ResourceLocation) {
         super(`"${method}" not allowed at "${url.toString()}"`);
     }
 }

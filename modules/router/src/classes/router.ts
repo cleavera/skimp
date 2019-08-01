@@ -1,9 +1,9 @@
 import { $isNull, Maybe } from '@cleavera/utils';
-import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, IRequest, IResponse, IRouter, MODEL_REGISTER, ResourceDoesNotExistException, ResourceLocation } from '@skimp/core';
+import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, IRequest, IResponse, IRouter, MODEL_REGISTER, ResourceDoesNotExistException, ResourceLocation, ResponseCode } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
-import { RequestMethod, ResponseCode } from '@skimp/http';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException, ValidationExceptions } from '@skimp/schema';
 import * as $uuid from 'uuid/v4';
+import { Action } from '../constants/action.contant';
 
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { NotAuthorisedException } from '../exceptions/not-authorised.exception';
@@ -77,7 +77,7 @@ export class Router implements IRouter {
 
                 return;
             } else {
-                throw new MethodNotAllowedException(request.method as RequestMethod, request.location);
+                throw new MethodNotAllowedException(request.method as any, request.location);
             }
         } catch (e) {
             if (e instanceof ResourceDoesNotExistException) {
@@ -132,7 +132,7 @@ export class Router implements IRouter {
 
         if (location.isEntity()) {
             if (await this._db.exists(location)) {
-                throw new MethodNotAllowedException(RequestMethod.POST, location);
+                throw new MethodNotAllowedException(Action.POST, location);
             } else {
                 throw new ResourceDoesNotExistException(location);
             }
@@ -154,7 +154,7 @@ export class Router implements IRouter {
         }
 
         if (!location.isEntity()) {
-            throw new MethodNotAllowedException(RequestMethod.PUT, location);
+            throw new MethodNotAllowedException(Action.PUT, location);
         }
 
         const isCreate: boolean = !await this._db.exists(location);
@@ -179,7 +179,7 @@ export class Router implements IRouter {
         }
 
         if (!location.isEntity()) {
-            throw new MethodNotAllowedException(RequestMethod.DELETE, location);
+            throw new MethodNotAllowedException(Action.DELETE, location);
         }
 
         const oldModel: any = await this._db.get(location);
