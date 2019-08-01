@@ -23,7 +23,7 @@ export class Docs implements IApi {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if ($isNull(schema)) {
-            throw new ResourceDoesNotExistException(location.toUrl());
+            throw new ResourceDoesNotExistException(location);
         }
 
         response.setAllow(false, false, false);

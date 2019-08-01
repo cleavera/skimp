@@ -26,7 +26,7 @@ export class Db implements IDb {
         const file: IEntity = await this.entityFactory.fromPath(filePath);
 
         if (!file.exists()) {
-            throw new ResourceDoesNotExistException(location.toUrl());
+            throw new ResourceDoesNotExistException(location);
         }
 
         const model: any = this.serialiser.deserialise(await file.readContent());
@@ -51,7 +51,7 @@ export class Db implements IDb {
         const file: IEntity = await this.entityFactory.fromPath(filePath);
 
         if (!file.exists()) {
-            throw new ResourceDoesNotExistException(location.toUrl());
+            throw new ResourceDoesNotExistException(location);
         }
 
         await file.delete();
