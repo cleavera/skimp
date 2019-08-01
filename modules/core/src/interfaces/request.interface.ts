@@ -1,10 +1,9 @@
 import { Maybe } from '@cleavera/utils';
-
-import { Uri } from '../classes/uri';
+import { ResourceLocation } from '../classes/resource-location';
 import { IContent } from './content.interface';
 
 export interface IRequest {
-    url: Uri;
+    location: Maybe<ResourceLocation>;
     content: Maybe<IContent>;
     method: string;
     readonly isGet: boolean;
@@ -12,7 +11,5 @@ export interface IRequest {
     readonly isPost: boolean;
     readonly isDelete: boolean;
     readonly isOptions: boolean;
-    readonly accepts: Maybe<string>;
-    readonly origin: Maybe<string | Array<string>>;
-    readonly contentType: Maybe<string>;
+    readonly type: Maybe<string>;
 }

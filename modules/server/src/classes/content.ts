@@ -1,20 +1,18 @@
 import { IPromiseRejector, Maybe } from '@cleavera/utils';
 import { IPromiseResolverWithValue } from '@cleavera/utils/dist/interfaces/promise-resolver.interface';
-import { IContent } from '@skimp/http';
-import { Readable } from 'stream';
+import { IContent } from '@skimp/core';
+import { IncomingMessage } from 'http';
 
 export class Content implements IContent {
     public readonly raw: string;
+    public readonly type: Maybe<string>;
 
-    constructor(raw: string) {
+    constructor(raw: string, type: Maybe<string> = null) {
         this.raw = raw;
+        this.type = type;
     }
 
-    public json<T = any>(): T { // tslint:disable-line no-any
-        return JSON.parse(this.raw);
-    }
-
-    public static async fromStream(stream: Readable): Promise<Maybe<Content>> {
+    public static async fromStream(stream: IncomingMessage): Promise<Maybe<Content>> {
         return new Promise<Maybe<Content>>((resolve: IPromiseResolverWithValue<Maybe<Content>>, reject: IPromiseRejector): void => {
             let body: string = '';
 
@@ -28,7 +26,7 @@ export class Content implements IContent {
 
             stream.on('end', (): void => {
                 if (body) {
-                    resolve(new Content(body));
+                    resolve(new Content(body, stream.headers['content-type']));
                 }
 
                 resolve(null);

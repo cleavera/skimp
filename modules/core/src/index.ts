@@ -9,7 +9,8 @@ export { ResourceLocation } from './classes/resource-location';
 export { IDb } from './interfaces/db.interface';
 export { ContentTypeNotSupportedException } from './exceptions/content-type-not-supported.exception';
 export { NoContentTypesConfiguredException } from './exceptions/no-content-types-configured.exception';
-export { IRouter } from './interfaces/router.interface';
+export { IRequest } from './interfaces/request.interface';
+export { IContent } from './interfaces/content.interface';
 
 import * as MetaKey from './constants/meta-field-names.constant';
 
