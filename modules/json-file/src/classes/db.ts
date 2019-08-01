@@ -1,5 +1,4 @@
-import { IDb, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
-import { ResourceDoesNotExistException } from '@skimp/router';
+import { IDb, MODEL_REGISTER, ResourceDoesNotExistException, ResourceLocation } from '@skimp/core';
 
 import { IEntityFactory } from '../interfaces/entity-factory.interface';
 import { IEntity } from '../interfaces/entity.interface';

@@ -1,6 +1,5 @@
 import { $isNull, Maybe } from '@cleavera/utils';
-import { IApi, IResponse, ResourceLocation } from '@skimp/core';
-import { ResponseCode } from '@skimp/http';
+import { IApi, IResponse, ResourceLocation, ResponseCode } from '@skimp/core';
 import { RequestBodyNotAllowedException, ResourceDoesNotExistException } from '@skimp/router';
 import { FieldNotConfiguredException, FieldType, IOptions, ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '@skimp/schema';
 

@@ -13,6 +13,8 @@ export { IRequest } from './interfaces/request.interface';
 export { IContent } from './interfaces/content.interface';
 export { IRouter } from './interfaces/router.interface';
 export { IResponse } from './interfaces/response.interface';
+export { ResponseCode } from './constants/response-code.constant';
+export { ResourceDoesNotExistException } from './exceptions/resource-does-not-exist.exception';
 
 import * as MetaKey from './constants/meta-field-names.constant';
 

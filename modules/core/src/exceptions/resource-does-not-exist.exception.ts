@@ -1,4 +1,4 @@
-import { ResourceLocation } from '@skimp/core';
+import { ResourceLocation } from '../classes/resource-location';
 
 export class ResourceDoesNotExistException extends Error {
     public path: string;

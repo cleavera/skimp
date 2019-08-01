@@ -1,6 +1,5 @@
 import { $isNull, Maybe } from '@cleavera/utils';
-import { IApi, IResponse, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
-import { ResponseCode } from '@skimp/http';
+import { IApi, IResponse, MODEL_REGISTER, ResourceLocation, ResponseCode } from '@skimp/core';
 import { NoLocationRegisteredException } from '@skimp/router';
 import { ValidationException } from '@skimp/schema';
 

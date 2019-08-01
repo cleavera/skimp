@@ -1,5 +1,5 @@
 import { $isNull, Maybe } from '@cleavera/utils';
-import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, IRequest, IResponse, IRouter, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
+import { API_REGISTER, ContentTypeNotSupportedException, DB_REGISTER, IApi, IDb, IRequest, IResponse, IRouter, MODEL_REGISTER, ResourceDoesNotExistException, ResourceLocation } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
 import { RequestMethod, ResponseCode } from '@skimp/http';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException, ValidationExceptions } from '@skimp/schema';
@@ -7,7 +7,6 @@ import * as $uuid from 'uuid/v4';
 
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { NotAuthorisedException } from '../exceptions/not-authorised.exception';
-import { ResourceDoesNotExistException } from '../exceptions/resource-does-not-exist.exception';
 import { IAuthenticator } from '../interfaces/authenticator.interface';
 import { RootSchema } from '../schemas/root.schema';
 

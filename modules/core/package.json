@@ -23,11 +23,7 @@
   ],
   "author": "Anthony Cleaver",
   "license": "ISC",
-  "peerDependencies": {
-    "@skimp/http": "^2.0.0"
-  },
   "devDependencies": {
-    "@skimp/http": "^2.0.0",
     "tslint": "^5.17.0",
     "typescript": "^3.5.1"
   },
