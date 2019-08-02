@@ -4,14 +4,14 @@ import { FieldCannotBeSymbolException, IOptions, ISchema, SCHEMA_REGISTER } from
 import { ValidationFieldNotValidOptionException } from '../exceptions/validation-field-not-valid-option.exception';
 
 export function Options<T extends IJsonValue>(options: IOptions<T>): PropertyDecorator {
-    return (target: any, propertyKey: string | symbol): void => {
+    return (target: any, propertyKey: string | symbol): void => { // tslint:disable-line no-any
         const schema: ISchema = target.constructor;
 
         if ($isSymbol(propertyKey)) {
             throw new FieldCannotBeSymbolException(propertyKey);
         }
 
-        SCHEMA_REGISTER.addValidation(schema, async(model: any) => {
+        SCHEMA_REGISTER.addValidation(schema, async(model: any) => { // tslint:disable-line no-any
             const value: T = model[propertyKey];
 
             if (!$isNull(value) && options.indexOf(value) === -1) {
