@@ -1,9 +1,9 @@
-import { IResponse } from '@skimp/core';
+import { ResponseCode } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
-import { ResponseCode, ResponseType } from '@skimp/http';
+import { IHttpResponse, ResponseType } from '@skimp/http';
 import { ServerResponse } from 'http';
 
-export class Response implements IResponse {
+export class Response implements IHttpResponse {
     private readonly _response: ServerResponse;
 
     constructor(response: ServerResponse) {

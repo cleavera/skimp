@@ -8,18 +8,14 @@ import { Response } from './response';
 export class Server {
     public port: number;
 
-    private readonly _cors: string | boolean | Array<string>;
     private readonly _server: HttpServer;
 
-    constructor(port: number, router: IRouter, cors: string | boolean | Array<string>) {
+    constructor(port: number, router: IRouter) {
         this.port = port;
-        this._cors = cors;
 
         this._server = createServer(async(requestMessage: IncomingMessage, serverResponse: ServerResponse) => {
             const request: Request = await Request.fromIncomingMessage(requestMessage);
             const response: Response = new Response(serverResponse);
-
-            this._assignCors(request, response);
 
             try {
                 await router.route(request, response);
@@ -37,15 +33,5 @@ export class Server {
                 resolve();
             });
         });
-    }
-
-    private _assignCors(request: Request, response: Response): void {
-        if (this._cors === false) {
-            return;
-        } else if (this._cors === true) {
-            response.corsHeader = request.origin || '*';
-        } else {
-            response.corsHeader = this._cors;
-        }
     }
 }

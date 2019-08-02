@@ -1,12 +1,12 @@
 import { $isNull, IDict, Maybe } from '@cleavera/utils';
-import { IRequest, ResourceLocation } from '@skimp/core';
-import { RequestMethod } from '@skimp/http';
+import { ResourceLocation } from '@skimp/core';
+import { IHttpRequest, RequestMethod } from '@skimp/http';
 import { IncomingMessage } from 'http';
 
 import { Content } from './content';
 import { LocationFactory } from './location.factory';
 
-export class Request implements IRequest {
+export class Request implements IHttpRequest {
     public location: Maybe<ResourceLocation>;
     public content: Maybe<Content>;
     public readonly method: string;

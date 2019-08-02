@@ -3,7 +3,8 @@ import { API_REGISTER, DB_REGISTER } from '@skimp/core';
 import { ConsoleLogger, ILogger, LOGGER } from '@skimp/debug';
 import { FileSystem } from '@skimp/file-system';
 import { Api, Docs } from '@skimp/json-api';
-import { IAuthenticator, Router } from '@skimp/router';
+import { HttpRouter } from '@skimp/http';
+import { IAuthenticator } from '@skimp/router';
 import { ISchema } from '@skimp/schema';
 import { Server } from '@skimp/server';
 
@@ -34,7 +35,7 @@ export class TestServer {
     API_REGISTER.configure(new Api(), '*/*');
     API_REGISTER.configure(new Api(), 'application/json');
     API_REGISTER.configure(new Docs(), 'documentation/json');
-    const server: Server = new Server(port, new Router(version, authenticator), cors);
+    const server: Server = new Server(port, new HttpRouter(version, authenticator, cors));
 
     LOGGER.debug(`Server started on port ${server.port}`);
     LOGGER.debug(`Loading data from  ${fileSystem.path}`);
