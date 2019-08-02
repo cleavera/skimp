@@ -7,6 +7,7 @@ import * as $uuid from 'uuid/v4';
 import { Action } from '../constants/action.contant';
 import { CannotParseModelWithNoLocationException } from '../exceptions/cannot-parse-model-with-no-location.exception';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
+import { MissingRequiredModelException } from '../exceptions/missing-required-model.exception';
 import { NotAuthorisedException } from '../exceptions/not-authorised.exception';
 import { IAuthenticator } from '../interfaces/authenticator.interface';
 import { RootSchema } from '../schemas/root.schema';
@@ -80,7 +81,7 @@ export class Router implements IRouter {
     public async post(location: ResourceLocation, content: Maybe<IContent>, response: IResponse, api: IApi): Promise<void> {
         this._assertExists(location);
 
-        const model: Maybe<object> = await this._parseModel(content, location);
+        const model: object = await this._parseModel(content, location);
 
         if (location.isEntity()) {
             if (await this._db.exists(location)) {
@@ -101,7 +102,7 @@ export class Router implements IRouter {
     public async put(location: ResourceLocation, content: Maybe<IContent>, response: IResponse, api: IApi): Promise<void> {
         this._assertExists(location);
 
-        const model: Maybe<object> = await this._parseModel(content, location);
+        const model: object = await this._parseModel(content, location);
 
         if (!location.isEntity()) {
             throw new MethodNotAllowedException(Action.PUT, location);
@@ -205,18 +206,24 @@ export class Router implements IRouter {
             API_REGISTER.get().error(response, ResponseCode.NOT_ACCEPTABLE);
         } else if (e instanceof ContentTypeNotSupportedException) {
             LOGGER.warn(e);
-            API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST);
+            API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST, [e]);
         } else if (e instanceof NotAuthorisedException) {
             LOGGER.warn(e);
             API_REGISTER.get().error(response, ResponseCode.NOT_AUTHORISED);
+        } else if (e instanceof MissingRequiredModelException) {
+            LOGGER.warn(e);
+            API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST, [e]);
+        } else if (e instanceof CannotParseModelWithNoLocationException) {
+            LOGGER.warn(e);
+            API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST, [e]);
         } else {
             throw e;
         }
     }
 
-    private async _parseModel(content: Maybe<IContent>, location: Maybe<ResourceLocation>): Promise<Maybe<object>> {
+    private async _parseModel(content: Maybe<IContent>, location: Maybe<ResourceLocation>): Promise<object> {
         if ($isNull(content)) {
-            return null;
+            throw new MissingRequiredModelException();
         }
 
         if ($isNull(location)) {
