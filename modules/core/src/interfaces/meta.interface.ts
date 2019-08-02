@@ -1,6 +1,6 @@
 import { Maybe } from '@cleavera/utils';
 
 export interface IMeta {
-    get<T = any>(object: any, key: string): Maybe<T>;
-    set(object: any, key: string, value: any): void;
+    get<T = unknown>(object: object, key: string): Maybe<T>;
+    set(object: object, key: string, value: unknown): void;
 }
