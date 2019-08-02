@@ -1,5 +1,5 @@
 import { $isNull, Maybe } from '@cleavera/utils';
-import { API_REGISTER, ContentTypeNotSupportedException, IApi, IResponse, IRouter, ResourceDoesNotExistException, ResourceLocation, ResponseCode } from '@skimp/core';
+import { API_REGISTER, ContentTypeNotSupportedException, IApi, IResponse, ResourceDoesNotExistException, ResourceLocation, ResponseCode } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
 import { ActionNotAllowedException, Router } from '@skimp/router';
 import { ISchema, SCHEMA_REGISTER, ValidationException, ValidationExceptions } from '@skimp/schema';
@@ -10,7 +10,7 @@ import { IAuthenticator } from '../interfaces/authenticator.interface';
 import { IHttpRequest } from '../interfaces/http-request.interface';
 import { IHttpResponse } from '../interfaces/http-response.interface';
 
-export class HttpRouter implements IRouter {
+export class HttpRouter {
     public authenticator: Maybe<IAuthenticator>;
     private _coreRouter: Router;
     private readonly _cors: string | boolean | Array<string>;

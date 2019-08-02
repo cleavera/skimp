@@ -11,7 +11,6 @@ export { ContentTypeNotSupportedException } from './exceptions/content-type-not-
 export { NoContentTypesConfiguredException } from './exceptions/no-content-types-configured.exception';
 export { IRequest } from './interfaces/request.interface';
 export { IContent } from './interfaces/content.interface';
-export { IRouter } from './interfaces/router.interface';
 export { IResponse } from './interfaces/response.interface';
 export { ResponseCode } from './constants/response-code.constant';
 export { ResourceDoesNotExistException } from './exceptions/resource-does-not-exist.exception';
