@@ -1,4 +1,4 @@
-import { $isNull, Maybe } from '@cleavera/utils';
+import { $isNull, Maybe, OneOrMany } from '@cleavera/utils';
 import { IApi, IResponse, MODEL_REGISTER, ResourceLocation, ResponseCode } from '@skimp/core';
 import { NoLocationRegisteredException } from '@skimp/router';
 import { ValidationException } from '@skimp/schema';
@@ -15,7 +15,7 @@ export class Api implements IApi {
         this.serialiser = new Serialiser();
     }
 
-    public respond(response: IResponse, model: Array<any> | any, _location: ResourceLocation, created?: boolean): void {
+    public respond(response: IResponse, model: OneOrMany<object>, _location: ResourceLocation, created?: boolean): void {
         let out: string;
 
         if (Array.isArray(model)) {
@@ -54,14 +54,14 @@ export class Api implements IApi {
         response.commit();
     }
 
-    public deserialise(content: string, location: ResourceLocation): any {
+    public deserialise(content: string, location: ResourceLocation): object {
         const json: IJsonApi = JSON.parse(content);
 
         if (!Api.isData(json)) {
             throw new RequestNotValidDataException(json);
         }
 
-        const model: any = this.serialiser.deserialise(json as IJsonData);
+        const model: object = this.serialiser.deserialise(json as IJsonData);
 
         MODEL_REGISTER.setLocation(model, location);
 

@@ -50,12 +50,12 @@ export class Serialiser {
         return JSON.stringify(out);
     }
 
-    public serialiseModel(model: any, location: Maybe<ResourceLocation> = null): string {
+    public serialiseModel(model: object, location: Maybe<ResourceLocation> = null): string {
         return JSON.stringify(this._mapToModel(model, location));
     }
 
-    public serialiseList(model: Array<unknown>): string {
-        return JSON.stringify(model.sort((a: any, b: any): number => {
+    public serialiseList(model: Array<object>): string {
+        return JSON.stringify(model.sort((a: object, b: object): number => {
             const aCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(a);
             const bCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(b);
 
@@ -76,7 +76,7 @@ export class Serialiser {
             }
 
             return 0;
-        }).map((item: any) => {
+        }).map((item: object) => {
             const location: Maybe<ResourceLocation> = MODEL_REGISTER.getLocation(item);
 
             if ($isNull(location)) {
@@ -87,7 +87,7 @@ export class Serialiser {
         }));
     }
 
-    public deserialise(json: IJsonData): any {
+    public deserialise(json: IJsonData): object {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(json.data.type);
 
         if ($isNull(schema)) {
@@ -100,7 +100,7 @@ export class Serialiser {
             fields = [];
         }
 
-        const model: any = new schema();
+        const model: object = new schema();
 
         fields.forEach((field: string) => {
             const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
@@ -109,7 +109,7 @@ export class Serialiser {
                 throw new FieldNotConfiguredException(schema, field);
             }
 
-            model[field] = SCHEMA_REGISTER.deserialise(schema, field, json.data.attributes[mappedField]);
+            (model as any)[field] = SCHEMA_REGISTER.deserialise(schema, field, json.data.attributes[mappedField]); // tslint:disable-line no-any
         });
 
         if (json.data.relationships) {
@@ -125,7 +125,7 @@ export class Serialiser {
         return model;
     }
 
-    private _mapToModel(model: any, location: Maybe<ResourceLocation> = null): IJsonData {
+    private _mapToModel(model: any, location: Maybe<ResourceLocation> = null): IJsonData { //tslint:disable-line no-any
         const schema: ISchema = model.constructor;
         let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
