@@ -20,7 +20,7 @@ export class Db implements IDb {
         return file.exists();
     }
 
-    public async get(location: ResourceLocation): Promise<any> {
+    public async get(location: ResourceLocation): Promise<object> {
         const filePath: string = location.toString() + '.json';
         const file: IEntity = await this.entityFactory.fromPath(filePath);
 
@@ -28,7 +28,7 @@ export class Db implements IDb {
             throw new ResourceDoesNotExistException(location);
         }
 
-        const model: any = this.serialiser.deserialise(await file.readContent());
+        const model: object = this.serialiser.deserialise(await file.readContent());
 
         MODEL_REGISTER.setLocation(model, location);
         MODEL_REGISTER.setCreatedDate(model, file.createdDate());
@@ -36,7 +36,7 @@ export class Db implements IDb {
         return model;
     }
 
-    public async list(location: ResourceLocation): Promise<Array<any>> {
+    public async list(location: ResourceLocation): Promise<Array<object>> {
         const entity: IEntity = await this.entityFactory.fromPath(location.toString());
         const files: Array<string> = await entity.listChildren();
 
@@ -56,7 +56,7 @@ export class Db implements IDb {
         await file.delete();
     }
 
-    public async set(location: ResourceLocation, model: any): Promise<void> {
+    public async set(location: ResourceLocation, model: object): Promise<void> {
         const filePath: string = location.toString() + '.json';
         const file: IEntity = await this.entityFactory.fromPath(filePath);
 
