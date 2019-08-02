@@ -8,18 +8,14 @@ import { Action } from '../constants/action.contant';
 import { CannotParseModelWithNoLocationException } from '../exceptions/cannot-parse-model-with-no-location.exception';
 import { MethodNotAllowedException } from '../exceptions/method-not-allowed.exception';
 import { MissingRequiredModelException } from '../exceptions/missing-required-model.exception';
-import { NotAuthorisedException } from '../exceptions/not-authorised.exception';
-import { IAuthenticator } from '../interfaces/authenticator.interface';
 import { RootSchema } from '../schemas/root.schema';
 
 export class Router implements IRouter {
     public version: string;
-    public authenticator: Maybe<IAuthenticator>;
 
     private _db: IDb;
 
-    constructor(version: string, authenticator: Maybe<IAuthenticator> = null) {
-        this.authenticator = authenticator;
+    constructor(version: string) {
         this._db = DB_REGISTER.get();
         this.version = version;
     }
@@ -27,8 +23,6 @@ export class Router implements IRouter {
     public async route(request: IRequest, response: IResponse): Promise<void> {
         try {
             const api: IApi = this._getApi(request);
-
-            this._authenticate(request);
 
             if ($isNull(request.location)) {
                 await this.root(response, api);
@@ -207,9 +201,6 @@ export class Router implements IRouter {
         } else if (e instanceof ContentTypeNotSupportedException) {
             LOGGER.warn(e);
             API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST, [e]);
-        } else if (e instanceof NotAuthorisedException) {
-            LOGGER.warn(e);
-            API_REGISTER.get().error(response, ResponseCode.NOT_AUTHORISED);
         } else if (e instanceof MissingRequiredModelException) {
             LOGGER.warn(e);
             API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST, [e]);
@@ -246,16 +237,6 @@ export class Router implements IRouter {
 
         if ($isNull(schema)) {
             throw new ResourceDoesNotExistException(location);
-        }
-    }
-
-    private _authenticate(request: IRequest): void {
-        if (!$isNull(this.authenticator)) {
-            try {
-                this.authenticator.authenticate(request);
-            } catch (e) {
-                throw new NotAuthorisedException();
-            }
         }
     }
 

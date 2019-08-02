@@ -3,8 +3,7 @@ import { API_REGISTER, DB_REGISTER } from '@skimp/core';
 import { ConsoleLogger, ILogger, LOGGER } from '@skimp/debug';
 import { FileSystem } from '@skimp/file-system';
 import { Api, Docs } from '@skimp/json-api';
-import { HttpRouter } from '@skimp/http';
-import { IAuthenticator } from '@skimp/router';
+import { HttpRouter, IAuthenticator } from '@skimp/http';
 import { ISchema } from '@skimp/schema';
 import { Server } from '@skimp/server';
 
