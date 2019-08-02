@@ -40,6 +40,6 @@
   },
   "dependencies": {
     "@cleavera/utils": "^2.6.0",
-    "@types/node": "^10.14.12"
+    "@types/node": "^10.14.14"
   }
 }
