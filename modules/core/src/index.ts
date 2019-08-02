@@ -9,7 +9,6 @@ export { ResourceLocation } from './classes/resource-location';
 export { IDb } from './interfaces/db.interface';
 export { ContentTypeNotSupportedException } from './exceptions/content-type-not-supported.exception';
 export { NoContentTypesConfiguredException } from './exceptions/no-content-types-configured.exception';
-export { IRequest } from './interfaces/request.interface';
 export { IContent } from './interfaces/content.interface';
 export { IResponse } from './interfaces/response.interface';
 export { ResponseCode } from './constants/response-code.constant';
