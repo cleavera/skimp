@@ -81,7 +81,7 @@ export class Router {
             throw new ActionNotAllowedException(Action.DELETE, location);
         }
 
-        const oldModel: any = await this._db.get(location);
+        const oldModel: object = await this._db.get(location);
 
         await this._db.delete(location);
         await this._updateRelationships(location, null, oldModel);

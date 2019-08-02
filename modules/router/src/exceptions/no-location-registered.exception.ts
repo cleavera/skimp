@@ -1,5 +1,5 @@
 export class NoLocationRegisteredException extends Error {
-    constructor(model: any) {
+    constructor(model: unknown) {
         super(`No location registered for ${JSON.stringify(model)}`);
     }
 }
