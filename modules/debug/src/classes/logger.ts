@@ -20,7 +20,7 @@ export class Logger implements ILogger {
         this._logLevel = level;
     }
 
-    public debug(...messages: Array<any>): void {
+    public debug(...messages: Array<unknown>): void {
         if ($isNull(this._logger)) {
             throw new NoLoggerException();
         }
