@@ -6,9 +6,10 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "clean": "git clean -X -f -d --exclude=\"!node_modules\"",
     "lint": "tslint --project ./tsconfig.json",
     "test": "echo \"Tests are run in the testing module\" && exit 1",
-    "prepack": "npm run lint && npm run build"
+    "prepack": "npm run clean && npm run lint && npm run build"
   },
   "repository": {
     "type": "git",
