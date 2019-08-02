@@ -28,7 +28,7 @@
         "private-static-method"
       ]
     }],
-    "no-any": false,
+    "no-any": true,
     "no-empty-interface": true,
     "no-import-side-effect": false,
     "no-inferrable-types": false,
@@ -111,7 +111,6 @@
     "no-unsafe-finally": true,
     "no-unused-expression": true,
     "no-unused-variable": false,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "no-void-expression": true,
     "radix": true,
