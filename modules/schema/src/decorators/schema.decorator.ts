@@ -6,10 +6,10 @@ import { ValidationExceptions } from '../exceptions/validation.exceptions';
 import { ISchema } from '../interfaces/schema.interface';
 
 export function Schema(resourceName: string): ClassDecorator {
-    return (target: any): void => {
+    return (target: any): void => { // tslint:disable-line no-any
         SCHEMA_REGISTER.register(target, resourceName);
 
-        SCHEMA_REGISTER.addValidation(target, async(model: any) => {
+        SCHEMA_REGISTER.addValidation(target, async(model: object) => {
             const relationships: Array<ResourceLocation> = MODEL_REGISTER.getRelationships(model);
 
             const allowedRelationships: Array<string> = (SCHEMA_REGISTER.getSchemaRelationships(target) || []).map((relationship: ISchema) => {

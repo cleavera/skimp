@@ -8,11 +8,11 @@ import { ValidationExceptions } from '../exceptions/validation.exceptions';
 import { ISchema } from '../interfaces/schema.interface';
 
 export function Relationship(schema: ISchema, limit: Maybe<number> = null): ClassDecorator {
-    return (target: any): void => {
+    return (target: any): void => { // tslint:disable-line no-any
         SCHEMA_REGISTER.addSchemaRelationship(target, schema);
         SCHEMA_REGISTER.addSchemaRelationship(schema, target);
 
-        SCHEMA_REGISTER.addValidation(target, async(model: any) => {
+        SCHEMA_REGISTER.addValidation(target, async(model: object) => {
             const allRelationships: Array<ResourceLocation> = MODEL_REGISTER.getRelationships(model);
             const relationships: Array<ResourceLocation> = allRelationships.filter((relationship: ResourceLocation) => {
                 return relationship.resourceName === SCHEMA_REGISTER.getSchemaResourceName(schema);

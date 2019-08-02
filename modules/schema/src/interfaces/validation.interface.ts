@@ -1,3 +1,3 @@
 export interface IValidation {
-    (model: any): Promise<void>;
+    (model: object): Promise<void>;
 }
