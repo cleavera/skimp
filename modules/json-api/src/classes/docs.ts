@@ -26,7 +26,7 @@ export class Docs implements IApi {
         }
 
         response.setAllow(false, false, false);
-        response.write(JSON.stringify(this._documentSchema(schema)));
+        response.write(JSON.stringify(this._documentSchema(schema)), 'application/json');
         response.commit();
     }
 

@@ -40,7 +40,7 @@ export class Api implements IApi {
             response.setAllow(location.isResource(), location.isEntity(), location.isEntity());
         }
 
-        response.write(out);
+        response.write(out, 'application/json');
         response.commit();
     }
 
