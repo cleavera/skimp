@@ -24,15 +24,11 @@ export class HttpRouter {
     public async route(request: IHttpRequest, response: IHttpResponse): Promise<void> {
         this._assignCors(request, response);
 
-        try {
-            await this._authenticate(request);
-        } catch (e) {
-            if (e instanceof NotAuthorisedException) {
-                LOGGER.warn(e);
-                this._writeError(response, ResponseCode.NOT_AUTHORISED);
-            }
+        if (!await this._authenticate(request)) {
+            LOGGER.warn(new NotAuthorisedException());
+            this._writeError(response, ResponseCode.NOT_AUTHORISED);
 
-            throw e;
+            return;
         }
 
         const api: Maybe<IApi> = this._getApi(request.type);
@@ -166,14 +162,8 @@ export class HttpRouter {
         }
     }
 
-    private async _authenticate(request: IHttpRequest): Promise<void> {
-        if (!$isNull(this.authenticator)) {
-            try {
-                await this.authenticator.authenticate(request);
-            } catch (e) {
-                throw new NotAuthorisedException();
-            }
-        }
+    private async _authenticate(request: IHttpRequest): Promise<boolean> {
+        return $isNull(this.authenticator) || await this.authenticator.authenticate(request);
     }
 
     private _missingBody(response: IResponse): void {
