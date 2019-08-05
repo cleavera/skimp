@@ -113,8 +113,8 @@ export class Router {
     }
 
     private async _updateRelationships(location: ResourceLocation, model: Maybe<object> = null, previousModel: Maybe<object> = null): Promise<void> {
-        const newRelationships: Array<ResourceLocation> = MODEL_REGISTER.getRelationships(model);
-        const oldRelationships: Array<ResourceLocation> = MODEL_REGISTER.getRelationships(previousModel);
+        const newRelationships: Array<ResourceLocation> = $isNull(model) ? [] : MODEL_REGISTER.getRelationships(model);
+        const oldRelationships: Array<ResourceLocation> = $isNull(previousModel) ? [] : MODEL_REGISTER.getRelationships(previousModel);
         const added: Array<ResourceLocation> = newRelationships.filter((item: ResourceLocation) => {
             return oldRelationships.indexOf(item) === -1;
         });
