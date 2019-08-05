@@ -30,7 +30,7 @@ export class Serialiser {
                     throw new FieldNotConfiguredException(schema, field);
                 }
 
-                result[mappedField] = SCHEMA_REGISTER.serialise(schema, field, model[field]);
+                result[mappedField] = SCHEMA_REGISTER.serialise(schema, field, model[field]) as string;
 
                 return result;
             }, {}),
