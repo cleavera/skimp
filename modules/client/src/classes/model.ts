@@ -4,15 +4,15 @@ import { NoLocationRegisteredException } from '@skimp/router';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '@skimp/schema';
 
 export class Model {
-    public static getLocation(model: unknown): Maybe<ResourceLocation> {
+    public static getLocation(model: object): Maybe<ResourceLocation> {
         return MODEL_REGISTER.getLocation(model);
     }
 
-    public static getRelationships(model: unknown): Maybe<Array<ResourceLocation>> {
+    public static getRelationships(model: object): Maybe<Array<ResourceLocation>> {
         return MODEL_REGISTER.getRelationships(model);
     }
 
-    public static getRelationshipOfType(model: unknown, relatedSchema: ISchema): Maybe<Array<ResourceLocation>> {
+    public static getRelationshipOfType(model: object, relatedSchema: ISchema): Maybe<Array<ResourceLocation>> {
         const relationships: Maybe<Array<ResourceLocation>> = this.getRelationships(model);
         const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(relatedSchema);
 
@@ -29,7 +29,7 @@ export class Model {
         }) || null;
     }
 
-    public static addRelationship(model1: unknown, model2: unknown): void {
+    public static addRelationship(model1: object, model2: object): void {
         const location: Maybe<ResourceLocation> = this.getLocation(model2);
 
         if ($isNull(location)) {

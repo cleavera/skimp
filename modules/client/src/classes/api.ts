@@ -13,10 +13,10 @@ export class Api {
         this._serialiser = new Serialiser();
     }
 
-    public async get<T>(_schema: ISchema<T>, location: ResourceLocation): Promise<T> {
+    public async get<T extends object>(_schema: ISchema<T>, location: ResourceLocation): Promise<T> {
         const json: IJsonData = await HttpRequest.get<IJsonData>(this._constructUrl(location));
 
-        const model: T = this._serialiser.deserialise(json);
+        const model: T = this._serialiser.deserialise(json) as T;
 
         MODEL_REGISTER.setLocation(model, location);
 
@@ -35,7 +35,7 @@ export class Api {
         const json: Array<IJsonData> = await HttpRequest.get<Array<IJsonData>>(this._constructUrl(location));
 
         return json.map<T>((data: IJsonData) => {
-            const model: T = this._serialiser.deserialise(data);
+            const model: T = this._serialiser.deserialise(data) as T;
 
             const modelLocation: ResourceLocation = ResourceLocation.FromString(data.data.id as string);
 
@@ -57,13 +57,13 @@ export class Api {
         let json: IJsonData;
 
         if ($isNull(location)) {
-            json = await HttpRequest.post<IJsonData>(this._constructUrl(new ResourceLocation(resourceName)), this._serialiser.serialise(model));
+            json = await HttpRequest.post<IJsonData>(this._constructUrl(new ResourceLocation(resourceName)), JSON.parse(this._serialiser.serialiseModel(model)));
             location = ResourceLocation.FromString(json.data.id as string);
         } else {
-            json = await HttpRequest.put<IJsonData>(this._constructUrl(location), this._serialiser.serialise(model));
+            json = await HttpRequest.put<IJsonData>(this._constructUrl(location), JSON.parse(this._serialiser.serialiseModel(model)));
         }
 
-        const savedModel: T = this._serialiser.deserialise(json);
+        const savedModel: T = this._serialiser.deserialise(json) as T;
 
         MODEL_REGISTER.setLocation(savedModel, location);
 
