@@ -25,13 +25,16 @@
   "author": "Anthony Cleaver",
   "license": "ISC",
   "peerDependencies": {
-    "@skimp/core": "2.4.0"
+    "@skimp/core": "^3.0.0",
+    "@skimp/debug": "^1.3.0",
+    "@skimp/router": "^2.0.0",
+    "@skimp/schema": "^2.5.0"
   },
   "devDependencies": {
-    "@skimp/core": "file:skimp-core-2.4.0.tgz",
-    "@skimp/debug": "file:skimp-debug-1.3.0.tgz",
-    "@skimp/router": "file:skimp-router-1.5.0.tgz",
-    "@skimp/schema": "file:skimp-schema-2.4.1.tgz",
+    "@skimp/core": "^3.0.0",
+    "@skimp/debug": "^1.3.0",
+    "@skimp/router": "^2.0.0",
+    "@skimp/schema": "^2.5.0",
     "@types/node": "10.5.2",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
