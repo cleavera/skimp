@@ -29,11 +29,19 @@ export class HttpRouter {
         } catch (e) {
             if (e instanceof NotAuthorisedException) {
                 LOGGER.warn(e);
-                API_REGISTER.get().error(response, ResponseCode.NOT_AUTHORISED);
+                this._writeError(response, ResponseCode.NOT_AUTHORISED);
             }
+
+            throw e;
         }
 
-        const api: IApi = API_REGISTER.get(request.type);
+        const api: Maybe<IApi> = this._getApi(request.type);
+
+        if ($isNull(api)) {
+            this._writeError(response, ResponseCode.NOT_ACCEPTABLE);
+
+            return;
+        }
 
         if ($isNull(request.location)) {
             await this._coreRouter.root(response, api);
@@ -42,41 +50,25 @@ export class HttpRouter {
         }
 
         if (request.isOptions) {
-            try {
-                await this._options(request.location, response);
-            } catch (e) {
-                if (e instanceof ResourceDoesNotExistException) {
-                    LOGGER.warn(e);
-                    API_REGISTER.get().error(response, ResponseCode.NOT_FOUND);
-                } else {
-                    throw e;
-                }
-            }
+            await this._options(request.location, response);
 
             return;
         }
 
         if (request.isGet) {
-            try {
-                await this._coreRouter.get(request.location, response, api);
-            } catch (e) {
-                if (e instanceof ResourceDoesNotExistException) {
-                    LOGGER.warn(e);
-                    API_REGISTER.get().error(response, ResponseCode.NOT_FOUND);
-                } else {
-                    throw e;
-                }
-            }
+            await this._get(request.location, response, api);
 
             return;
         }
 
         if (request.isPost) {
-            try {
-                if ($isNull(request.content)) {
-                    throw new MissingRequestBodyException();
-                }
+            if ($isNull(request.content)) {
+                this._missingBody(response);
 
+                return;
+            }
+
+            try {
                 await this._coreRouter.post(request.location, request.content, response, api);
             } catch (e) {
                 this._handleError(e, response);
@@ -86,11 +78,13 @@ export class HttpRouter {
         }
 
         if (request.isPut) {
-            try {
-                if ($isNull(request.content)) {
-                    throw new MissingRequestBodyException();
-                }
+            if ($isNull(request.content)) {
+                this._missingBody(response);
 
+                return;
+            }
+
+            try {
                 await this._coreRouter.put(request.location, request.content, response, api);
             } catch (e) {
                 this._handleError(e, response);
@@ -100,34 +94,66 @@ export class HttpRouter {
         }
 
         if (request.isDelete) {
-            try {
-                await this._coreRouter.remove(request.location, response);
-            } catch (e) {
-                if (e instanceof ResourceDoesNotExistException) {
-                    LOGGER.warn(e);
-                    API_REGISTER.get().error(response, ResponseCode.NOT_FOUND);
-                } else if (e instanceof ActionNotAllowedException) {
-                    LOGGER.warn(e);
-                    API_REGISTER.get().error(response, ResponseCode.METHOD_NOT_ALLOWED);
-                } else {
-                    throw e;
-                }
-            }
+            await this._remove(request.location, response);
 
             return;
         }
-
-        await this._coreRouter.route(request, response);
     }
 
     private async _options(location: ResourceLocation, response: IResponse): Promise<void> {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if ($isNull(schema)) {
-            throw new ResourceDoesNotExistException(location);
+            LOGGER.warn(new ResourceDoesNotExistException(location));
+            this._writeError(response, ResponseCode.NOT_FOUND);
+
+            return;
         }
 
         response.noContent();
+    }
+
+    private async _get(location: ResourceLocation, response: IResponse, api: IApi): Promise<void> {
+        try {
+            await this._coreRouter.get(location, response, api);
+        } catch (e) {
+            if (e instanceof ResourceDoesNotExistException) {
+                LOGGER.warn(e);
+                this._writeError(response, ResponseCode.NOT_FOUND);
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    private async _remove(location: ResourceLocation, response: IResponse): Promise<void> {
+        try {
+            await this._coreRouter.remove(location, response);
+        } catch (e) {
+            if (e instanceof ResourceDoesNotExistException) {
+                LOGGER.warn(e);
+                this._writeError(response, ResponseCode.NOT_FOUND);
+            } else if (e instanceof ActionNotAllowedException) {
+                LOGGER.warn(e);
+                this._writeError(response, ResponseCode.METHOD_NOT_ALLOWED);
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    private _getApi(type: Maybe<string>): Maybe<IApi> {
+        try {
+            return API_REGISTER.get(type);
+        } catch (e) {
+            if (e instanceof ContentTypeNotSupportedException) {
+                LOGGER.warn(e);
+
+                return null;
+            } else {
+                throw e;
+            }
+        }
     }
 
     private _assignCors(request: IHttpRequest, response: IHttpResponse): void {
@@ -150,28 +176,34 @@ export class HttpRouter {
         }
     }
 
+    private _missingBody(response: IResponse): void {
+        const e: MissingRequestBodyException = new MissingRequestBodyException();
+
+        LOGGER.warn(e);
+        this._writeError(response, ResponseCode.BAD_REQUEST, [e]);
+    }
+
+    private _writeError(response: IResponse, code: number, e: Maybe<Array<Error>> = null): void {
+        API_REGISTER.get().error(response, code, e);
+    }
+
     private _handleError(e: Error, response: IResponse): void {
         if (e instanceof ResourceDoesNotExistException) {
             LOGGER.warn(e);
-            API_REGISTER.get().error(response, ResponseCode.NOT_FOUND);
+            this._writeError(response, ResponseCode.NOT_FOUND);
         } else if (e instanceof ActionNotAllowedException) {
             LOGGER.warn(e);
+            this._writeError(response, ResponseCode.METHOD_NOT_ALLOWED);
             API_REGISTER.get().error(response, ResponseCode.METHOD_NOT_ALLOWED);
         } else if (e instanceof ValidationExceptions) {
             LOGGER.warn(...e);
-            API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST, e);
+            this._writeError(response, ResponseCode.BAD_REQUEST, e);
         } else if (e instanceof ValidationException) {
             LOGGER.warn(e);
-            API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST, [e]);
-        } else if (e instanceof ContentTypeNotSupportedException) {
-            LOGGER.warn(e);
-            API_REGISTER.get().error(response, ResponseCode.NOT_ACCEPTABLE);
-        } else if (e instanceof ContentTypeNotSupportedException) {
-            LOGGER.warn(e);
-            API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST, [e]);
+            this._writeError(response, ResponseCode.BAD_REQUEST, [e]);
         } else if (e instanceof MissingRequestBodyException) {
             LOGGER.warn(e);
-            API_REGISTER.get().error(response, ResponseCode.BAD_REQUEST, [e]);
+            this._writeError(response, ResponseCode.BAD_REQUEST, [e]);
         } else {
             throw e;
         }
