@@ -1,9 +1,8 @@
 import { Maybe } from '@cleavera/utils';
-import { API_REGISTER, DB_REGISTER } from '@skimp/core';
-import { ConsoleLogger, ILogger, LOGGER } from '@skimp/debug';
+import { ConsoleLogger, ILogger } from '@skimp/debug';
 import { FileSystem } from '@skimp/file-system';
-import { Api, Docs } from '@skimp/json-api';
-import { HttpRouter, IAuthenticator } from '@skimp/http';
+import { IAuthenticator } from '@skimp/http';
+import { init } from '@skimp/quickstart';
 import { ISchema } from '@skimp/schema';
 import { Server } from '@skimp/server';
 
@@ -26,20 +25,9 @@ export class TestServer {
     }
 
     public static async create(port: number, dataPath: string, _schemas: Array<ISchema>, cors: boolean | string | Array<string> = false, version: string = 'UNVERSIONED', authenticator: Maybe<IAuthenticator> = null, loggerClass: ILogger = new ConsoleLogger()): Promise<TestServer> {
-    LOGGER.setLogger(loggerClass);
+        const fileSystem: FileSystem = FileSystem.create(dataPath);
+        const server: Server = await init(port, fileSystem.path, _schemas, cors, version, authenticator, loggerClass, fileSystem) as any;
 
-    const fileSystem: FileSystem = FileSystem.create(dataPath);
-
-    DB_REGISTER.configure(await fileSystem.createDb());
-    API_REGISTER.configure(new Api(), '*/*');
-    API_REGISTER.configure(new Api(), 'application/json');
-    API_REGISTER.configure(new Docs(), 'documentation/json');
-    const server: Server = new Server(port, new HttpRouter(version, authenticator, cors));
-
-    LOGGER.debug(`Server started on port ${server.port}`);
-    LOGGER.debug(`Loading data from  ${fileSystem.path}`);
-
-    return new TestServer(server, fileSystem);
-}
-
+        return new TestServer(server, fileSystem);
+    }
 }
