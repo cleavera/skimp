@@ -7,8 +7,8 @@ import { ISchema, SCHEMA_REGISTER, ValidationException, ValidationExceptions } f
 import { MissingRequestBodyException } from '../exceptions/missing-request-body.exception';
 import { NotAuthorisedException } from '../exceptions/not-authorised.exception';
 import { IAuthenticator } from '../interfaces/authenticator.interface';
-import { IHttpRequest } from '../interfaces/http-request.interface';
 import { IHttpResponse } from '../interfaces/http-response.interface';
+import { HttpRequest } from './http-request';
 
 export class HttpRouter {
     public authenticator: Maybe<IAuthenticator>;
@@ -21,7 +21,7 @@ export class HttpRouter {
         this._cors = cors;
     }
 
-    public async route(request: IHttpRequest, response: IHttpResponse): Promise<void> {
+    public async route(request: HttpRequest, response: IHttpResponse): Promise<void> {
         this._assignCors(request, response);
 
         if (!await this._authenticate(request)) {
@@ -152,7 +152,7 @@ export class HttpRouter {
         }
     }
 
-    private _assignCors(request: IHttpRequest, response: IHttpResponse): void {
+    private _assignCors(request: HttpRequest, response: IHttpResponse): void {
         if (this._cors === false) {
             return;
         } else if (this._cors === true) {
@@ -162,7 +162,7 @@ export class HttpRouter {
         }
     }
 
-    private async _authenticate(request: IHttpRequest): Promise<boolean> {
+    private async _authenticate(request: HttpRequest): Promise<boolean> {
         return $isNull(this.authenticator) || await this.authenticator.authenticate(request);
     }
 

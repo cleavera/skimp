@@ -1,5 +1,5 @@
-import { IHttpRequest } from './http-request.interface';
+import { HttpRequest } from '../classes/http-request';
 
 export interface IAuthenticator {
-    authenticate(request: IHttpRequest): Promise<boolean>;
+    authenticate(request: HttpRequest): Promise<boolean>;
 }
