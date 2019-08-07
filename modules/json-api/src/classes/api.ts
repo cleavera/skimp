@@ -1,6 +1,5 @@
-import { $isNull, Maybe } from '@cleavera/utils';
-import { IApi, MissingCreatedDateException, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
-import { IResponse, ResponseCode } from '@skimp/http';
+import { $isNull, Maybe, OneOrMany } from '@cleavera/utils';
+import { IApi, IResponse, MODEL_REGISTER, ResourceLocation, ResponseCode } from '@skimp/core';
 import { NoLocationRegisteredException } from '@skimp/router';
 import { ValidationException } from '@skimp/schema';
 
@@ -16,38 +15,11 @@ export class Api implements IApi {
         this.serialiser = new Serialiser();
     }
 
-    public respond(response: IResponse, model: Array<any> | any, _location: ResourceLocation, created?: boolean): void {
+    public respond(response: IResponse, model: OneOrMany<object>, _location: ResourceLocation, created?: boolean): void {
+        let out: string;
+
         if (Array.isArray(model)) {
-            model = model.sort((a: any, b: any): number => {
-                const aCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(a);
-                const bCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(b);
-
-                if ($isNull(aCreated)) {
-                    throw new MissingCreatedDateException(a);
-                }
-
-                if ($isNull(bCreated)) {
-                    throw new MissingCreatedDateException(b);
-                }
-
-                if (aCreated < bCreated) {
-                    return 1;
-                }
-
-                if (aCreated > bCreated) {
-                    return -1;
-                }
-
-                return 0;
-            }).map((item: any) => {
-                const location: Maybe<ResourceLocation> = MODEL_REGISTER.getLocation(item);
-
-                if ($isNull(location)) {
-                    throw new NoLocationRegisteredException(item);
-                }
-
-                return this.serialiser.serialise(item, location);
-            });
+            out = this.serialiser.serialiseList(model);
 
             response.setAllow(true, false, false);
         } else {
@@ -57,7 +29,7 @@ export class Api implements IApi {
                 throw new NoLocationRegisteredException(model);
             }
 
-            model = this.serialiser.serialise(model, location);
+            out = this.serialiser.serialiseModel(model, location);
 
             if (created) {
                 response.statusCode = ResponseCode.CREATED;
@@ -68,7 +40,7 @@ export class Api implements IApi {
             response.setAllow(location.isResource(), location.isEntity(), location.isEntity());
         }
 
-        response.json(model);
+        response.write(out, 'application/json');
         response.commit();
     }
 
@@ -76,18 +48,20 @@ export class Api implements IApi {
         response.statusCode = code;
 
         if (!$isNull(errors) && errors.length) {
-            response.json(this.serialiser.error(errors));
+            response.write(this.serialiser.error(errors));
         }
 
         response.commit();
     }
 
-    public deserialise(json: IJsonApi, location: ResourceLocation): any {
+    public deserialise(content: string, location: ResourceLocation): object {
+        const json: IJsonApi = JSON.parse(content);
+
         if (!Api.isData(json)) {
             throw new RequestNotValidDataException(json);
         }
 
-        const model: any = this.serialiser.deserialise(json as IJsonData);
+        const model: object = this.serialiser.deserialise(json as IJsonData);
 
         MODEL_REGISTER.setLocation(model, location);
 

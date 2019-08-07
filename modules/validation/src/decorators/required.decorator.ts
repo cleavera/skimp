@@ -3,14 +3,14 @@ import { FieldCannotBeSymbolException, ISchema, SCHEMA_REGISTER } from '@skimp/s
 
 import { ValidationFieldRequiredException } from '../exceptions/validation-field-required.exception';
 
-export const Required: PropertyDecorator = (target: any, propertyKey: string | symbol): void => {
+export const Required: PropertyDecorator = (target: any, propertyKey: string | symbol): void => { // tslint:disable-line no-any
     const schema: ISchema = target.constructor;
 
     if ($isSymbol(propertyKey)) {
         throw new FieldCannotBeSymbolException(propertyKey);
     }
 
-    SCHEMA_REGISTER.addValidation(schema, async(model: any) => {
+    SCHEMA_REGISTER.addValidation(schema, async(model: any) => { // tslint:disable-line no-any
         if ((!(propertyKey in model)) || $isUndefined(model[propertyKey]) || $isNull(model[propertyKey])) {
             throw new ValidationFieldRequiredException(propertyKey, model);
         }

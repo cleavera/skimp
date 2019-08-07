@@ -19,13 +19,13 @@
     "@types/request": "2.47.1",
     "@types/request-promise-native": "1.0.15",
     "@types/uuid": "3.4.3",
-    "alsatian": "^2.4.0",
+    "alsatian": "^3.0.0",
     "del-cli": "^2.0.0",
     "glob": "^7.1.4",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
-    "tslint": "^5.17.0",
-    "typescript": "^3.5.1",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3",
     "uuid": "3.3.2"
   },
   "peerDependencies": {
@@ -42,6 +42,6 @@
     "@skimp/validation": "*"
   },
   "dependencies": {
-    "@cleavera/utils": "^2.4.0"
+    "@cleavera/utils": "^2.6.0"
   }
 }

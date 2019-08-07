@@ -7,7 +7,7 @@ export class ModelPointer {
     public readonly property: string;
     public readonly field: string;
 
-    constructor(model: any, property: string) {
+    constructor(model: any, property: string) { // tslint:disable-line no-any
         const field: Maybe<string> = SCHEMA_REGISTER.mapToField(model.constructor, property);
 
         if ($isNull(field)) {

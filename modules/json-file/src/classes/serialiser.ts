@@ -1,6 +1,5 @@
 import { $isNull, Maybe } from '@cleavera/utils';
 import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
-import { Uri } from '@skimp/http';
 import { FieldNotConfiguredException, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaNotRegisteredException } from '@skimp/schema';
 
 import { IData } from '../interfaces/data.interface';
@@ -8,7 +7,7 @@ import { IJsonFile } from '../interfaces/json-file.interface';
 import { IRelationship } from '../interfaces/relationship.interface';
 
 export class Serialiser {
-    public serialise(model: any): string {
+    public serialise(model: any): string { // tslint:disable-line no-any
         const schema: ISchema = model.constructor;
         let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
@@ -31,7 +30,7 @@ export class Serialiser {
                     throw new FieldNotConfiguredException(schema, field);
                 }
 
-                result[mappedField] = SCHEMA_REGISTER.serialise(schema, field, model[field]);
+                result[mappedField] = SCHEMA_REGISTER.serialise(schema, field, model[field]) as string;
 
                 return result;
             }, {}),
@@ -43,7 +42,7 @@ export class Serialiser {
         return JSON.stringify(out, null, '\t');
     }
 
-    public deserialise(body: string): any {
+    public deserialise(body: string): object {
         const json: IJsonFile = JSON.parse(body);
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(json.type);
 
@@ -57,7 +56,7 @@ export class Serialiser {
             fields = [];
         }
 
-        const model: any = new schema();
+        const model: any = new schema(); // tslint:disable-line no-any
 
         fields.forEach((field: string) => {
             const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
@@ -71,7 +70,7 @@ export class Serialiser {
 
         if (json.relationships) {
             json.relationships.forEach((relationship: IRelationship) => {
-                MODEL_REGISTER.addRelationship(model, ResourceLocation.fromUrl(new Uri(relationship)));
+                MODEL_REGISTER.addRelationship(model, ResourceLocation.FromString(relationship));
             });
         }
 

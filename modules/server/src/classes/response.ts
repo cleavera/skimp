@@ -1,8 +1,9 @@
+import { ResponseCode } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
-import { IResponse, ResponseCode, ResponseType } from '@skimp/http';
+import { IHttpResponse, ResponseType } from '@skimp/http';
 import { ServerResponse } from 'http';
 
-export class Response implements IResponse {
+export class Response implements IHttpResponse {
     private readonly _response: ServerResponse;
 
     constructor(response: ServerResponse) {
@@ -59,16 +60,9 @@ export class Response implements IResponse {
         this._response.end();
     }
 
-    public json(obj: any, contentType: ResponseType = ResponseType.JSON): void {
-        this._response.setHeader('Content-Type', contentType);
-        this._response.write(JSON.stringify(obj));
-    }
-
-    public async text(text: string, statusCode: ResponseCode = ResponseCode.OKAY, contentType: ResponseType = ResponseType.TEXT): Promise<void> {
-        this.statusCode = statusCode;
+    public write(text: string, contentType: ResponseType = ResponseType.TEXT): void {
         this._response.setHeader('Content-Type', contentType);
         this._response.write(text);
-        this._response.end();
     }
 
     public noContent(): void {
@@ -76,7 +70,7 @@ export class Response implements IResponse {
         this._response.end();
     }
 
-    public serverError(error: Error): void {
+    public error(error: Error): void {
         LOGGER.error(error);
 
         this.statusCode = ResponseCode.SERVER_ERROR;

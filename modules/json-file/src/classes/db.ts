@@ -1,5 +1,4 @@
-import { IDb, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
-import { ResourceDoesNotExistException } from '@skimp/router';
+import { IDb, MODEL_REGISTER, ResourceDoesNotExistException, ResourceLocation } from '@skimp/core';
 
 import { IEntityFactory } from '../interfaces/entity-factory.interface';
 import { IEntity } from '../interfaces/entity.interface';
@@ -21,15 +20,15 @@ export class Db implements IDb {
         return file.exists();
     }
 
-    public async get(location: ResourceLocation): Promise<any> {
+    public async get(location: ResourceLocation): Promise<object> {
         const filePath: string = location.toString() + '.json';
         const file: IEntity = await this.entityFactory.fromPath(filePath);
 
         if (!file.exists()) {
-            throw new ResourceDoesNotExistException(location.toUrl());
+            throw new ResourceDoesNotExistException(location);
         }
 
-        const model: any = this.serialiser.deserialise(await file.readContent());
+        const model: object = this.serialiser.deserialise(await file.readContent());
 
         MODEL_REGISTER.setLocation(model, location);
         MODEL_REGISTER.setCreatedDate(model, file.createdDate());
@@ -37,7 +36,7 @@ export class Db implements IDb {
         return model;
     }
 
-    public async list(location: ResourceLocation): Promise<Array<any>> {
+    public async list(location: ResourceLocation): Promise<Array<object>> {
         const entity: IEntity = await this.entityFactory.fromPath(location.toString());
         const files: Array<string> = await entity.listChildren();
 
@@ -51,13 +50,13 @@ export class Db implements IDb {
         const file: IEntity = await this.entityFactory.fromPath(filePath);
 
         if (!file.exists()) {
-            throw new ResourceDoesNotExistException(location.toUrl());
+            throw new ResourceDoesNotExistException(location);
         }
 
         await file.delete();
     }
 
-    public async set(location: ResourceLocation, model: any): Promise<void> {
+    public async set(location: ResourceLocation, model: object): Promise<void> {
         const filePath: string = location.toString() + '.json';
         const file: IEntity = await this.entityFactory.fromPath(filePath);
 

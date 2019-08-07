@@ -1,5 +1,5 @@
 import { IPromiseResolver } from '@cleavera/utils';
-import { IRouter } from '@skimp/core';
+import { HttpRouter } from '@skimp/http';
 import { createServer, IncomingMessage, Server as HttpServer, ServerResponse } from 'http';
 
 import { Request } from './request';
@@ -8,9 +8,9 @@ import { Response } from './response';
 export class Server {
     public port: number;
 
-    private _server: HttpServer;
+    private readonly _server: HttpServer;
 
-    constructor(port: number, router: IRouter) {
+    constructor(port: number, router: HttpRouter) {
         this.port = port;
 
         this._server = createServer(async(requestMessage: IncomingMessage, serverResponse: ServerResponse) => {
@@ -20,7 +20,7 @@ export class Server {
             try {
                 await router.route(request, response);
             } catch (e) {
-                response.serverError(e);
+                response.error(e);
             }
         });
 

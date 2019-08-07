@@ -1,4 +1,5 @@
 import { $isNull, $isUndefined, Maybe } from '@cleavera/utils';
+import { IJsonValue } from '@cleavera/utils/dist';
 import { IMeta, MetaKey } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
 
@@ -53,7 +54,7 @@ export class SchemaRegister {
         this.setFieldMeta(schema, field, fieldMeta);
     }
 
-    public serialise(schema: ISchema, field: string, value: any): any {
+    public serialise(schema: ISchema, field: string, value: unknown): unknown {
         const fieldMeta: IFieldMeta = this.getFieldMeta(schema, field);
 
         if (!fieldMeta.serialiser) {
@@ -63,7 +64,7 @@ export class SchemaRegister {
         return fieldMeta.serialiser(value);
     }
 
-    public deserialise(schema: ISchema, field: string, value: any): any {
+    public deserialise(schema: ISchema, field: string, value: Maybe<IJsonValue>): unknown {
         const fieldMeta: IFieldMeta = this.getFieldMeta(schema, field);
 
         if (!fieldMeta.deserialiser) {
@@ -81,7 +82,7 @@ export class SchemaRegister {
         this._meta.set(schema, MetaKey.VALIDATION, validations);
     }
 
-    public async validate(model: any): Promise<ValidationExceptions> {
+    public async validate(model: object): Promise<ValidationExceptions> {
         const validations: Array<IValidation> = this._meta.get(model.constructor, MetaKey.VALIDATION) || [];
         let errors: ValidationExceptions = new ValidationExceptions();
 
@@ -132,7 +133,7 @@ export class SchemaRegister {
         this.setFieldMeta(schema, propertyName, field);
     }
 
-    public setFieldOptions(schema: ISchema, propertyName: string, options: IOptions<any>): void {
+    public setFieldOptions(schema: ISchema, propertyName: string, options: IOptions<IJsonValue>): void {
         const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
 
         field.options = options;

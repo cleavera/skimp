@@ -1,7 +1,6 @@
-import { $isNull, Maybe } from '@cleavera/utils';
-import { IApi, ResourceLocation } from '@skimp/core';
-import { IResponse, ResponseCode } from '@skimp/http';
-import { RequestBodyNotAllowedException, ResourceDoesNotExistException } from '@skimp/router';
+import { $isNull, Maybe, OneOrMany } from '@cleavera/utils';
+import { IApi, IResponse, ResourceDoesNotExistException, ResourceLocation, ResponseCode } from '@skimp/core';
+import { RequestBodyNotAllowedException } from '@skimp/router';
 import { FieldNotConfiguredException, FieldType, IOptions, ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '@skimp/schema';
 
 import { FieldTypeMapping } from '../constants/field-type-mapping.constant';
@@ -19,19 +18,19 @@ export class Docs implements IApi {
         this._jsonAPI = new Api();
     }
 
-    public respond(response: IResponse, _model: Array<any> | any, location: ResourceLocation): void {
+    public respond(response: IResponse, _model: OneOrMany<object>, location: ResourceLocation): void {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if ($isNull(schema)) {
-            throw new ResourceDoesNotExistException(location.toUrl());
+            throw new ResourceDoesNotExistException(location);
         }
 
         response.setAllow(false, false, false);
-        response.json(this._documentSchema(schema));
+        response.write(JSON.stringify(this._documentSchema(schema)), 'application/json');
         response.commit();
     }
 
-    public deserialise(_json: any, _location: ResourceLocation): any {
+    public deserialise(_json: string, _location: ResourceLocation): never {
         throw new RequestBodyNotAllowedException();
     }
 
@@ -99,7 +98,7 @@ export class Docs implements IApi {
                                 } as ISchemaTerminatingValue;
 
                                 if (!$isNull(options)) {
-                                    (result[mappedField] as ISchemaTerminatingValue).enum = options as any;
+                                    (result[mappedField] as ISchemaTerminatingValue).enum = options as any; //tslint:disable-line no-any
                                 }
 
                                 return result;

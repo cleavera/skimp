@@ -9,7 +9,10 @@ export { ResourceLocation } from './classes/resource-location';
 export { IDb } from './interfaces/db.interface';
 export { ContentTypeNotSupportedException } from './exceptions/content-type-not-supported.exception';
 export { NoContentTypesConfiguredException } from './exceptions/no-content-types-configured.exception';
-export { IRouter } from './interfaces/router.interface';
+export { IContent } from './interfaces/content.interface';
+export { IResponse } from './interfaces/response.interface';
+export { ResponseCode } from './constants/response-code.constant';
+export { ResourceDoesNotExistException } from './exceptions/resource-does-not-exist.exception';
 
 import * as MetaKey from './constants/meta-field-names.constant';
 

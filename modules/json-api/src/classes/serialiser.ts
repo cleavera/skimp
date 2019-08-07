@@ -1,6 +1,6 @@
 import { $isNull, $isString, Maybe } from '@cleavera/utils';
-import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
-import { Uri } from '@skimp/http';
+import { MissingCreatedDateException, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
+import { NoLocationRegisteredException } from '@skimp/router';
 import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException } from '@skimp/schema';
 import { ModelValidationException } from '@skimp/validation';
 
@@ -13,8 +13,8 @@ import { ILinks } from '../interfaces/links.interface';
 import { IRelationship } from '../interfaces/relationship.interface';
 
 export class Serialiser {
-    public error(errors: Array<ValidationException>): IJsonErrors {
-        return {
+    public error(errors: Array<ValidationException>): string {
+        const out: IJsonErrors = {
             errors: errors.reduce((acc: Array<IJsonError>, exception: ValidationException) => {
                 if (exception instanceof ModelValidationException) {
                     return acc.concat((exception.fields).map((pointer: ModelPointer): IJsonError => {
@@ -46,9 +46,86 @@ export class Serialiser {
                 }
             }, [])
         };
+
+        return JSON.stringify(out);
     }
 
-    public serialise(model: any, location: Maybe<ResourceLocation> = null): IJsonData {
+    public serialiseModel(model: object, location: Maybe<ResourceLocation> = null): string {
+        return JSON.stringify(this._mapToModel(model, location));
+    }
+
+    public serialiseList(model: Array<object>): string {
+        return JSON.stringify(model.sort((a: object, b: object): number => {
+            const aCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(a);
+            const bCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(b);
+
+            if ($isNull(aCreated)) {
+                throw new MissingCreatedDateException(a);
+            }
+
+            if ($isNull(bCreated)) {
+                throw new MissingCreatedDateException(b);
+            }
+
+            if (aCreated < bCreated) {
+                return 1;
+            }
+
+            if (aCreated > bCreated) {
+                return -1;
+            }
+
+            return 0;
+        }).map((item: object) => {
+            const location: Maybe<ResourceLocation> = MODEL_REGISTER.getLocation(item);
+
+            if ($isNull(location)) {
+                throw new NoLocationRegisteredException(item);
+            }
+
+            return this._mapToModel(item, location);
+        }));
+    }
+
+    public deserialise(json: IJsonData): object {
+        const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(json.data.type);
+
+        if ($isNull(schema)) {
+            throw new ResourceNotRegisteredException(json.data.type);
+        }
+
+        let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
+
+        if ($isNull(fields)) {
+            fields = [];
+        }
+
+        const model: object = new schema();
+
+        fields.forEach((field: string) => {
+            const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
+
+            if ($isNull(mappedField)) {
+                throw new FieldNotConfiguredException(schema, field);
+            }
+
+            (model as any)[field] = SCHEMA_REGISTER.deserialise(schema, field, json.data.attributes[mappedField]); // tslint:disable-line no-any
+        });
+
+        if (json.data.relationships) {
+            json.data.relationships.forEach((relationship: IRelationship, index: number) => {
+                if (!relationship.href || !$isString(relationship.href)) {
+                    throw new InvalidJSONRelationship(index);
+                }
+
+                MODEL_REGISTER.addRelationship(model, ResourceLocation.FromString(relationship.href));
+            });
+        }
+
+        return model;
+    }
+
+    private _mapToModel(model: any, location: Maybe<ResourceLocation> = null): IJsonData { //tslint:disable-line no-any
         const schema: ISchema = model.constructor;
         let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
@@ -74,7 +151,7 @@ export class Serialiser {
                         throw new FieldNotConfiguredException(schema, field);
                     }
 
-                    result[mappedField] = SCHEMA_REGISTER.serialise(schema, field, model[field]);
+                    result[mappedField] = SCHEMA_REGISTER.serialise(schema, field, model[field]) as string;
 
                     return result;
                 }, {}),
@@ -99,43 +176,5 @@ export class Serialiser {
                 }, {}) : undefined
             }
         };
-    }
-
-    public deserialise(json: IJsonData): any {
-        const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(json.data.type);
-
-        if ($isNull(schema)) {
-            throw new ResourceNotRegisteredException(json.data.type);
-        }
-
-        let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
-
-        if ($isNull(fields)) {
-            fields = [];
-        }
-
-        const model: any = new schema();
-
-        fields.forEach((field: string) => {
-            const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
-
-            if ($isNull(mappedField)) {
-                throw new FieldNotConfiguredException(schema, field);
-            }
-
-            model[field] = SCHEMA_REGISTER.deserialise(schema, field, json.data.attributes[mappedField]);
-        });
-
-        if (json.data.relationships) {
-            json.data.relationships.forEach((relationship: IRelationship, index: number) => {
-                if (!relationship.href || !$isString(relationship.href)) {
-                    throw new InvalidJSONRelationship(index);
-                }
-
-                MODEL_REGISTER.addRelationship(model, ResourceLocation.fromUrl(new Uri(relationship.href)));
-            });
-        }
-
-        return model;
     }
 }
