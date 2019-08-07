@@ -1,8 +1,8 @@
 import { IPromiseResolver } from '@cleavera/utils';
-import { HttpRouter } from '@skimp/http';
+import { HttpRequest, HttpRouter } from '@skimp/http';
 import { createServer, IncomingMessage, Server as HttpServer, ServerResponse } from 'http';
 
-import { Request } from './request';
+import { RequestFactory } from './request.factory';
 import { Response } from './response';
 
 export class Server {
@@ -14,7 +14,7 @@ export class Server {
         this.port = port;
 
         this._server = createServer(async(requestMessage: IncomingMessage, serverResponse: ServerResponse) => {
-            const request: Request = await Request.fromIncomingMessage(requestMessage);
+            const request: HttpRequest = await RequestFactory.FromIncomingMessage(requestMessage);
             const response: Response = new Response(serverResponse);
 
             try {
