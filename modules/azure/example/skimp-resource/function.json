@@ -12,7 +12,7 @@
         "options",
         "delete"
       ],
-      "route": "{resource}"
+      "route": "{resource?}"
     },
     {
       "type": "http",
