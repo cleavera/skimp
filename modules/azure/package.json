@@ -1,7 +1,7 @@
 {
   "name": "@skimp/azure",
   "version": "1.0.0",
-  "description": "",
+  "description": "Helper classes for binding skimp to an azure function app",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
