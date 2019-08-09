@@ -1,7 +1,6 @@
 import { AzureFunction, Context, HttpRequest as AzureHttpRequest } from '@azure/functions';
 import { Maybe } from '@cleavera/utils';
-import { RequestFactory, Response } from '@skimp/azure';
-import { ContextLogger } from '@skimp/azure';
+import { ContextLogger, RequestFactory, Response } from '@skimp/azure';
 import { API_REGISTER, DB_REGISTER, ResourceLocation } from '@skimp/core';
 import { ILogger, LOGGER } from '@skimp/debug';
 import { FileSystem } from '@skimp/file-system';
