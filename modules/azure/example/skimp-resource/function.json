@@ -20,5 +20,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/skimp-resource/index.js"
+  "scriptFile": "../dist/index.js"
 }

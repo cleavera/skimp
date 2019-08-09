@@ -9,10 +9,10 @@
         "get",
         "post",
         "put",
-        "delete",
-        "options"
+        "options",
+        "delete"
       ],
-      "route": ""
+      "route": "{resource}/{id}"
     },
     {
       "type": "http",
