@@ -7,10 +7,8 @@ import { Api, Docs } from '@skimp/json-api';
 import { ISchema } from '@skimp/schema';
 import { Server } from '@skimp/server';
 
-export async function init(port: number, dataPath: string, _schemas: Array<ISchema>, cors: boolean | string | Array<string> = false, version: string = 'UNVERSIONED', authenticator: Maybe<IAuthenticator> = null, loggerClass: ILogger = new ConsoleLogger()): Promise<Server> {
+export async function init(port: number, dataPath: string, _schemas: Array<ISchema>, cors: boolean | string | Array<string> = false, version: string = 'UNVERSIONED', authenticator: Maybe<IAuthenticator> = null, loggerClass: ILogger = new ConsoleLogger(), fileSystem: FileSystem = FileSystem.create(dataPath)): Promise<Server> {
     LOGGER.setLogger(loggerClass);
-
-    const fileSystem: FileSystem = FileSystem.create(dataPath);
 
     DB_REGISTER.configure(await fileSystem.createDb());
     API_REGISTER.configure(new Api(), '*/*');
