@@ -8,7 +8,7 @@ The easiest way to get set up is to install the quickstart module and the requir
 
 ### Example
 
-A full working example can be found in the example module, the test module also contains integration tests which describe all the behaviour currently available.
+A full working example can be found in the quickstart module, the test module also contains integration tests which describe all the behaviour currently available. For an example running from a function app checkout the azure module.
 
 ```typescript
 import { init } from '@skimp/quickstart';
@@ -196,7 +196,7 @@ init(
 <dt>version</dt>
 <dd>The version number to report at the root entity</dd>
 <dt>authenticator</dt>
-<dd>An optional authenticator class to be called for all requests, it gets passed the request object and if it throws errors the router will return a 401</dd>
+<dd>An optional authenticator class to be called for all requests, it gets passed an http request object and should return a promise of a boolean about whether to allow the request or not.</dd>
 <dt>loggerClass</dt>
 <dd>A logger class to use, by default will log to the console.</dd>
 </dl>
@@ -223,7 +223,6 @@ const server = new Server(port, new Router(version, cors));
 
 ## Todo
 
-- Azure function app as server alternative
 - Azure blob storage support
 - ETag
 - File upload

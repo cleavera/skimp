@@ -21,12 +21,10 @@ const httpTrigger: AzureFunction = async(context: Context, req: AzureHttpRequest
     API_REGISTER.configure(new Docs(), 'documentation/json');
 
     const router: HttpRouter = new HttpRouter('1.0', null, true);
-    let location: Maybe<ResourceLocation>;
+    let location: Maybe<ResourceLocation> = null;
 
     if (req.params.resource) {
         location = new ResourceLocation(req.params.resource, req.params.id);
-    } else {
-        location = null;
     }
 
     await router.route(await RequestFactory.FromRequest(location, req), Response.FromContext(context));

@@ -15,7 +15,6 @@ export class Api {
 
     public async get<T extends object>(_schema: ISchema<T>, location: ResourceLocation): Promise<T> {
         const json: IJsonData = await HttpRequest.get<IJsonData>(this._constructUrl(location));
-
         const model: T = this._serialiser.deserialise(json) as T;
 
         MODEL_REGISTER.setLocation(model, location);
@@ -31,7 +30,6 @@ export class Api {
         }
 
         const location: ResourceLocation = new ResourceLocation(resourceName);
-
         const json: Array<IJsonData> = await HttpRequest.get<Array<IJsonData>>(this._constructUrl(location));
 
         return json.map<T>((data: IJsonData) => {
