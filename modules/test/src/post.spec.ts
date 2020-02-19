@@ -39,7 +39,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -54,7 +55,7 @@ export class PostSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         const postResponse: Response = await $request('/person', postOptions);
         const location: string = postResponse.headers.location || '';
@@ -134,7 +135,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -144,7 +146,7 @@ export class PostSpec {
                     type: 'job'
                 }
             } as IJsonApi
-        });
+        };
 
         const postResponse: Response = await $request('/job', postOptions);
         const location: string = postResponse.headers.location || '';
@@ -195,7 +197,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -210,7 +213,7 @@ export class PostSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         const postResponse: Response = await $request('/person', postOptions);
         this.location = postResponse.headers.location || '';
@@ -280,12 +283,13 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 errors: []
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -322,7 +326,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -332,7 +337,7 @@ export class PostSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -371,7 +376,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -381,7 +387,7 @@ export class PostSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -420,7 +426,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -431,7 +438,7 @@ export class PostSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -471,7 +478,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -482,7 +490,7 @@ export class PostSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -521,7 +529,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -532,7 +541,7 @@ export class PostSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -571,7 +580,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -582,7 +592,7 @@ export class PostSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -640,7 +650,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -651,7 +662,7 @@ export class PostSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -688,7 +699,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -698,7 +710,7 @@ export class PostSpec {
                     type: 'invalid'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -725,7 +737,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -735,7 +748,7 @@ export class PostSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -764,7 +777,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -774,7 +788,7 @@ export class PostSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -818,7 +832,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -833,7 +848,7 @@ export class PostSpec {
                     type: 'job'
                 }
             } as IJsonApi
-        });
+        };
 
         const postResponse: Response = await $request('/job', postOptions);
         const location: string = postResponse.headers.location || '';
@@ -958,7 +973,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -978,7 +994,7 @@ export class PostSpec {
                     ]
                 }
             } as IJsonApi
-        });
+        };
 
         const postResponse: Response = await $request('/person', postOptions);
         this.location = postResponse.headers.location || '';
@@ -1085,7 +1101,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -1100,7 +1117,7 @@ export class PostSpec {
                     type: 'job'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -1137,7 +1154,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -1152,7 +1170,7 @@ export class PostSpec {
                     type: 'job'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -1191,7 +1209,8 @@ export class PostSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -1209,7 +1228,7 @@ export class PostSpec {
                     type: 'team'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 
@@ -1255,7 +1274,8 @@ export class PostSpec {
         await this.create();
         const secondPersonLocation: string = await this.createSecondPerson();
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -1273,7 +1293,7 @@ export class PostSpec {
                     type: 'job'
                 }
             } as IJsonApi
-        });
+        };
 
         let success: boolean = false;
 

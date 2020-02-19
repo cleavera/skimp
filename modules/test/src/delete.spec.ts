@@ -32,7 +32,8 @@ export class DeleteSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -48,7 +49,7 @@ export class DeleteSpec {
                     ]
                 }
             } as IJsonApi
-        });
+        };
 
         const postResponse: Response = await $request('/job', postOptions);
         const location: string = postResponse.headers.location || '';
@@ -173,7 +174,8 @@ export class DeleteSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -183,7 +185,7 @@ export class DeleteSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         const postResponse: Response = await $request('/person', postOptions);
         this.location = postResponse.headers.location || '';
@@ -237,9 +239,10 @@ export class DeleteSpec {
             resolveWithFullResponse: true
         };
 
-        const deleteOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const deleteOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'DELETE'
-        });
+        };
 
         const deleteResponse: Response = await ($request(this.location, deleteOptions) as Promise<Response>);
 
@@ -283,9 +286,10 @@ export class DeleteSpec {
             resolveWithFullResponse: true
         };
 
-        const deleteOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const deleteOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'DELETE'
-        });
+        };
 
         let success: boolean = false;
 
@@ -328,9 +332,10 @@ export class DeleteSpec {
             resolveWithFullResponse: true
         };
 
-        const deleteOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const deleteOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'DELETE'
-        });
+        };
 
         let success: boolean = false;
 

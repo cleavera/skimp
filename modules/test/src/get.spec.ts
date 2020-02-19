@@ -34,7 +34,8 @@ export class GetSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -50,7 +51,7 @@ export class GetSpec {
                     ]
                 }
             } as IJsonApi
-        });
+        };
 
         const postResponse: Response = await $request('/job', postOptions);
         this.jobLocation = postResponse.headers.location || '';
@@ -172,7 +173,8 @@ export class GetSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -182,7 +184,7 @@ export class GetSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         const postResponse: Response = await $request('/person', postOptions);
         this.personLocation = postResponse.headers.location || '';
