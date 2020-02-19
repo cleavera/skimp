@@ -12,7 +12,7 @@ export class Content implements IContent {
         this.type = type;
     }
 
-    public static async fromStream(stream: IncomingMessage): Promise<Maybe<Content>> {
+    public static fromStream(stream: IncomingMessage): Promise<Maybe<Content>> {
         return new Promise<Maybe<Content>>((resolve: IPromiseResolverWithValue<Maybe<Content>>, reject: IPromiseRejector): void => {
             let body: string = '';
 

@@ -15,7 +15,7 @@ export class HttpRouter {
     private _coreRouter: Router;
     private readonly _cors: string | boolean | Array<string>;
 
-    constructor(version: string, authenticator: Maybe<IAuthenticator> = null, cors: string | boolean | Array<string>) {
+    constructor(version: string, authenticator: Maybe<IAuthenticator> = null, cors: string | boolean | Array<string> = false) {
         this.authenticator = authenticator;
         this._coreRouter = new Router(version);
         this._cors = cors;
@@ -46,7 +46,7 @@ export class HttpRouter {
         }
 
         if (request.isOptions) {
-            await this._options(request.location, response);
+            this._options(request.location, response);
 
             return;
         }
@@ -96,7 +96,7 @@ export class HttpRouter {
         }
     }
 
-    private async _options(location: ResourceLocation, response: IResponse): Promise<void> {
+    private _options(location: ResourceLocation, response: IResponse): void {
         const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
 
         if ($isNull(schema)) {
@@ -146,24 +146,26 @@ export class HttpRouter {
                 LOGGER.warn(e);
 
                 return null;
-            } else {
-                throw e;
             }
+
+            throw e;
         }
     }
 
     private _assignCors(request: HttpRequest, response: IHttpResponse): void {
         if (this._cors === false) {
             return;
-        } else if (this._cors === true) {
+        }
+
+        if (this._cors === true) {
             response.corsHeader = request.origin || '*';
         } else {
             response.corsHeader = this._cors;
         }
     }
 
-    private async _authenticate(request: HttpRequest): Promise<boolean> {
-        return $isNull(this.authenticator) || await this.authenticator.authenticate(request);
+    private _authenticate(request: HttpRequest): Promise<boolean> {
+        return $isNull(this.authenticator) || this.authenticator.authenticate(request);
     }
 
     private _missingBody(response: IResponse): void {

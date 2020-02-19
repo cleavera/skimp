@@ -40,7 +40,7 @@ export class Db implements IDb {
         const entity: IEntity = await this.entityFactory.fromPath(location.toString());
         const files: Array<string> = await entity.listChildren();
 
-        return Promise.all(files.map(async(filePath: string) => {
+        return Promise.all(files.map((filePath: string): Promise<object> => {
             return this.get(this.entityFactory.parseResourceLocation(filePath));
         }));
     }

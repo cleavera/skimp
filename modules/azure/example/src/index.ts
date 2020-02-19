@@ -27,7 +27,7 @@ const httpTrigger: AzureFunction = async(context: Context, req: AzureHttpRequest
         location = new ResourceLocation(req.params.resource, req.params.id);
     }
 
-    await router.route(await RequestFactory.FromRequest(location, req), Response.FromContext(context));
+    await router.route(RequestFactory.FromRequest(location, req), Response.FromContext(context));
 };
 
 export default httpTrigger;

@@ -5,7 +5,7 @@ import { HttpRequest } from '@skimp/http';
 import { Content } from './content';
 
 export class RequestFactory {
-    public static async FromRequest(location: Maybe<ResourceLocation>, request: AzureRequest): Promise<HttpRequest> {
+    public static FromRequest(location: Maybe<ResourceLocation>, request: AzureRequest): HttpRequest {
         const content: Maybe<Content> = Content.FromRequest(request);
         const origin: Maybe<string> = request.headers.origin || null;
         const type: Maybe<string> = request.headers.accept || null;

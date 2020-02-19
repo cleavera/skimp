@@ -52,7 +52,7 @@ export class Api {
             throw new SchemaNotRegisteredException(schema);
         }
 
-        let json: IJsonData;
+        let json: Maybe<IJsonData> = null;
 
         if ($isNull(location)) {
             json = await HttpRequest.post<IJsonData>(this._constructUrl(new ResourceLocation(resourceName)), JSON.parse(this._serialiser.serialiseModel(model)));

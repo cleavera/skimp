@@ -25,7 +25,9 @@ export class Serialiser {
                             }
                         };
                     }));
-                } else if (exception instanceof RelationshipValidationException) {
+                }
+
+                if (exception instanceof RelationshipValidationException) {
                     return acc.concat((exception.relationships).map((pointer: RelationshipPointer): IJsonError => {
                         return {
                             code: exception.code,
@@ -34,16 +36,16 @@ export class Serialiser {
                             }
                         };
                     }));
-                } else {
-                    acc.push({
-                        code: exception.code,
-                        source: {
-                            pointer: ''
-                        }
-                    });
-
-                    return acc;
                 }
+
+                acc.push({
+                    code: exception.code,
+                    source: {
+                        pointer: ''
+                    }
+                });
+
+                return acc;
             }, [])
         };
 
