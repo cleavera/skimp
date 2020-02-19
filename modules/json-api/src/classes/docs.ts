@@ -110,7 +110,7 @@ export class Docs implements IApi {
 
                                 return result;
                             }, {})
-                        },
+                        }
                     }
                 }
             }
