@@ -79,29 +79,31 @@ export class DeleteSpec {
 
         const getResponse: Response = await $request('/job', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    name: 'Web developer'
-                },
-                id: location,
-                type: 'job',
-                relationships: [
-                    {
-                        href: this.location,
-                        type: 'person',
-                        meta: {
-                            methods: {
-                                GET: true,
-                                POST: false,
-                                PUT: true,
-                                DELETE: true
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        name: 'Web developer'
+                    },
+                    id: location,
+                    type: 'job',
+                    relationships: [
+                        {
+                            href: this.location,
+                            type: 'person',
+                            meta: {
+                                methods: {
+                                    GET: true,
+                                    POST: false,
+                                    PUT: true,
+                                    DELETE: true
+                                }
                             }
                         }
-                    }
-                ]
-            }
-        } as IJsonApi]);
+                    ]
+                }
+            } as IJsonApi
+        ]);
 
         const getSingleResponse: Response = await $request(location, baseOptions);
 
@@ -203,20 +205,22 @@ export class DeleteSpec {
 
         const getResponse: Response = await $request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver',
-                    dateOfBirth: null,
-                    height: null,
-                    weight: null,
-                    employed: null,
-                    gender: null
-                },
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
     }
 
     @AsyncTeardown
@@ -298,20 +302,22 @@ export class DeleteSpec {
 
         const getResponse: Response = await $request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver',
-                    dateOfBirth: null,
-                    height: null,
-                    weight: null,
-                    employed: null,
-                    gender: null
-                },
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
     }
 
     @AsyncTest('When trying to delete a resource that does not exist should 404')
@@ -341,19 +347,21 @@ export class DeleteSpec {
 
         const getResponse: Response = await $request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver',
-                    dateOfBirth: null,
-                    height: null,
-                    weight: null,
-                    employed: null,
-                    gender: null
-                },
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
     }
 }

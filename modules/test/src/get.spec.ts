@@ -81,29 +81,31 @@ export class GetSpec {
 
         const getResponse: Response = await $request('/job', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    name: 'Web developer'
-                },
-                id: this.jobLocation,
-                type: 'job',
-                relationships: [
-                    {
-                        href: this.personLocation,
-                        type: 'person',
-                        meta: {
-                            methods: {
-                                GET: true,
-                                POST: false,
-                                PUT: true,
-                                DELETE: true
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        name: 'Web developer'
+                    },
+                    id: this.jobLocation,
+                    type: 'job',
+                    relationships: [
+                        {
+                            href: this.personLocation,
+                            type: 'person',
+                            meta: {
+                                methods: {
+                                    GET: true,
+                                    POST: false,
+                                    PUT: true,
+                                    DELETE: true
+                                }
                             }
                         }
-                    }
-                ]
-            }
-        } as IJsonApi]);
+                    ]
+                }
+            } as IJsonApi
+        ]);
 
         const getSingleResponse: Response = await $request(this.jobLocation, baseOptions);
 
@@ -202,20 +204,22 @@ export class GetSpec {
 
         const getResponse: Response = await $request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver',
-                    dateOfBirth: null,
-                    height: null,
-                    weight: null,
-                    employed: null,
-                    gender: null
-                },
-                id: this.personLocation,
-                type: 'person'
-            }
-        } as IJsonApi]);
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
+                    },
+                    id: this.personLocation,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
     }
 
     @AsyncSetup
@@ -334,9 +338,7 @@ export class GetSpec {
         Expect(getResponse.body).toEqual({
             $schema: 'http://json-schema.org/draft-04/schema#',
             type: 'object',
-            required: [
-                'data'
-            ],
+            required: ['data'],
             properties: {
                 data: {
                     type: 'object',
@@ -355,9 +357,7 @@ export class GetSpec {
                         },
                         attributes: {
                             type: 'object',
-                            required: [
-                                'fullName'
-                            ],
+                            required: ['fullName'],
                             properties: {
                                 fullName: {
                                     type: 'string'
@@ -403,9 +403,7 @@ export class GetSpec {
                             items: [
                                 {
                                     type: 'object',
-                                    required: [
-                                        'href'
-                                    ],
+                                    required: ['href'],
                                     properties: {
                                         href: {
                                             type: 'string'
@@ -446,9 +444,7 @@ export class GetSpec {
                                 },
                                 {
                                     type: 'object',
-                                    required: [
-                                        'href'
-                                    ],
+                                    required: ['href'],
                                     properties: {
                                         href: {
                                             type: 'string'
@@ -507,34 +503,36 @@ export class GetSpec {
 
         const getResponse: Response = await $request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver',
-                    dateOfBirth: null,
-                    height: null,
-                    weight: null,
-                    employed: null,
-                    gender: null
-                },
-                id: this.personLocation,
-                type: 'person',
-                relationships: [
-                    {
-                        href: this.jobLocation,
-                        type: 'job',
-                        meta: {
-                            methods: {
-                                GET: true,
-                                POST: false,
-                                PUT: true,
-                                DELETE: true
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
+                    },
+                    id: this.personLocation,
+                    type: 'person',
+                    relationships: [
+                        {
+                            href: this.jobLocation,
+                            type: 'job',
+                            meta: {
+                                methods: {
+                                    GET: true,
+                                    POST: false,
+                                    PUT: true,
+                                    DELETE: true
+                                }
                             }
                         }
-                    }
-                ]
-            }
-        } as IJsonApi]);
+                    ]
+                }
+            } as IJsonApi
+        ]);
 
         Expect(getResponse.headers.allow).toEqual('GET, POST');
     }
