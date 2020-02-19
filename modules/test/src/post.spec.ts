@@ -161,15 +161,17 @@ export class PostSpec {
 
         const getResponse: Response = await $request('/job', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    name: 'Web developer'
-                },
-                id: location,
-                type: 'job'
-            }
-        } as IJsonApi]);
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        name: 'Web developer'
+                    },
+                    id: location,
+                    type: 'job'
+                }
+            } as IJsonApi
+        ]);
 
         const getSingleResponse: Response = await $request(location, baseOptions);
 
@@ -230,20 +232,22 @@ export class PostSpec {
 
         const getResponse: Response = await $request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver',
-                    dateOfBirth: '1990-05-04',
-                    height: 180,
-                    weight: 78,
-                    employed: true,
-                    gender: Gender.MALE
-                },
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: '1990-05-04',
+                        height: 180,
+                        weight: 78,
+                        employed: true,
+                        gender: Gender.MALE
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
 
         const getSingleResponse: Response = await $request(this.location, baseOptions);
 
@@ -786,20 +790,22 @@ export class PostSpec {
 
         const getResponse: Response = await $request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver',
-                    dateOfBirth: '1990-05-04',
-                    height: 180,
-                    weight: 78,
-                    employed: true,
-                    gender: Gender.MALE
-                },
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: '1990-05-04',
+                        height: 180,
+                        weight: 78,
+                        employed: true,
+                        gender: Gender.MALE
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
     }
 
     @AsyncTest('When adding a relationship')
@@ -858,29 +864,31 @@ export class PostSpec {
 
         const getResponse: Response = await $request('/job', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    name: 'Web developer'
-                },
-                id: location,
-                relationships: [
-                    {
-                        href: this.location,
-                        type: 'person',
-                        meta: {
-                            methods: {
-                                GET: true,
-                                POST: false,
-                                PUT: true,
-                                DELETE: true
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        name: 'Web developer'
+                    },
+                    id: location,
+                    relationships: [
+                        {
+                            href: this.location,
+                            type: 'person',
+                            meta: {
+                                methods: {
+                                    GET: true,
+                                    POST: false,
+                                    PUT: true,
+                                    DELETE: true
+                                }
                             }
                         }
-                    }
-                ],
-                type: 'job'
-            }
-        } as IJsonApi]);
+                    ],
+                    type: 'job'
+                }
+            } as IJsonApi
+        ]);
 
         const getSingleResponse: Response = await $request(location, baseOptions);
 
@@ -1006,34 +1014,36 @@ export class PostSpec {
 
         const getResponse: Response = await $request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver',
-                    dateOfBirth: '1990-05-04',
-                    height: 180,
-                    weight: 78,
-                    employed: true,
-                    gender: Gender.FEMALE
-                },
-                relationships: [
-                    {
-                        href: jobLocation,
-                        type: 'job',
-                        meta: {
-                            methods: {
-                                GET: true,
-                                POST: false,
-                                PUT: true,
-                                DELETE: true
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: '1990-05-04',
+                        height: 180,
+                        weight: 78,
+                        employed: true,
+                        gender: Gender.FEMALE
+                    },
+                    relationships: [
+                        {
+                            href: jobLocation,
+                            type: 'job',
+                            meta: {
+                                methods: {
+                                    GET: true,
+                                    POST: false,
+                                    PUT: true,
+                                    DELETE: true
+                                }
                             }
                         }
-                    }
-                ],
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
+                    ],
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
 
         const getSingleResponse: Response = await $request(this.location, baseOptions);
 

@@ -16,10 +16,7 @@ const config: Configuration = {
         rules: [
             {
                 test: /\.ts$/,
-                use: [
-                    'ts-loader'
-                ]
-
+                use: ['ts-loader']
             }
         ]
     },
@@ -28,10 +25,11 @@ const config: Configuration = {
     externals: /^@(?:angular|skimp)\//,
 
     resolve: {
-        modules: [
-            'node_modules'
-        ],
-        extensions: ['.ts', '.js']
+        modules: ['node_modules'],
+        extensions: [
+            '.ts',
+            '.js'
+        ]
     },
 
     mode: 'production'

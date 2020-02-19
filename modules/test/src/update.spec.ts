@@ -80,29 +80,31 @@ export class UpdateSpec {
 
         const getResponse: Response = await $request('/job', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    name: 'Web developer'
-                },
-                id: location,
-                type: 'job',
-                relationships: [
-                    {
-                        href: this.location,
-                        type: 'person',
-                        meta: {
-                            methods: {
-                                GET: true,
-                                POST: false,
-                                PUT: true,
-                                DELETE: true
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        name: 'Web developer'
+                    },
+                    id: location,
+                    type: 'job',
+                    relationships: [
+                        {
+                            href: this.location,
+                            type: 'person',
+                            meta: {
+                                methods: {
+                                    GET: true,
+                                    POST: false,
+                                    PUT: true,
+                                    DELETE: true
+                                }
                             }
                         }
-                    }
-                ]
-            }
-        } as IJsonApi]);
+                    ]
+                }
+            } as IJsonApi
+        ]);
 
         const getSingleResponse: Response = await $request(location, baseOptions);
 
@@ -204,20 +206,22 @@ export class UpdateSpec {
 
         const getResponse: Response = await $request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver',
-                    dateOfBirth: null,
-                    height: null,
-                    weight: null,
-                    employed: null,
-                    gender: null
-                },
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
     }
 
     @AsyncTeardown
@@ -286,20 +290,22 @@ export class UpdateSpec {
 
         const getResponse: Response = await $request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver2',
-                    dateOfBirth: null,
-                    height: null,
-                    weight: null,
-                    employed: null,
-                    gender: null
-                },
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver2',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
     }
 
     @AsyncTest('When putting a new resource')
@@ -533,20 +539,22 @@ export class UpdateSpec {
 
         const getResponse: Response = await $request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver',
-                    dateOfBirth: null,
-                    height: null,
-                    weight: null,
-                    employed: null,
-                    gender: null
-                },
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
     }
 
     @AsyncTest('When putting to a schema that does not exist')
@@ -584,20 +592,22 @@ export class UpdateSpec {
 
         const getResponse: Response = await $request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver',
-                    dateOfBirth: null,
-                    height: null,
-                    weight: null,
-                    employed: null,
-                    gender: null
-                },
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
     }
 
     @AsyncTest('When removing the relationship between two resources')
@@ -662,32 +672,36 @@ export class UpdateSpec {
 
         const getResponse: Response = await $request('/person', baseOptions);
 
-        Expect(getResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    fullName: 'Anthony Cleaver',
-                    dateOfBirth: null,
-                    height: null,
-                    weight: null,
-                    employed: null,
-                    gender: null
-                },
-                id: this.location,
-                type: 'person'
-            }
-        } as IJsonApi]);
+        Expect(getResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: null,
+                        height: null,
+                        weight: null,
+                        employed: null,
+                        gender: null
+                    },
+                    id: this.location,
+                    type: 'person'
+                }
+            } as IJsonApi
+        ]);
 
         const getJobResponse: Response = await $request('/job', baseOptions);
 
-        Expect(getJobResponse.body).toEqual([{
-            data: {
-                attributes: {
-                    name: 'Web developer'
-                },
-                id: jobLocation,
-                type: 'job'
+        Expect(getJobResponse.body).toEqual([
+            {
+                data: {
+                    attributes: {
+                        name: 'Web developer'
+                    },
+                    id: jobLocation,
+                    type: 'job'
+                }
             }
-        }]);
+        ]);
 
         const getSingleJobResponse: Response = await $request(jobLocation, baseOptions);
 
