@@ -608,4 +608,26 @@ export class GetSpec {
 
         Expect(success).toBe(false);
     }
+
+    @AsyncTest('When using an unknown method')
+    public async unknownMethod(): Promise<void> {
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true,
+            method: 'STEVE'
+        };
+
+        let success: boolean = false;
+
+        try {
+            await $request('/person', baseOptions);
+
+            success = true;
+        } catch (e) {
+            Expect(e.statusCode).toEqual(405);
+        }
+
+        Expect(success).toBe(false);
+    }
 }
