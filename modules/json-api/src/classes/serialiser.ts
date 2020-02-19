@@ -127,7 +127,7 @@ export class Serialiser {
         return model;
     }
 
-    private _mapToModel(model: any, location: Maybe<ResourceLocation> = null): IJsonData { //tslint:disable-line no-any
+    private _mapToModel(model: any, location: Maybe<ResourceLocation> = null): IJsonData { // tslint:disable-line no-any
         const schema: ISchema = model.constructor;
         let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);

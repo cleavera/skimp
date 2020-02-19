@@ -33,7 +33,8 @@ export class UpdateSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -49,7 +50,7 @@ export class UpdateSpec {
                     ]
                 }
             } as IJsonApi
-        });
+        };
 
         const postResponse: Response = await $request('/job', postOptions);
         const location: string = postResponse.headers.location || '';
@@ -174,7 +175,8 @@ export class UpdateSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'POST',
             body: {
                 data: {
@@ -184,7 +186,7 @@ export class UpdateSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         const postResponse: Response = await $request('/person', postOptions);
         this.location = postResponse.headers.location || '';
@@ -239,7 +241,8 @@ export class UpdateSpec {
 
         await $request(this.location, baseOptions);
 
-        const putOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const putOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'PUT',
             body: {
                 data: {
@@ -250,7 +253,7 @@ export class UpdateSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         const putResponse: Response = await $request(this.location, putOptions);
 
@@ -329,7 +332,8 @@ export class UpdateSpec {
 
         Expect(success).toBe(false);
 
-        const putOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const putOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'PUT',
             body: {
                 data: {
@@ -339,7 +343,7 @@ export class UpdateSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         const putResponse: Response = await $request(location, putOptions);
 
@@ -421,7 +425,8 @@ export class UpdateSpec {
 
         const location: string = `/person/${uuid.v4()}`;
 
-        const putOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const putOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'PUT',
             body: {
                 data: {
@@ -432,7 +437,7 @@ export class UpdateSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         const putResponse: Response = await $request(location, putOptions);
 
@@ -512,7 +517,8 @@ export class UpdateSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'PUT',
             body: {
                 data: {
@@ -522,7 +528,7 @@ export class UpdateSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         const location: string = `/person/${uuid.v4()}`;
         let success: boolean = false;
@@ -565,7 +571,8 @@ export class UpdateSpec {
             resolveWithFullResponse: true
         };
 
-        const postOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'PUT',
             body: {
                 data: {
@@ -575,7 +582,7 @@ export class UpdateSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         const location: string = `/invalid/${uuid.v4()}`;
         let success: boolean = false;
@@ -621,7 +628,8 @@ export class UpdateSpec {
 
         await $request(this.location, baseOptions);
 
-        const putOptions: RequestPromiseOptions = Object.assign({}, baseOptions, {
+        const putOptions: RequestPromiseOptions = {
+            ...baseOptions,
             method: 'PUT',
             body: {
                 data: {
@@ -632,7 +640,7 @@ export class UpdateSpec {
                     type: 'person'
                 }
             } as IJsonApi
-        });
+        };
 
         const putResponse: Response = await $request(this.location, putOptions);
 
