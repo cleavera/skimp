@@ -25,7 +25,7 @@ const config: Configuration = {
     },
 
     target: 'web',
-    externals: /^@(angular|skimp)\//,
+    externals: /^@(?:angular|skimp)\//,
 
     resolve: {
         modules: [
