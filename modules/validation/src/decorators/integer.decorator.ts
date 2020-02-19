@@ -10,7 +10,7 @@ export const IntegerType: PropertyDecorator = (target: any, propertyKey: string 
 
     const schema: ISchema = target.constructor;
 
-    SCHEMA_REGISTER.addValidation(schema, async(model: any) => { // tslint:disable-line no-any
+    SCHEMA_REGISTER.addValidation(schema, (model: any) => { // tslint:disable-line no-any
         if ((!$isNumber(model[propertyKey]) || !Number.isInteger(model[propertyKey])) && !$isNull(model[propertyKey])) {
             throw new ValidationFieldInvalidIntegerException(propertyKey, model);
         }

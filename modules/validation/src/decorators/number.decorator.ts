@@ -10,7 +10,7 @@ export const NumberType: PropertyDecorator = (target: any, propertyKey: string |
         throw new FieldCannotBeSymbolException(propertyKey);
     }
 
-    SCHEMA_REGISTER.addValidation(schema, async(model: any) => { // tslint:disable-line no-any
+    SCHEMA_REGISTER.addValidation(schema, (model: any) => { // tslint:disable-line no-any
         if (!$isNumber(model[propertyKey]) && !$isNull(model[propertyKey])) {
             throw new ValidationFieldInvalidNumberException(propertyKey, model);
         }

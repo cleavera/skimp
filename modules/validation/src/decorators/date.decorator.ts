@@ -10,7 +10,7 @@ export const DateType: PropertyDecorator = (target: any, propertyKey: string | s
         throw new FieldCannotBeSymbolException(propertyKey);
     }
 
-    SCHEMA_REGISTER.addValidation(schema, async(model: any) => { // tslint:disable-line no-any
+    SCHEMA_REGISTER.addValidation(schema, (model: any) => { // tslint:disable-line no-any
         if (!$isDate(model[propertyKey]) && !$isNull(model[propertyKey])) {
             throw new ValidationFieldInvalidDateException(propertyKey, model);
         }
