@@ -33,11 +33,14 @@ export class Serialiser {
                 result[mappedField] = SCHEMA_REGISTER.serialise(schema, field, model[field]) as string;
 
                 return result;
-            }, {}),
-            relationships: relationships && relationships.length ? relationships.map((relationship: ResourceLocation): IRelationship => {
-                return relationship.toString();
-            }) : undefined
+            }, {})
         };
+
+        if (relationships && relationships.length) {
+            out.relationships = relationships.map((relationship: ResourceLocation): IRelationship => {
+                return relationship.toString();
+            });
+        }
 
         return JSON.stringify(out, null, '\t');
     }
