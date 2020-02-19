@@ -51,14 +51,18 @@ export class Docs implements IApi {
             fields = [];
         }
 
-        return {
+        const out: ISchemaRoot<ISchemaObject> = {
             $schema: 'http://json-schema.org/draft-04/schema#',
             type: 'object',
             required: ['data'],
             properties: {
                 data: {
                     type: 'object',
-                    required: ['type', 'id', 'attributes'],
+                    required: [
+                        'type',
+                        'id',
+                        'attributes'
+                    ],
                     properties: {
                         type: {
                             type: 'string',
@@ -94,7 +98,10 @@ export class Docs implements IApi {
                                 }
 
                                 result[mappedField] = {
-                                    type: isRequired ? FieldTypeMapping[fieldType] : [FieldTypeMapping[fieldType], 'null']
+                                    type: isRequired ? FieldTypeMapping[fieldType] : [
+                                        FieldTypeMapping[fieldType],
+                                        'null'
+                                    ]
                                 } as ISchemaTerminatingValue;
 
                                 if (!$isNull(options)) {
@@ -104,56 +111,66 @@ export class Docs implements IApi {
                                 return result;
                             }, {})
                         },
-                        relationships: relationships && relationships.length ? {
-                            type: 'array',
-                            items: relationships.map((relationship: ISchema): ISchemaObject => {
-                                const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(relationship);
-
-                                if ($isNull(resourceName)) {
-                                    throw new SchemaNotRegisteredException(relationship);
-                                }
-
-                                return {
-                                    type: 'object',
-                                    required: ['href'],
-                                    properties: {
-                                        href: {
-                                            type: 'string'
-                                        },
-                                        type: {
-                                            type: 'string',
-                                            const: resourceName
-                                        },
-                                        meta: {
-                                            type: 'object',
-                                            properties: {
-                                                methods: {
-                                                    type: 'object',
-                                                    required: ['GET', 'POST', 'PUT', 'DELETE'],
-                                                    properties: {
-                                                        GET: {
-                                                            type: 'boolean'
-                                                        },
-                                                        POST: {
-                                                            type: 'boolean'
-                                                        },
-                                                        PUT: {
-                                                            type: 'boolean'
-                                                        },
-                                                        DELETE: {
-                                                            type: 'boolean'
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                };
-                            })
-                        } : undefined
                     }
                 }
             }
         };
+
+        if (relationships && relationships.length) {
+            (out.properties.data as ISchemaObject).properties.relationships = {
+                type: 'array',
+                items: relationships.map((relationship: ISchema): ISchemaObject => {
+                    const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(relationship);
+
+                    if ($isNull(resourceName)) {
+                        throw new SchemaNotRegisteredException(relationship);
+                    }
+
+                    return {
+                        type: 'object',
+                        required: ['href'],
+                        properties: {
+                            href: {
+                                type: 'string'
+                            },
+                            type: {
+                                type: 'string',
+                                const: resourceName
+                            },
+                            meta: {
+                                type: 'object',
+                                properties: {
+                                    methods: {
+                                        type: 'object',
+                                        required: [
+                                            'GET',
+                                            'POST',
+                                            'PUT',
+                                            'DELETE'
+                                        ],
+                                        properties: {
+                                            GET: {
+                                                type: 'boolean'
+                                            },
+                                            POST: {
+                                                type: 'boolean'
+                                            },
+                                            PUT: {
+                                                type: 'boolean'
+                                            },
+                                            DELETE: {
+                                                type: 'boolean'
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    };
+                })
+            };
+        }
+
+        return out;
     }
 }

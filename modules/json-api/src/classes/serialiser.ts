@@ -142,10 +142,9 @@ export class Serialiser {
             fields = [];
         }
 
-        return {
+        const out: IJsonData = {
             data: {
                 type,
-                id: $isNull(location) ? undefined : location.toString(),
                 attributes: fields.reduce<IAttributes>((result: IAttributes, field: string): IAttributes => {
                     const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
 
@@ -156,27 +155,39 @@ export class Serialiser {
                     result[mappedField] = SCHEMA_REGISTER.serialise(schema, field, model[field]) as string;
 
                     return result;
-                }, {}),
-                relationships: relationships && relationships.length ? relationships.map((relationship: ResourceLocation): IRelationship => {
-                    return {
-                        href: relationship.toString(),
-                        type: relationship.resourceName,
-                        meta: {
-                            methods: {
-                                GET: true,
-                                POST: false,
-                                PUT: true,
-                                DELETE: true
-                            }
-                        }
-                    };
-                }) : undefined,
-                links: links && links.length ? links.reduce<ILinks>((acc: ILinks, relationship: ResourceLocation): ILinks => {
-                    acc[relationship.resourceName] = relationship.toString();
-
-                    return acc;
-                }, {}) : undefined
+                }, {})
             }
         };
+
+        if (!$isNull(location)) {
+            out.data.id = location.toString();
+        }
+
+        if (relationships && relationships.length) {
+            out.data.relationships = relationships.map((relationship: ResourceLocation): IRelationship => {
+                return {
+                    href: relationship.toString(),
+                    type: relationship.resourceName,
+                    meta: {
+                        methods: {
+                            GET: true,
+                            POST: false,
+                            PUT: true,
+                            DELETE: true
+                        }
+                    }
+                };
+            });
+        }
+
+        if (links && links.length) {
+            out.data.links = links.reduce<ILinks>((acc: ILinks, relationship: ResourceLocation): ILinks => {
+                acc[relationship.resourceName] = relationship.toString();
+
+                return acc;
+            }, {});
+        }
+
+        return out;
     }
 }
