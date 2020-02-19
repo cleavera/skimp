@@ -10,7 +10,7 @@ export const Required: PropertyDecorator = (target: any, propertyKey: string | s
         throw new FieldCannotBeSymbolException(propertyKey);
     }
 
-    SCHEMA_REGISTER.addValidation(schema, async(model: any) => { // tslint:disable-line no-any
+    SCHEMA_REGISTER.addValidation(schema, (model: any) => { // tslint:disable-line no-any
         if ((!(propertyKey in model)) || $isUndefined(model[propertyKey]) || $isNull(model[propertyKey])) {
             throw new ValidationFieldRequiredException(propertyKey, model);
         }

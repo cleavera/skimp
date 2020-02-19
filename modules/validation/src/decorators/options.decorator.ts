@@ -11,7 +11,7 @@ export function Options<T extends IJsonValue>(options: IOptions<T>): PropertyDec
             throw new FieldCannotBeSymbolException(propertyKey);
         }
 
-        SCHEMA_REGISTER.addValidation(schema, async(model: any) => { // tslint:disable-line no-any
+        SCHEMA_REGISTER.addValidation(schema, (model: any) => { // tslint:disable-line no-any
             const value: T = model[propertyKey];
 
             if (!$isNull(value) && options.indexOf(value) === -1) {

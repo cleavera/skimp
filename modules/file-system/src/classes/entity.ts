@@ -111,7 +111,7 @@ export class Entity implements IEntity {
         }
 
         return new Promise((resolve: IPromiseResolver<Array<string>>, reject: IPromiseRejector): void => {
-            readdir(this.path, async(err: Maybe<NodeJS.ErrnoException>, files: Array<string>): Promise<void> => {
+            readdir(this.path, (err: Maybe<NodeJS.ErrnoException>, files: Array<string>): void => {
                 if (!$isNull(err)) {
                     reject(err);
                 }

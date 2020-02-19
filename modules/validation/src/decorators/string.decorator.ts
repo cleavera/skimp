@@ -10,7 +10,7 @@ export const StringType: PropertyDecorator = (target: any, propertyKey: string |
         throw new FieldCannotBeSymbolException(propertyKey);
     }
 
-    SCHEMA_REGISTER.addValidation(schema, async(model: any) => { // tslint:disable-line no-any
+    SCHEMA_REGISTER.addValidation(schema, (model: any) => { // tslint:disable-line no-any
         if (!$isString(model[propertyKey]) && !$isNull(model[propertyKey])) {
             throw new ValidationFieldInvalidStringException(propertyKey, model);
         }

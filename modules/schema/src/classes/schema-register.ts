@@ -1,5 +1,4 @@
-import { $isNull, $isUndefined, Maybe } from '@cleavera/utils';
-import { IJsonValue } from '@cleavera/utils/dist';
+import { $isNull, $isUndefined, IJsonValue, Maybe } from '@cleavera/utils';
 import { IMeta, MetaKey } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
 

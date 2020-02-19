@@ -1,3 +1,5 @@
+import { Asyncable } from '@cleavera/utils';
+
 export interface IValidation {
-    (model: object): Promise<void>;
+    (model: object): Asyncable<void>;
 }
