@@ -95,7 +95,7 @@ export class Router {
 
         model.version = this.version;
 
-        SCHEMA_REGISTER.register(RootSchema, 'ROOT', true);
+        await SCHEMA_REGISTER.register(RootSchema, 'ROOT', true);
         SCHEMA_REGISTER.addFieldMapping(RootSchema, 'version', 'version');
         MODEL_REGISTER.setLocation(model, location);
 

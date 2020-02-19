@@ -5,7 +5,7 @@ import { IMeta } from '../interfaces/meta.interface';
 
 export class MetaData implements IMeta {
     private readonly _objects: { [key: string]: unknown };
-    private readonly  _metaData: { [key: string]: { [metaDataKey: string]: unknown }};
+    private readonly _metaData: { [key: string]: { [metaDataKey: string]: unknown }};
 
     constructor() {
         this._objects = {};

@@ -4,7 +4,6 @@ import { InvalidSchemaResourceNameException, SCHEMA_REGISTER } from '@skimp/sche
 import { mkdir } from 'fs';
 import { join } from 'path';
 import { EntityFactory } from './entity-factory';
-import ErrnoException = NodeJS.ErrnoException;
 
 export class FileSystem {
     public readonly path: string;
@@ -43,8 +42,8 @@ export class FileSystem {
 
             const resourcePath: string = join(this.path, resourceName);
 
-            await new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector<ErrnoException>): void => {
-                mkdir(resourcePath, { recursive: true }, (err: Maybe<ErrnoException>): void => {
+            await new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector<NodeJS.ErrnoException>): void => {
+                mkdir(resourcePath, { recursive: true }, (err: Maybe<NodeJS.ErrnoException>): void => {
                     if (!$isNull(err) && err.code !== 'EEXIST') {
                         reject(err);
 

@@ -16,7 +16,7 @@ export class Api implements IApi {
     }
 
     public respond(response: IResponse, model: OneOrMany<object>, _location: ResourceLocation, created?: boolean): void {
-        let out: string;
+        let out: Maybe<string> = null;
 
         if (Array.isArray(model)) {
             out = this.serialiser.serialiseList(model);
