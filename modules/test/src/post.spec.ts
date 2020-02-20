@@ -4,8 +4,8 @@ import { ValidationExceptionCode } from '@skimp/schema';
 import { AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestCase, TestFixture } from 'alsatian';
 import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
-import { TestServer } from './classes/test-server';
 
+import { TestServer } from './classes/test-server';
 import { Gender } from './constants/genders.constant';
 import * as DATA_PATH from './data/path';
 import { $request } from './helpers/request.helper';

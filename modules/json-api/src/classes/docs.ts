@@ -8,7 +8,6 @@ import { ISchemaObject } from '../interfaces/schema-object.interface';
 import { ISchemaRoot } from '../interfaces/schema-root.interface';
 import { ISchemaTerminatingValue } from '../interfaces/schema-terminating-value.interface';
 import { ISchemaValue } from '../interfaces/schema-value.interface';
-
 import { Api } from './api';
 
 export class Docs implements IApi {

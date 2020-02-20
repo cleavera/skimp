@@ -1,4 +1,5 @@
 import { ResourceLocation } from '@skimp/core';
+
 import { Action } from '../constants/action.contant';
 
 export class ActionNotAllowedException extends Error {

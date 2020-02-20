@@ -3,8 +3,8 @@ import { API_REGISTER, ContentTypeNotSupportedException, IApi, IResponse, Resour
 import { LOGGER } from '@skimp/debug';
 import { ActionNotAllowedException, Router } from '@skimp/router';
 import { ISchema, SCHEMA_REGISTER, ValidationException, ValidationExceptions } from '@skimp/schema';
-import { MethodNotSupportedException } from '../exceptions/method-not-supported.exception';
 
+import { MethodNotSupportedException } from '../exceptions/method-not-supported.exception';
 import { MissingRequestBodyException } from '../exceptions/missing-request-body.exception';
 import { NotAuthorisedException } from '../exceptions/not-authorised.exception';
 import { IAuthenticator } from '../interfaces/authenticator.interface';

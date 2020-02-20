@@ -1,5 +1,6 @@
 import { Field, Schema } from '@skimp/schema';
 import { BooleanType, DateType, IntegerType, NumberType, Options, Required, StringType } from '@skimp/validation';
+
 import { GENDER_OPTIONS } from '../constants/gender-options.constant';
 
 @Schema('person')

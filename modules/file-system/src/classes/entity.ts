@@ -1,9 +1,8 @@
+import { $isNull, IPromiseRejector, IPromiseResolver, Maybe } from '@cleavera/utils';
+import { IEntity } from '@skimp/json-file';
 import { createReadStream, lstat, readdir, readFile, ReadStream, Stats, unlink, writeFile } from 'fs';
 import { join } from 'path';
 import { Writable } from 'stream';
-
-import { $isNull, IPromiseRejector, IPromiseResolver, Maybe } from '@cleavera/utils';
-import { IEntity } from '@skimp/json-file';
 
 import { EntityDoesNotExistException } from '../exceptions/entity-does-not-exist.exception';
 import { EntityNotADirectoryException } from '../exceptions/entity-not-a-directory.exception';
