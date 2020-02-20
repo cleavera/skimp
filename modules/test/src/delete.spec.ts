@@ -3,8 +3,8 @@ import { IJsonApi } from '@skimp/json-api';
 import { AsyncSetup, AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestFixture } from 'alsatian';
 import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
-import { TestServer } from './classes/test-server';
 
+import { TestServer } from './classes/test-server';
 import * as DATA_PATH from './data/path';
 import { $request } from './helpers/request.helper';
 import { SCHEMAS } from './schemas';

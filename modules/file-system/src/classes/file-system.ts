@@ -3,6 +3,7 @@ import { Db } from '@skimp/json-file';
 import { InvalidSchemaResourceNameException, SCHEMA_REGISTER } from '@skimp/schema';
 import { mkdir } from 'fs';
 import { join } from 'path';
+
 import { EntityFactory } from './entity-factory';
 
 export class FileSystem {

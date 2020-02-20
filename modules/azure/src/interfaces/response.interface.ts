@@ -1,5 +1,3 @@
-export type IResponse = IJSONResponse | IRawResponse;
-
 interface IJSONResponse extends IBaseResponse {
     body: {
         [prop: string]: unknown;
@@ -18,3 +16,5 @@ interface IBaseResponse {
     };
     status: number;
 }
+
+export type IResponse = IJSONResponse | IRawResponse;

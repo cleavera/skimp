@@ -1,4 +1,5 @@
 import { ResourceLocation } from '@skimp/core';
+
 import { IEntity } from './entity.interface';
 
 export interface IEntityFactory {

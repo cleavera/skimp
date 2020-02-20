@@ -1,3 +1,6 @@
+import * as MetaKey from './constants/meta-field-names.constant';
+
+export { MetaKey };
 export { MetaData } from './classes/meta-data';
 export { IMeta } from './interfaces/meta.interface';
 export { MissingCreatedDateException } from './exceptions/missing-created-date.exception';
@@ -13,7 +16,3 @@ export { IContent } from './interfaces/content.interface';
 export { IResponse } from './interfaces/response.interface';
 export { ResponseCode } from './constants/response-code.constant';
 export { ResourceDoesNotExistException } from './exceptions/resource-does-not-exist.exception';
-
-import * as MetaKey from './constants/meta-field-names.constant';
-
-export { MetaKey };

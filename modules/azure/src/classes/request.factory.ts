@@ -2,6 +2,7 @@ import { HttpRequest as AzureRequest } from '@azure/functions';
 import { Maybe } from '@cleavera/utils';
 import { ResourceLocation } from '@skimp/core';
 import { HttpRequest } from '@skimp/http';
+
 import { Content } from './content';
 
 export class RequestFactory {

@@ -1,6 +1,7 @@
 import { ResourceLocation } from '@skimp/core';
 import { IEntityFactory } from '@skimp/json-file';
 import { join, parse, ParsedPath, sep } from 'path';
+
 import { Entity } from './entity';
 
 export class EntityFactory implements IEntityFactory {

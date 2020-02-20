@@ -14,14 +14,14 @@ export class Db implements IDb {
     }
 
     public async exists(location: ResourceLocation): Promise<boolean> {
-        const filePath: string = location.toString() + '.json';
+        const filePath: string = this._getFilePath(location);
         const file: IEntity = await this.entityFactory.fromPath(filePath);
 
         return file.exists();
     }
 
     public async get(location: ResourceLocation): Promise<object> {
-        const filePath: string = location.toString() + '.json';
+        const filePath: string = this._getFilePath(location);
         const file: IEntity = await this.entityFactory.fromPath(filePath);
 
         if (!file.exists()) {
@@ -46,7 +46,7 @@ export class Db implements IDb {
     }
 
     public async delete(location: ResourceLocation): Promise<void> {
-        const filePath: string = location.toString() + '.json';
+        const filePath: string = this._getFilePath(location);
         const file: IEntity = await this.entityFactory.fromPath(filePath);
 
         if (!file.exists()) {
@@ -57,7 +57,7 @@ export class Db implements IDb {
     }
 
     public async set(location: ResourceLocation, model: object): Promise<void> {
-        const filePath: string = location.toString() + '.json';
+        const filePath: string = this._getFilePath(location);
         const file: IEntity = await this.entityFactory.fromPath(filePath);
 
         MODEL_REGISTER.setLocation(model, location);
@@ -67,5 +67,9 @@ export class Db implements IDb {
 
     public static create(entityFactory: IEntityFactory): Db {
         return new Db(entityFactory);
+    }
+
+    private _getFilePath(location: ResourceLocation): string {
+        return `${location.toString()}.json`;
     }
 }
