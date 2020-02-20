@@ -1,7 +1,7 @@
 import { $isNull, Maybe } from '@cleavera/utils';
 import { API_REGISTER, DB_REGISTER, IApi, IContent, IDb, IResponse, MODEL_REGISTER, ResourceDoesNotExistException, ResourceLocation } from '@skimp/core';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationExceptions } from '@skimp/schema';
-import * as $uuid from 'uuid/v4';
+import * as $uuid from 'uuid/v4'; // eslint-disable-line import/no-internal-modules
 
 import { Action } from '../constants/action.contant';
 import { ActionNotAllowedException } from '../exceptions/action-not.allowed.exception';

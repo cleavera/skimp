@@ -39,7 +39,7 @@
     "@skimp/http": "^4.0.0"
   },
   "dependencies": {
-    "@cleavera/utils": "^2.6.0",
+    "@cleavera/utils": "^3.5.1",
     "@types/node": "^10.14.14"
   }
 }
