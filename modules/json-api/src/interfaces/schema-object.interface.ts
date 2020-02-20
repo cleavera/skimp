@@ -1,9 +1,9 @@
+import { IDict } from '@cleavera/utils';
+
 import { ISchemaValue } from './schema-value.interface';
 
 export interface ISchemaObject {
     type: 'object';
     required?: Array<string>;
-    properties: {
-        [propName: string]: ISchemaValue | void
-    };
+    properties: IDict<ISchemaValue | void>;
 }

@@ -7,6 +7,6 @@ export interface IRelationship {
             POST: boolean;
             PUT: boolean;
             DELETE: boolean;
-        }
+        };
     };
 }

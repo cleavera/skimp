@@ -65,11 +65,11 @@ export class Db implements IDb {
         await file.write(this.serialiser.serialise(model));
     }
 
-    public static create(entityFactory: IEntityFactory): Db {
-        return new Db(entityFactory);
-    }
-
     private _getFilePath(location: ResourceLocation): string {
         return `${location.toString()}.json`;
+    }
+
+    public static create(entityFactory: IEntityFactory): Db {
+        return new Db(entityFactory);
     }
 }

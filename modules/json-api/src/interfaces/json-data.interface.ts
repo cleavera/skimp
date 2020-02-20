@@ -7,7 +7,7 @@ export interface IJsonData<TAttributes = IAttributes> {
         attributes: TAttributes;
         id?: string;
         type: string;
-        relationships?: Array<IRelationship>,
-        links?: ILinks
+        relationships?: Array<IRelationship>;
+        links?: ILinks;
     };
 }

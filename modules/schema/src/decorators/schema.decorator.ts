@@ -6,7 +6,7 @@ import { ValidationExceptions } from '../exceptions/validation.exceptions';
 import { ISchema } from '../interfaces/schema.interface';
 
 export function Schema(resourceName: string): ClassDecorator {
-    return (target: any): void => { // tslint:disable-line no-any
+    return (target: any): void => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
         SCHEMA_REGISTER.register(target, resourceName);
 
         SCHEMA_REGISTER.addValidation(target, (model: object) => {

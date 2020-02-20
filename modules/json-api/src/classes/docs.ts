@@ -1,4 +1,4 @@
-import { $isNull, Maybe, OneOrMany } from '@cleavera/utils';
+import { $isNull, IDict, Maybe, OneOrMany } from '@cleavera/utils';
 import { IApi, IResponse, ResourceDoesNotExistException, ResourceLocation, ResponseCode } from '@skimp/core';
 import { RequestBodyNotAllowedException } from '@skimp/router';
 import { FieldNotConfiguredException, FieldType, IOptions, ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '@skimp/schema';
@@ -86,7 +86,7 @@ export class Docs implements IApi {
 
                                 return acc;
                             }, []),
-                            properties: fields.reduce<{ [propName: string]: ISchemaValue }>((result: { [propName: string]: ISchemaValue }, field: string): { [propName: string]: ISchemaValue } => {
+                            properties: fields.reduce<IDict<ISchemaValue>>((result: IDict<ISchemaValue>, field: string): IDict<ISchemaValue> => {
                                 const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
                                 const fieldType: Maybe<FieldType> = SCHEMA_REGISTER.getFieldType(schema, field);
                                 const isRequired: boolean = SCHEMA_REGISTER.getFieldRequired(schema, field);
