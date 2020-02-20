@@ -7,7 +7,7 @@ import { FileSystem } from '@skimp/file-system';
 import { HttpRouter } from '@skimp/http';
 import { Api, Docs } from '@skimp/json-api';
 
-import './schemas';
+import './schemas'; // eslint-disable-line import/no-unassigned-import
 
 const httpTrigger: AzureFunction = async(context: Context, req: AzureHttpRequest): Promise<void> => {
     const logger: ILogger = new ContextLogger(context);
@@ -30,4 +30,4 @@ const httpTrigger: AzureFunction = async(context: Context, req: AzureHttpRequest
     await router.route(RequestFactory.FromRequest(location, req), Response.FromContext(context));
 };
 
-export default httpTrigger;
+export default httpTrigger; // eslint-disable-line import/no-default-export
