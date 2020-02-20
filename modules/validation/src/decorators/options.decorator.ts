@@ -4,7 +4,7 @@ import { FieldCannotBeSymbolException, IOptions, ISchema, SCHEMA_REGISTER } from
 import { ValidationFieldNotValidOptionException } from '../exceptions/validation-field-not-valid-option.exception';
 
 export function Options<T extends IJsonValue>(options: IOptions<T>): PropertyDecorator {
-    return (target: any, propertyKey: string | symbol): void => { // tslint:disable-line no-any
+    return (target: any, propertyKey: string | symbol): void => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
         const schema: ISchema = target.constructor;
 
         if ($isSymbol(propertyKey)) {

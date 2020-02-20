@@ -8,7 +8,7 @@ import { ValidationExceptions } from '../exceptions/validation.exceptions';
 import { ISchema } from '../interfaces/schema.interface';
 
 export function Relationship(schema: ISchema, limit: Maybe<number> = null): ClassDecorator {
-    return (target: any): void => { // tslint:disable-line no-any
+    return (target: any): void => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
         SCHEMA_REGISTER.addSchemaRelationship(target, schema);
         SCHEMA_REGISTER.addSchemaRelationship(schema, target);
 

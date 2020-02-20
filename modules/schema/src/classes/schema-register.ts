@@ -1,4 +1,4 @@
-import { $isNull, $isUndefined, IJsonValue, Maybe } from '@cleavera/utils';
+import { $isNull, $isUndefined, IDict, IJsonValue, Maybe } from '@cleavera/utils';
 import { IMeta, MetaKey } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
 
@@ -14,7 +14,7 @@ import { IValueDeserialiser } from '../interfaces/value-deserialiser.interface';
 import { IValueSerialiser } from '../interfaces/value-serialiser.interface';
 
 export class SchemaRegister {
-    private readonly _schemas: { [key: string]: ISchema };
+    private readonly _schemas: IDict<ISchema>;
     private readonly _meta: IMeta;
 
     constructor(meta: IMeta) {
@@ -167,17 +167,17 @@ export class SchemaRegister {
             return null;
         }
 
-        return (field as { type: FieldType }).type;
+        return (field as { type: FieldType; }).type;
     }
 
     public getFieldMeta(schema: ISchema, fieldName: string): IFieldMeta {
-        const fields: { [field: string]: IFieldMeta } = this._meta.get(schema, MetaKey.FIELDS) || {};
+        const fields: IDict<IFieldMeta> = this._meta.get(schema, MetaKey.FIELDS) || {};
 
         return fields[fieldName] || {};
     }
 
     public setFieldMeta(schema: ISchema, fieldName: string, meta: IFieldMeta): void {
-        const fields: { [field: string]: IFieldMeta } = this._meta.get(schema, MetaKey.FIELDS) || {};
+        const fields: IDict<IFieldMeta> = this._meta.get(schema, MetaKey.FIELDS) || {};
 
         fields[fieldName] = meta;
 
@@ -185,7 +185,7 @@ export class SchemaRegister {
     }
 
     public getFields(schema: ISchema): Maybe<Array<string>> {
-        const fields: Maybe<{ [field: string]: IFieldMeta }> = this._meta.get(schema, MetaKey.FIELDS);
+        const fields: Maybe<IDict<IFieldMeta>> = this._meta.get(schema, MetaKey.FIELDS);
 
         if ($isNull(fields)) {
             return null;

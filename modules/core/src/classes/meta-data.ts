@@ -1,11 +1,11 @@
-import { $isNull, $isUndefined, Maybe } from '@cleavera/utils';
+import { $isNull, $isUndefined, IDict, Maybe } from '@cleavera/utils';
 import { v4 as uuid } from 'uuid';
 
 import { IMeta } from '../interfaces/meta.interface';
 
 export class MetaData implements IMeta {
-    private readonly _objects: { [key: string]: unknown };
-    private readonly _metaData: { [key: string]: { [metaDataKey: string]: unknown }};
+    private readonly _objects: IDict<unknown>;
+    private readonly _metaData: IDict<IDict<unknown>>;
 
     constructor() {
         this._objects = {};

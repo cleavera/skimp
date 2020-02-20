@@ -1,4 +1,4 @@
-import { $isNull, $isUndefined, Maybe } from '@cleavera/utils';
+import { $isNull, $isUndefined, IDict, Maybe } from '@cleavera/utils';
 
 import { ContentTypeNotSupportedException } from '../exceptions/content-type-not-supported.exception';
 import { NoContentTypesConfiguredException } from '../exceptions/no-content-types-configured.exception';
@@ -7,7 +7,7 @@ import { IApi } from '../interfaces/api.interface';
 export class ApiRegister {
     public defaultContentType: Maybe<string>;
 
-    private readonly _apis: { [contentType: string]: IApi };
+    private readonly _apis: IDict<IApi>;
 
     constructor() {
         this._apis = {};
