@@ -1,4 +1,5 @@
 import { Context } from '@azure/functions';
+import { $isUndefined } from '@cleavera/utils';
 import { ResponseCode } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
 import { IHttpResponse, ResponseType } from '@skimp/http';
@@ -24,7 +25,7 @@ export class Response implements IHttpResponse {
     }
 
     public get corsHeader(): string | Array<string> {
-        return this._res.headers['Access-Control-Allow-Origin'] as string | Array<string> || '';
+        return this._res.headers['Access-Control-Allow-Origin'] as string | Array<string> ?? '';
     }
 
     public set corsHeader(cors: string | Array<string>) {
@@ -36,7 +37,7 @@ export class Response implements IHttpResponse {
     }
 
     public get location(): string {
-        return this._res.headers.location as string || '';
+        return this._res.headers.location as string ?? '';
     }
 
     public set location(location: string) {
@@ -86,7 +87,7 @@ export class Response implements IHttpResponse {
     }
 
     public static FromContext(context: Context): Response {
-        if (!context.res) {
+        if ($isUndefined(context.res)) {
             throw new RequestNotHttpTriggerException();
         }
 

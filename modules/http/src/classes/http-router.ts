@@ -13,7 +13,7 @@ import { HttpRequest } from './http-request';
 
 export class HttpRouter {
     public authenticator: Maybe<IAuthenticator>;
-    private _coreRouter: Router;
+    private readonly _coreRouter: Router;
     private readonly _cors: string | boolean | Array<string>;
 
     constructor(version: string, authenticator: Maybe<IAuthenticator> = null, cors: string | boolean | Array<string> = false) {
@@ -27,15 +27,15 @@ export class HttpRouter {
 
         if (!await this._authenticate(request)) {
             LOGGER.warn(new NotAuthorisedException());
-            this._writeError(response, ResponseCode.NOT_AUTHORISED);
+            HttpRouter._writeError(response, ResponseCode.NOT_AUTHORISED);
 
             return;
         }
 
-        const api: Maybe<IApi> = this._getApi(request.type);
+        const api: Maybe<IApi> = HttpRouter._getApi(request.type);
 
         if ($isNull(api)) {
-            this._writeError(response, ResponseCode.NOT_ACCEPTABLE);
+            HttpRouter._writeError(response, ResponseCode.NOT_ACCEPTABLE);
 
             return;
         }
@@ -60,7 +60,7 @@ export class HttpRouter {
 
         if (request.isPost) {
             if ($isNull(request.content)) {
-                this._missingBody(response);
+                HttpRouter._missingBody(response);
 
                 return;
             }
@@ -68,7 +68,7 @@ export class HttpRouter {
             try {
                 await this._coreRouter.post(request.location, request.content, response, api);
             } catch (e) {
-                this._handleError(e, response);
+                HttpRouter._handleError(e, response);
             }
 
             return;
@@ -76,7 +76,7 @@ export class HttpRouter {
 
         if (request.isPut) {
             if ($isNull(request.content)) {
-                this._missingBody(response);
+                HttpRouter._missingBody(response);
 
                 return;
             }
@@ -84,7 +84,7 @@ export class HttpRouter {
             try {
                 await this._coreRouter.put(request.location, request.content, response, api);
             } catch (e) {
-                this._handleError(e, response);
+                HttpRouter._handleError(e, response);
             }
 
             return;
@@ -97,7 +97,7 @@ export class HttpRouter {
         }
 
         LOGGER.warn(new MethodNotSupportedException(request.method));
-        this._writeError(response, ResponseCode.METHOD_NOT_ALLOWED);
+        HttpRouter._writeError(response, ResponseCode.METHOD_NOT_ALLOWED);
     }
 
     private _options(location: ResourceLocation, response: IResponse): void {
@@ -105,7 +105,7 @@ export class HttpRouter {
 
         if ($isNull(schema)) {
             LOGGER.warn(new ResourceDoesNotExistException(location));
-            this._writeError(response, ResponseCode.NOT_FOUND);
+            HttpRouter._writeError(response, ResponseCode.NOT_FOUND);
 
             return;
         }
@@ -119,7 +119,7 @@ export class HttpRouter {
         } catch (e) {
             if (e instanceof ResourceDoesNotExistException) {
                 LOGGER.warn(e);
-                this._writeError(response, ResponseCode.NOT_FOUND);
+                HttpRouter._writeError(response, ResponseCode.NOT_FOUND);
             } else {
                 throw e;
             }
@@ -132,27 +132,13 @@ export class HttpRouter {
         } catch (e) {
             if (e instanceof ResourceDoesNotExistException) {
                 LOGGER.warn(e);
-                this._writeError(response, ResponseCode.NOT_FOUND);
+                HttpRouter._writeError(response, ResponseCode.NOT_FOUND);
             } else if (e instanceof ActionNotAllowedException) {
                 LOGGER.warn(e);
-                this._writeError(response, ResponseCode.METHOD_NOT_ALLOWED);
+                HttpRouter._writeError(response, ResponseCode.METHOD_NOT_ALLOWED);
             } else {
                 throw e;
             }
-        }
-    }
-
-    private _getApi(type: Maybe<string>): Maybe<IApi> {
-        try {
-            return API_REGISTER.get(type);
-        } catch (e) {
-            if (e instanceof ContentTypeNotSupportedException) {
-                LOGGER.warn(e);
-
-                return null;
-            }
-
-            throw e;
         }
     }
 
@@ -162,45 +148,59 @@ export class HttpRouter {
         }
 
         if (this._cors === true) {
-            response.corsHeader = request.origin || '*';
+            response.corsHeader = request.origin ?? '*';
         } else {
             response.corsHeader = this._cors;
         }
     }
 
-    private _authenticate(request: HttpRequest): Promise<boolean> {
-        return $isNull(this.authenticator) || this.authenticator.authenticate(request);
+    private async _authenticate(request: HttpRequest): Promise<boolean> {
+        return $isNull(this.authenticator) || await this.authenticator.authenticate(request);
     }
 
-    private _missingBody(response: IResponse): void {
+    private static _missingBody(response: IResponse): void {
         const e: MissingRequestBodyException = new MissingRequestBodyException();
 
         LOGGER.warn(e);
-        this._writeError(response, ResponseCode.BAD_REQUEST, [e]);
+        HttpRouter._writeError(response, ResponseCode.BAD_REQUEST, [e]);
     }
 
-    private _writeError(response: IResponse, code: number, e: Maybe<Array<Error>> = null): void {
-        API_REGISTER.get().error(response, code, e);
-    }
-
-    private _handleError(e: Error, response: IResponse): void {
+    private static _handleError(e: Error, response: IResponse): void {
         if (e instanceof ResourceDoesNotExistException) {
             LOGGER.warn(e);
-            this._writeError(response, ResponseCode.NOT_FOUND);
+            HttpRouter._writeError(response, ResponseCode.NOT_FOUND);
         } else if (e instanceof ActionNotAllowedException) {
             LOGGER.warn(e);
-            this._writeError(response, ResponseCode.METHOD_NOT_ALLOWED);
+            HttpRouter._writeError(response, ResponseCode.METHOD_NOT_ALLOWED);
             API_REGISTER.get().error(response, ResponseCode.METHOD_NOT_ALLOWED);
         } else if (e instanceof ValidationExceptions) {
             LOGGER.warn(...e);
-            this._writeError(response, ResponseCode.BAD_REQUEST, e);
+            HttpRouter._writeError(response, ResponseCode.BAD_REQUEST, e);
         } else if (e instanceof ValidationException) {
             LOGGER.warn(e);
-            this._writeError(response, ResponseCode.BAD_REQUEST, [e]);
+            HttpRouter._writeError(response, ResponseCode.BAD_REQUEST, [e]);
         } else if (e instanceof MissingRequestBodyException) {
             LOGGER.warn(e);
-            this._writeError(response, ResponseCode.BAD_REQUEST, [e]);
+            HttpRouter._writeError(response, ResponseCode.BAD_REQUEST, [e]);
         } else {
+            throw e;
+        }
+    }
+
+    private static _writeError(response: IResponse, code: number, e: Maybe<Array<Error>> = null): void {
+        API_REGISTER.get().error(response, code, e);
+    }
+
+    private static _getApi(type: Maybe<string>): Maybe<IApi> {
+        try {
+            return API_REGISTER.get(type);
+        } catch (e) {
+            if (e instanceof ContentTypeNotSupportedException) {
+                LOGGER.warn(e);
+
+                return null;
+            }
+
             throw e;
         }
     }

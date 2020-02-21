@@ -52,7 +52,7 @@ export class DeleteSpec {
         };
 
         const postResponse: Response = await $request('/job', postOptions);
-        const location: string = postResponse.headers.location || '';
+        const location: string = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
             data: {
@@ -188,7 +188,7 @@ export class DeleteSpec {
         };
 
         const postResponse: Response = await $request('/person', postOptions);
-        this.location = postResponse.headers.location || '';
+        this.location = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
             data: {
@@ -244,7 +244,7 @@ export class DeleteSpec {
             method: 'DELETE'
         };
 
-        const deleteResponse: Response = await ($request(this.location, deleteOptions) as Promise<Response>);
+        const deleteResponse: Response = await $request(this.location, deleteOptions);
 
         Expect(deleteResponse.body).not.toBeDefined();
         Expect(deleteResponse.statusCode).toBe(204);

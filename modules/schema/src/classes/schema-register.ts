@@ -28,7 +28,7 @@ export class SchemaRegister {
         });
     }
 
-    public register(schema: ISchema, resourceName: string, isPrivate?: boolean): void {
+    public register(schema: ISchema, resourceName: string, isPrivate: boolean = false): void {
         if (!($isNull(this._schemas[resourceName]) || $isUndefined(this._schemas[resourceName])) && !isPrivate) {
             throw new DuplicateResourceNameException(resourceName);
         }
@@ -41,7 +41,7 @@ export class SchemaRegister {
     }
 
     public getSchema(resourceName: string): Maybe<ISchema> {
-        return this._schemas[resourceName] || null;
+        return this._schemas[resourceName] ?? null;
     }
 
     public addSerialiser(schema: ISchema, field: string, serialiser: IValueSerialiser, deserialiser: IValueDeserialiser): void {
@@ -56,7 +56,7 @@ export class SchemaRegister {
     public serialise(schema: ISchema, field: string, value: unknown): unknown {
         const fieldMeta: IFieldMeta = this.getFieldMeta(schema, field);
 
-        if (!fieldMeta.serialiser) {
+        if ($isUndefined(fieldMeta.serialiser)) {
             return value;
         }
 
@@ -66,15 +66,15 @@ export class SchemaRegister {
     public deserialise(schema: ISchema, field: string, value: Maybe<IJsonValue>): unknown {
         const fieldMeta: IFieldMeta = this.getFieldMeta(schema, field);
 
-        if (!fieldMeta.deserialiser) {
-            return value || null;
+        if ($isUndefined(fieldMeta.deserialiser)) {
+            return value ?? null;
         }
 
         return fieldMeta.deserialiser(value);
     }
 
     public addValidation(schema: ISchema, validation: IValidation): void {
-        const validations: Array<IValidation> = this._meta.get(schema, MetaKey.VALIDATION) || [];
+        const validations: Array<IValidation> = this._meta.get(schema, MetaKey.VALIDATION) ?? [];
 
         validations.push(validation);
 
@@ -82,7 +82,7 @@ export class SchemaRegister {
     }
 
     public async validate(model: object): Promise<ValidationExceptions> {
-        const validations: Array<IValidation> = this._meta.get(model.constructor, MetaKey.VALIDATION) || [];
+        const validations: Array<IValidation> = this._meta.get(model.constructor, MetaKey.VALIDATION) ?? [];
         let errors: ValidationExceptions = new ValidationExceptions();
 
         for (const validate of validations) {
@@ -105,7 +105,7 @@ export class SchemaRegister {
     }
 
     public addSchemaRelationship(schema: ISchema, relationship: ISchema): void {
-        const relationships: Array<ISchema> = this._meta.get(schema, MetaKey.SCHEMA_RELATIONSHIPS) || [];
+        const relationships: Array<ISchema> = this._meta.get(schema, MetaKey.SCHEMA_RELATIONSHIPS) ?? [];
 
         relationships.push(relationship);
 
@@ -132,7 +132,7 @@ export class SchemaRegister {
         this.setFieldMeta(schema, propertyName, field);
     }
 
-    public setFieldOptions(schema: ISchema, propertyName: string, options: IOptions<IJsonValue>): void {
+    public setFieldOptions(schema: ISchema, propertyName: string, options: IOptions): void {
         const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
 
         field.options = options;
@@ -143,7 +143,7 @@ export class SchemaRegister {
     public getFieldOptions(schema: ISchema, propertyName: string): Maybe<IOptions> {
         const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
 
-        return field.options || null;
+        return field.options ?? null;
     }
 
     public setFieldRequired(schema: ISchema, propertyName: string, isRequired: boolean): void {
@@ -157,7 +157,7 @@ export class SchemaRegister {
     public getFieldRequired(schema: ISchema, propertyName: string): boolean {
         const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
 
-        return field.isRequired || false;
+        return field.isRequired ?? false;
     }
 
     public getFieldType(schema: ISchema, propertyName: string): Maybe<FieldType> {
@@ -171,13 +171,13 @@ export class SchemaRegister {
     }
 
     public getFieldMeta(schema: ISchema, fieldName: string): IFieldMeta {
-        const fields: IDict<IFieldMeta> = this._meta.get(schema, MetaKey.FIELDS) || {};
+        const fields: IDict<IFieldMeta> = this._meta.get(schema, MetaKey.FIELDS) ?? {};
 
-        return fields[fieldName] || {};
+        return fields[fieldName] ?? {};
     }
 
     public setFieldMeta(schema: ISchema, fieldName: string, meta: IFieldMeta): void {
-        const fields: IDict<IFieldMeta> = this._meta.get(schema, MetaKey.FIELDS) || {};
+        const fields: IDict<IFieldMeta> = this._meta.get(schema, MetaKey.FIELDS) ?? {};
 
         fields[fieldName] = meta;
 
@@ -197,11 +197,7 @@ export class SchemaRegister {
     public mapToField(schema: ISchema, property: string): Maybe<string> {
         const field: IFieldMeta = this.getFieldMeta(schema, property);
 
-        if (!field || !field.mappedName) {
-            return null;
-        }
-
-        return field.mappedName;
+        return field?.mappedName ?? null;
     }
 
     public getSchemaResourceName(schema: ISchema): Maybe<string> {

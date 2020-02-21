@@ -16,7 +16,7 @@ export async function init(port: number, dataPath: string, _schemas: Array<ISche
     API_REGISTER.configure(new Docs(), 'documentation/json');
     const server: Server = new Server(port, new HttpRouter(version, authenticator, cors));
 
-    LOGGER.debug(`Server started on port ${server.port}`);
+    LOGGER.debug(`Server started on port ${server.port.toString(10)}`);
     LOGGER.debug(`Loading data from  ${fileSystem.path}`);
 
     return server;

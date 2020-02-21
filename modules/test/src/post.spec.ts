@@ -58,7 +58,7 @@ export class PostSpec {
         };
 
         const postResponse: Response = await $request('/person', postOptions);
-        const location: string = postResponse.headers.location || '';
+        const location: string = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
             data: {
@@ -149,7 +149,7 @@ export class PostSpec {
         };
 
         const postResponse: Response = await $request('/job', postOptions);
-        const location: string = postResponse.headers.location || '';
+        const location: string = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
             data: {
@@ -216,7 +216,7 @@ export class PostSpec {
         };
 
         const postResponse: Response = await $request('/person', postOptions);
-        this.location = postResponse.headers.location || '';
+        this.location = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
             data: {
@@ -851,7 +851,7 @@ export class PostSpec {
         };
 
         const postResponse: Response = await $request('/job', postOptions);
-        const location: string = postResponse.headers.location || '';
+        const location: string = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
             data: {
@@ -997,7 +997,7 @@ export class PostSpec {
         };
 
         const postResponse: Response = await $request('/person', postOptions);
-        this.location = postResponse.headers.location || '';
+        this.location = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
             data: {

@@ -7,7 +7,7 @@ import { HttpRequest } from './http-request';
 
 export class Api {
     public basePath: string;
-    private _serialiser: Serialiser;
+    private readonly _serialiser: Serialiser;
 
     constructor(basePath: string) {
         this.basePath = basePath;

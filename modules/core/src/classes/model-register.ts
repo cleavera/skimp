@@ -28,7 +28,7 @@ export class ModelRegister {
     }
 
     public addRelationship(model: object, relationship: ResourceLocation): void {
-        const relationships: Array<ResourceLocation> = this._meta.get(model, MetaKey.MODEL_RELATIONSHIPS) || [];
+        const relationships: Array<ResourceLocation> = this._meta.get(model, MetaKey.MODEL_RELATIONSHIPS) ?? [];
 
         relationships.push(relationship);
 
@@ -36,7 +36,7 @@ export class ModelRegister {
     }
 
     public addLink(model: object, link: ResourceLocation): void {
-        const links: Array<ResourceLocation> = this._meta.get(model, MetaKey.LINKS) || [];
+        const links: Array<ResourceLocation> = this._meta.get(model, MetaKey.LINKS) ?? [];
 
         links.push(link);
 
@@ -44,7 +44,7 @@ export class ModelRegister {
     }
 
     public removeRelationship(model: object, relationship: ResourceLocation): void {
-        const relationships: Array<ResourceLocation> = this._meta.get(model, MetaKey.MODEL_RELATIONSHIPS) || [];
+        const relationships: Array<ResourceLocation> = this._meta.get(model, MetaKey.MODEL_RELATIONSHIPS) ?? [];
 
         relationships.splice(relationships.indexOf(relationship), 1);
 
@@ -52,10 +52,10 @@ export class ModelRegister {
     }
 
     public getRelationships(model: object): Array<ResourceLocation> {
-        return this._meta.get(model, MetaKey.MODEL_RELATIONSHIPS) || [];
+        return this._meta.get(model, MetaKey.MODEL_RELATIONSHIPS) ?? [];
     }
 
     public getLinks(model: object): Array<ResourceLocation> {
-        return this._meta.get(model, MetaKey.LINKS) || [];
+        return this._meta.get(model, MetaKey.LINKS) ?? [];
     }
 }

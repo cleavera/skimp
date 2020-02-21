@@ -1,17 +1,14 @@
-import { $isNull, Maybe } from '@cleavera/utils';
+import { $isUndefined, Maybe } from '@cleavera/utils';
 import { ResourceLocation } from '@skimp/core';
 
 export class LocationFactory {
     public static FromUrl(url: string): Maybe<ResourceLocation> {
-        const parts: Array<string> = url.substring(1).split('/');
+        const [resourceName, resourceId]: Array<string> = url.substring(1).split('/'); // eslint-disable-line array-element-newline
 
-        const resourceName: Maybe<string> = parts[0] || null;
-        const resourceId: Maybe<string> = parts[1] || null;
-
-        if ($isNull(resourceName)) {
+        if ($isUndefined(resourceName)) {
             return null;
         }
 
-        return new ResourceLocation(resourceName, resourceId);
+        return new ResourceLocation(resourceName, (resourceId as string | undefined) ?? null);
     }
 }

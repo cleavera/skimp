@@ -26,10 +26,10 @@
   "license": "ISC",
   "devDependencies": {
     "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.8.2"
   },
   "dependencies": {
-    "@cleavera/utils": "^2.6.0",
+    "@cleavera/utils": "^3.6.0",
     "@types/uuid": "^3.4.5",
     "uuid": "^3.3.2"
   }

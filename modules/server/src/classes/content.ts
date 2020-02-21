@@ -1,4 +1,4 @@
-import { IPromiseRejector, IPromiseResolver, Maybe } from '@cleavera/utils';
+import { $isEmpty, $isNull, IPromiseRejector, IPromiseResolver, Maybe } from '@cleavera/utils';
 import { IContent } from '@skimp/core';
 import { IncomingMessage } from 'http';
 
@@ -11,20 +11,20 @@ export class Content implements IContent {
         this.type = type;
     }
 
-    public static fromStream(stream: IncomingMessage): Promise<Maybe<Content>> {
+    public static async fromStream(stream: IncomingMessage): Promise<Maybe<Content>> {
         return new Promise<Maybe<Content>>((resolve: IPromiseResolver<Maybe<Content>>, reject: IPromiseRejector): void => {
             let body: string = '';
 
             stream.on('readable', (): void => {
-                const content: string = stream.read();
+                const content: Maybe<string> = stream.read() ?? null;
 
-                if (content) {
+                if (!$isNull(content)) {
                     body += content;
                 }
             });
 
             stream.on('end', (): void => {
-                if (body) {
+                if (!$isEmpty(body)) {
                     resolve(new Content(body, stream.headers['content-type']));
                 }
 

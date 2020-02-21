@@ -31,7 +31,7 @@
     "@skimp/router": "^2.0.0",
     "@skimp/schema": "^2.5.0",
     "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.8.2"
   },
   "peerDependencies": {
     "@skimp/core": "^3.0.0",
@@ -39,7 +39,7 @@
     "@skimp/http": "^4.0.0"
   },
   "dependencies": {
-    "@cleavera/utils": "^3.5.1",
+    "@cleavera/utils": "^3.6.0",
     "@types/node": "^10.14.14"
   }
 }

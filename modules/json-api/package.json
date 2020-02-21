@@ -31,7 +31,7 @@
     "@skimp/schema": "^2.5.0",
     "@skimp/validation": "^2.1.0",
     "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.8.2"
   },
   "peerDependencies": {
     "@skimp/core": "^3.0.0",
@@ -40,6 +40,6 @@
     "@skimp/validation": "^2.1.0"
   },
   "dependencies": {
-    "@cleavera/utils": "^2.6.0"
+    "@cleavera/utils": "^3.6.0"
   }
 }

@@ -40,7 +40,7 @@ export class Entity implements IEntity {
         return (this._stats as Stats).isFile();
     }
 
-    public write(content: string): Promise<void> {
+    public async write(content: string): Promise<void> {
         return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
             writeFile(this.path, content, 'utf-8', async(writeError: Maybe<NodeJS.ErrnoException>): Promise<void> => {
                 if (!$isNull(writeError)) {
@@ -58,7 +58,7 @@ export class Entity implements IEntity {
         });
     }
 
-    public delete(): Promise<void> {
+    public async delete(): Promise<void> {
         this.assertExists();
 
         return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
@@ -84,7 +84,7 @@ export class Entity implements IEntity {
         }
     }
 
-    public readContent(): Promise<string> {
+    public async readContent(): Promise<string> {
         this.assertExists();
 
         if (!this.isFile()) {
@@ -102,7 +102,7 @@ export class Entity implements IEntity {
         });
     }
 
-    public listChildren(): Promise<Array<string>> {
+    public async listChildren(): Promise<Array<string>> {
         this.assertExists();
 
         if (!this.isDirectory()) {
@@ -124,7 +124,7 @@ export class Entity implements IEntity {
         });
     }
 
-    public streamTo(stream: Writable): Promise<void> {
+    public async streamTo(stream: Writable): Promise<void> {
         this.assertExists();
 
         return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
@@ -158,7 +158,7 @@ export class Entity implements IEntity {
         }
     }
 
-    private static getStats(path: string): Promise<Stats> {
+    private static async getStats(path: string): Promise<Stats> {
         return new Promise((resolve: IPromiseResolver<Stats>, reject: IPromiseRejector): void => {
             lstat(path, (err: Maybe<NodeJS.ErrnoException>, stats: Stats): void => {
                 if (!$isNull(err)) {
