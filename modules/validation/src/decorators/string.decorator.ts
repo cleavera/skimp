@@ -3,14 +3,14 @@ import { FieldCannotBeSymbolException, FieldType, ISchema, SCHEMA_REGISTER } fro
 
 import { ValidationFieldInvalidStringException } from '../exceptions/validation-field-invalid-string.exception';
 
-export const StringType: PropertyDecorator = (target: any, propertyKey: string | symbol): void => { // tslint:disable-line no-any
+export const StringType: PropertyDecorator = (target: any, propertyKey: string | symbol): void => { // eslint-disable-line
     const schema: ISchema = target.constructor;
 
     if ($isSymbol(propertyKey)) {
         throw new FieldCannotBeSymbolException(propertyKey);
     }
 
-    SCHEMA_REGISTER.addValidation(schema, (model: any) => { // tslint:disable-line no-any
+    SCHEMA_REGISTER.addValidation(schema, (model: any) => { // eslint-disable-line
         if (!$isString(model[propertyKey]) && !$isNull(model[propertyKey])) {
             throw new ValidationFieldInvalidStringException(propertyKey, model);
         }

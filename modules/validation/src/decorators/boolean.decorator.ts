@@ -3,14 +3,14 @@ import { FieldCannotBeSymbolException, FieldType, ISchema, SCHEMA_REGISTER } fro
 
 import { ValidationFieldInvalidBooleanException } from '../exceptions/validation-field-invalid-boolean.exception';
 
-export const BooleanType: PropertyDecorator = (target: any, propertyKey: string | symbol): void => { // tslint:disable-line no-any
+export const BooleanType: PropertyDecorator = (target: any, propertyKey: string | symbol): void => { // eslint-disable-line
     if ($isSymbol(propertyKey)) {
         throw new FieldCannotBeSymbolException(propertyKey);
     }
 
     const schema: ISchema = target.constructor;
 
-    SCHEMA_REGISTER.addValidation(schema, (model: any) => { // tslint:disable-line no-any
+    SCHEMA_REGISTER.addValidation(schema, (model: any) => { // eslint-disable-line
         if (!$isBoolean(model[propertyKey]) && !$isNull(model[propertyKey])) {
             throw new ValidationFieldInvalidBooleanException(propertyKey, model);
         }

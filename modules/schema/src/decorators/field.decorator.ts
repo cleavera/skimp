@@ -4,7 +4,7 @@ import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
 import { FieldCannotBeSymbolException } from '../exceptions/field-cannot-be-symbol.exception';
 
 export function Field(alias: Maybe<string> = null): PropertyDecorator {
-    return (target: any, propertyKey: string | symbol): void => { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+    return (target: any, propertyKey: string | symbol): void => { // eslint-disable-line
         if ($isSymbol(propertyKey)) {
             throw new FieldCannotBeSymbolException(propertyKey);
         }

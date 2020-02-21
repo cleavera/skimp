@@ -8,7 +8,7 @@ export class ContextLogger implements ILogger {
         this._context = context;
     }
 
-    public debug(...messages: Array<any>): void { // tslint:disable-line no-any
+    public debug(...messages: Array<any>): void { // eslint-disable-line
         this._context.log(...messages);
     }
 

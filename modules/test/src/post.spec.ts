@@ -369,7 +369,7 @@ export class PostSpec {
     @TestCase(3)
     @TestCase(true)
     @AsyncTest('When sending an invalid string value')
-    public async invalidString(value: any): Promise<void> { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+    public async invalidString(value: unknown): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
@@ -419,7 +419,7 @@ export class PostSpec {
     @TestCase('abc')
     @TestCase(true)
     @AsyncTest('When sending an invalid number value')
-    public async invalidNumber(value: any): Promise<void> { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+    public async invalidNumber(value: unknown): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
@@ -471,7 +471,7 @@ export class PostSpec {
     @TestCase(true)
     @TestCase(12.5)
     @AsyncTest('When sending an invalid integer value')
-    public async invalidInteger(value: any): Promise<void> { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+    public async invalidInteger(value: unknown): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
@@ -522,7 +522,7 @@ export class PostSpec {
     @TestCase('abc')
     @TestCase(12)
     @AsyncTest('When sending an invalid boolean value')
-    public async invalidBoolean(value: any): Promise<void> { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+    public async invalidBoolean(value: unknown): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
@@ -573,7 +573,7 @@ export class PostSpec {
     @TestCase('Gender.MALES')
     @TestCase('MALE')
     @AsyncTest('When sending an invalid option value')
-    public async invalidOption(value: any): Promise<void> { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+    public async invalidOption(value: unknown): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
@@ -643,7 +643,7 @@ export class PostSpec {
     @TestCase('1990-11-31')
     @TestCase('1990-12-32')
     @AsyncTest('When sending an invalid date')
-    public async invalidDate(date: any): Promise<void> { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+    public async invalidDate(date: unknown): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
             json: true,
@@ -1112,7 +1112,7 @@ export class PostSpec {
                     relationships: [
                         {
                             link: '/person/123'
-                        } as any
+                        } as unknown
                     ],
                     type: 'job'
                 }

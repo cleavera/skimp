@@ -111,7 +111,7 @@ export class Serialiser {
                 throw new FieldNotConfiguredException(schema, field);
             }
 
-            (model as any)[field] = SCHEMA_REGISTER.deserialise(schema, field, json.data.attributes[mappedField]); // tslint:disable-line no-any
+            (model as any)[field] = SCHEMA_REGISTER.deserialise(schema, field, json.data.attributes[mappedField]); // eslint-disable-line
         });
 
         if (json.data.relationships) {
@@ -127,7 +127,7 @@ export class Serialiser {
         return model;
     }
 
-    private _mapToModel(model: any, location: Maybe<ResourceLocation> = null): IJsonData { // tslint:disable-line no-any
+    private _mapToModel(model: any, location: Maybe<ResourceLocation> = null): IJsonData { // eslint-disable-line
         const schema: ISchema = model.constructor;
         let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);

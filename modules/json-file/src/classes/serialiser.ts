@@ -7,7 +7,7 @@ import { IJsonFile } from '../interfaces/json-file.interface';
 import { IRelationship } from '../interfaces/relationship.interface';
 
 export class Serialiser {
-    public serialise(model: any): string { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+    public serialise(model: any): string { // eslint-disable-line
         const schema: ISchema = model.constructor;
         let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
         const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
@@ -59,7 +59,7 @@ export class Serialiser {
             fields = [];
         }
 
-        const model: any = new schema(); // tslint:disable-line no-any
+        const model: any = new schema(); // eslint-disable-line
 
         fields.forEach((field: string) => {
             const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);

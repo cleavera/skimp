@@ -3,14 +3,14 @@ import { FieldCannotBeSymbolException, FieldType, ISchema, SCHEMA_REGISTER } fro
 
 import { ValidationFieldInvalidDateException } from '../exceptions/validation-field-invalid-date.exception';
 
-export const DateType: PropertyDecorator = (target: any, propertyKey: string | symbol): void => { // tslint:disable-line no-any
+export const DateType: PropertyDecorator = (target: any, propertyKey: string | symbol): void => { // eslint-disable-line
     const schema: ISchema = target.constructor;
 
     if ($isSymbol(propertyKey)) {
         throw new FieldCannotBeSymbolException(propertyKey);
     }
 
-    SCHEMA_REGISTER.addValidation(schema, (model: any) => { // tslint:disable-line no-any
+    SCHEMA_REGISTER.addValidation(schema, (model: any) => { // eslint-disable-line
         if (!$isDate(model[propertyKey]) && !$isNull(model[propertyKey])) {
             throw new ValidationFieldInvalidDateException(propertyKey, model);
         }
