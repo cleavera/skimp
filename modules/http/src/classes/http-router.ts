@@ -155,7 +155,11 @@ export class HttpRouter {
     }
 
     private async _authenticate(request: HttpRequest): Promise<boolean> {
-        return $isNull(this.authenticator) || await this.authenticator.authenticate(request);
+        if ($isNull(this.authenticator)) {
+            return true;
+        }
+
+        return this.authenticator.authenticate(request);
     }
 
     private static _missingBody(response: IResponse): void {

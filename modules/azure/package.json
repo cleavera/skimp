@@ -28,6 +28,6 @@
   },
   "dependencies": {
     "@azure/functions": "^1.0.3",
-    "@cleavera/utils": "^3.4.0"
+    "@cleavera/utils": "^3.6.1"
   }
 }
