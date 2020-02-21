@@ -1,17 +1,17 @@
-import { $isNull, Maybe } from '@cleavera/utils';
+import { $isEmpty, $isNull, Maybe } from '@cleavera/utils';
 import { API_REGISTER, DB_REGISTER, IApi, IContent, IDb, IResponse, MODEL_REGISTER, ResourceDoesNotExistException, ResourceLocation } from '@skimp/core';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationExceptions } from '@skimp/schema';
 import * as $uuid from 'uuid/v4'; // eslint-disable-line import/no-internal-modules
 
 import { Action } from '../constants/action.contant';
-import { ActionNotAllowedException } from '../exceptions/action-not.allowed.exception';
+import { ActionNotAllowedException } from '../exceptions/action-not-allowed.exception';
 import { CannotParseModelWithNoLocationException } from '../exceptions/cannot-parse-model-with-no-location.exception';
 import { RootSchema } from '../schemas/root.schema';
 
 export class Router {
     public version: string;
 
-    private _db: IDb;
+    private readonly _db: IDb;
 
     constructor(version: string) {
         this._db = DB_REGISTER.get();
@@ -102,7 +102,7 @@ export class Router {
         SCHEMA_REGISTER.schemas.forEach((schema: ISchema) => {
             const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
 
-            if (!resourceName) {
+            if ($isNull(resourceName)) {
                 throw new SchemaNotRegisteredException(schema);
             }
 
@@ -116,11 +116,11 @@ export class Router {
         const newRelationships: Array<ResourceLocation> = $isNull(model) ? [] : MODEL_REGISTER.getRelationships(model);
         const oldRelationships: Array<ResourceLocation> = $isNull(previousModel) ? [] : MODEL_REGISTER.getRelationships(previousModel);
         const added: Array<ResourceLocation> = newRelationships.filter((item: ResourceLocation) => {
-            return oldRelationships.indexOf(item) === -1;
+            return !oldRelationships.includes(item);
         });
 
         const removed: Array<ResourceLocation> = oldRelationships.filter((item: ResourceLocation) => {
-            return newRelationships.indexOf(item) === -1;
+            return !newRelationships.includes(item);
         });
 
         for (const item of added) {
@@ -149,8 +149,8 @@ export class Router {
 
         const validationIssues: ValidationExceptions = await SCHEMA_REGISTER.validate(model);
 
-        if (validationIssues.length) {
-            throw validationIssues;
+        if (!$isEmpty(validationIssues)) {
+            throw validationIssues; // eslint-disable-line @typescript-eslint/no-throw-literal
         }
 
         return model;

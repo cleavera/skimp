@@ -54,7 +54,7 @@ export class GetSpec {
         };
 
         const postResponse: Response = await $request('/job', postOptions);
-        this.jobLocation = postResponse.headers.location || '';
+        this.jobLocation = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
             data: {
@@ -187,7 +187,7 @@ export class GetSpec {
         };
 
         const postResponse: Response = await $request('/person', postOptions);
-        this.personLocation = postResponse.headers.location || '';
+        this.personLocation = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
             data: {

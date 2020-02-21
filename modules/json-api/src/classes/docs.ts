@@ -1,4 +1,4 @@
-import { $isNull, IDict, Maybe, OneOrMany } from '@cleavera/utils';
+import { $isEmpty, $isNull, IDict, Maybe, OneOrMany } from '@cleavera/utils';
 import { IApi, IResponse, ResourceDoesNotExistException, ResourceLocation, ResponseCode } from '@skimp/core';
 import { RequestBodyNotAllowedException } from '@skimp/router';
 import { FieldNotConfiguredException, FieldType, IOptions, ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '@skimp/schema';
@@ -11,7 +11,7 @@ import { ISchemaValue } from '../interfaces/schema-value.interface';
 import { Api } from './api';
 
 export class Docs implements IApi {
-    private _jsonAPI: IApi;
+    private readonly _jsonAPI: IApi;
 
     constructor() {
         this._jsonAPI = new Api();
@@ -115,7 +115,7 @@ export class Docs implements IApi {
             }
         };
 
-        if (relationships && relationships.length) {
+        if (!$isNull(relationships) && !$isEmpty(relationships)) {
             (out.properties.data as ISchemaObject).properties.relationships = {
                 type: 'array',
                 items: relationships.map((relationship: ISchema): ISchemaObject => {

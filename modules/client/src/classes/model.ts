@@ -26,7 +26,7 @@ export class Model {
 
         return relationships.filter((relationship: ResourceLocation) => {
             return relationship.resourceName === resourceName;
-        }) || null;
+        }) ?? null;
     }
 
     public static addRelationship(model1: object, model2: object): void {

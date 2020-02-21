@@ -14,7 +14,7 @@ export function Options<T extends IJsonValue>(options: IOptions<T>): PropertyDec
         SCHEMA_REGISTER.addValidation(schema, (model: any) => { // eslint-disable-line
             const value: T = model[propertyKey];
 
-            if (!$isNull(value) && options.indexOf(value) === -1) {
+            if (!$isNull(value) && !options.includes(value)) {
                 throw new ValidationFieldNotValidOptionException(propertyKey, model);
             }
         });

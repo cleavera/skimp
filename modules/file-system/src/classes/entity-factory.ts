@@ -11,7 +11,7 @@ export class EntityFactory implements IEntityFactory {
         this.basePath = basePath;
     }
 
-    public fromPath(path: string): Promise<Entity> {
+    public async fromPath(path: string): Promise<Entity> {
         return Entity.fromPath(this.getAbsolutePath(path));
     }
 
@@ -23,7 +23,7 @@ export class EntityFactory implements IEntityFactory {
     }
 
     private getAbsolutePath(path: string): string {
-        if (path.indexOf(this.basePath) > -1) {
+        if (path.includes(this.basePath)) {
             return path;
         }
 

@@ -17,7 +17,7 @@ export const DateType: PropertyDecorator = (target: any, propertyKey: string | s
     });
 
     SCHEMA_REGISTER.addSerialiser(schema, propertyKey, (deserialisedValue: Maybe<Date>): Maybe<string> => {
-        if (!deserialisedValue) {
+        if ($isNull(deserialisedValue)) {
             return null;
         }
 

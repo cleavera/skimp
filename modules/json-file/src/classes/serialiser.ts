@@ -1,4 +1,4 @@
-import { $isNull, Maybe } from '@cleavera/utils';
+import { $isEmpty, $isNull, $isUndefined, Maybe } from '@cleavera/utils';
 import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 import { FieldNotConfiguredException, ISchema, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaNotRegisteredException } from '@skimp/schema';
 
@@ -36,7 +36,7 @@ export class Serialiser {
             }, {})
         };
 
-        if (relationships && relationships.length) {
+        if (!$isEmpty(relationships ?? [])) {
             out.relationships = relationships.map((relationship: ResourceLocation): IRelationship => {
                 return relationship.toString();
             });
@@ -71,7 +71,7 @@ export class Serialiser {
             model[field] = SCHEMA_REGISTER.deserialise(schema, field, json.data[mappedField]);
         });
 
-        if (json.relationships) {
+        if (!$isUndefined(json.relationships)) {
             json.relationships.forEach((relationship: IRelationship) => {
                 MODEL_REGISTER.addRelationship(model, ResourceLocation.FromString(relationship));
             });

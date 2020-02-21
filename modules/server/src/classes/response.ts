@@ -19,7 +19,7 @@ export class Response implements IHttpResponse {
     }
 
     public get corsHeader(): string | Array<string> {
-        return this._response.getHeader('Access-Control-Allow-Origin') as string | Array<string> || '';
+        return this._response.getHeader('Access-Control-Allow-Origin') as string | Array<string> | undefined ?? '';
     }
 
     public set corsHeader(cors: string | Array<string>) {
@@ -31,7 +31,7 @@ export class Response implements IHttpResponse {
     }
 
     public get location(): string {
-        return this._response.getHeader('location') as string || '';
+        return this._response.getHeader('location') as string | undefined ?? '';
     }
 
     public set location(location: string) {

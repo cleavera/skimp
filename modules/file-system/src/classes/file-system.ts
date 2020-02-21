@@ -19,7 +19,7 @@ export class FileSystem {
         let files: Array<string> = [];
 
         for (const schema of SCHEMA_REGISTER.schemas) {
-            files = files.concat(await (await this._entityFactory.fromPath(`/${SCHEMA_REGISTER.getSchemaResourceName(schema)}`)).listChildren());
+            files = files.concat(await (await this._entityFactory.fromPath(`/${SCHEMA_REGISTER.getSchemaResourceName(schema) as string}`)).listChildren());
         }
 
         await Promise.all(files.map(async(file: string) => {

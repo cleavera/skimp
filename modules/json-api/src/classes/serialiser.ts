@@ -1,4 +1,4 @@
-import { $isNull, $isString, Maybe } from '@cleavera/utils';
+import { $isEmpty, $isNull, $isString, $isUndefined, Maybe } from '@cleavera/utils';
 import { MissingCreatedDateException, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 import { NoLocationRegisteredException } from '@skimp/router';
 import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException } from '@skimp/schema';
@@ -17,22 +17,22 @@ export class Serialiser {
         const out: IJsonErrors = {
             errors: errors.reduce((acc: Array<IJsonError>, exception: ValidationException) => {
                 if (exception instanceof ModelValidationException) {
-                    return acc.concat((exception.fields).map((pointer: ModelPointer): IJsonError => {
+                    return acc.concat((exception.fields).map((pointer: Maybe<ModelPointer> = null): IJsonError => {
                         return {
                             code: exception.code,
                             source: {
-                                pointer: pointer ? `/data/attributes/${pointer.field}` : ''
+                                pointer: $isNull(pointer) ? '' : `/data/attributes/${pointer.field}`
                             }
                         };
                     }));
                 }
 
                 if (exception instanceof RelationshipValidationException) {
-                    return acc.concat((exception.relationships).map((pointer: RelationshipPointer): IJsonError => {
+                    return acc.concat((exception.relationships).map((pointer: Maybe<RelationshipPointer> = null): IJsonError => {
                         return {
                             code: exception.code,
                             source: {
-                                pointer: pointer ? `/data/relationships/${pointer}` : ''
+                                pointer: $isNull(pointer) ? '' : `/data/relationships/${pointer.toString()}`
                             }
                         };
                     }));
@@ -114,9 +114,9 @@ export class Serialiser {
             (model as any)[field] = SCHEMA_REGISTER.deserialise(schema, field, json.data.attributes[mappedField]); // eslint-disable-line
         });
 
-        if (json.data.relationships) {
+        if (!$isUndefined(json.data.relationships)) {
             json.data.relationships.forEach((relationship: IRelationship, index: number) => {
-                if (!relationship.href || !$isString(relationship.href)) {
+                if ($isUndefined(relationship.href) || !$isString(relationship.href)) {
                     throw new InvalidJSONRelationship(index);
                 }
 
@@ -163,7 +163,7 @@ export class Serialiser {
             out.data.id = location.toString();
         }
 
-        if (relationships && relationships.length) {
+        if (!$isEmpty(relationships ?? null)) {
             out.data.relationships = relationships.map((relationship: ResourceLocation): IRelationship => {
                 return {
                     href: relationship.toString(),
@@ -180,7 +180,7 @@ export class Serialiser {
             });
         }
 
-        if (links && links.length) {
+        if (!$isEmpty(links ?? null)) {
             out.data.links = links.reduce<ILinks>((acc: ILinks, relationship: ResourceLocation): ILinks => {
                 acc[relationship.resourceName] = relationship.toString();
 

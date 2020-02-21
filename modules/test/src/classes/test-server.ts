@@ -7,8 +7,8 @@ import { ISchema } from '@skimp/schema';
 import { Server } from '@skimp/server';
 
 export class TestServer {
-    private _server: Server;
-    private _fileSystem: FileSystem;
+    private readonly _server: Server;
+    private readonly _fileSystem: FileSystem;
 
     constructor(server: Server, fileSystem: FileSystem) {
         this._server = server;

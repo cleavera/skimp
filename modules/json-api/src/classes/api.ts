@@ -1,4 +1,4 @@
-import { $isNull, Maybe, OneOrMany } from '@cleavera/utils';
+import { $isEmpty, $isNull, Maybe, OneOrMany } from '@cleavera/utils';
 import { IApi, IResponse, MODEL_REGISTER, ResourceLocation, ResponseCode } from '@skimp/core';
 import { NoLocationRegisteredException } from '@skimp/router';
 import { ValidationException } from '@skimp/schema';
@@ -15,7 +15,7 @@ export class Api implements IApi {
         this.serialiser = new Serialiser();
     }
 
-    public respond(response: IResponse, model: OneOrMany<object>, _location: ResourceLocation, created?: boolean): void {
+    public respond(response: IResponse, model: OneOrMany<object>, _location: ResourceLocation, created: boolean = false): void {
         let out: Maybe<string> = null;
 
         if (Array.isArray(model)) {
@@ -47,7 +47,7 @@ export class Api implements IApi {
     public error(response: IResponse, code: ResponseCode, errors: Maybe<Array<ValidationException>> = null): void {
         response.statusCode = code;
 
-        if (!$isNull(errors) && errors.length) {
+        if (!$isNull(errors) && !$isEmpty(errors)) {
             response.write(this.serialiser.error(errors));
         }
 

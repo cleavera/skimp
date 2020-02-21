@@ -29,7 +29,7 @@ export class MetaData implements IMeta {
             this._metaData[objectId] = {};
         }
 
-        return this._metaData[objectId][metaKey] as T || null;
+        return this._metaData[objectId][metaKey] as T ?? null;
     }
 
     private _getObjectId(object: unknown): string {

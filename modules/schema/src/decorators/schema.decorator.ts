@@ -1,3 +1,4 @@
+import { $isEmpty } from '@cleavera/utils';
 import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
@@ -12,20 +13,20 @@ export function Schema(resourceName: string): ClassDecorator {
         SCHEMA_REGISTER.addValidation(target, (model: object) => {
             const relationships: Array<ResourceLocation> = MODEL_REGISTER.getRelationships(model);
 
-            const allowedRelationships: Array<string> = (SCHEMA_REGISTER.getSchemaRelationships(target) || []).map((relationship: ISchema) => {
-                return SCHEMA_REGISTER.getSchemaResourceName(relationship) || '';
+            const allowedRelationships: Array<string> = (SCHEMA_REGISTER.getSchemaRelationships(target) ?? []).map((relationship: ISchema) => {
+                return SCHEMA_REGISTER.getSchemaResourceName(relationship) ?? '';
             });
 
             const errors: ValidationExceptions = new ValidationExceptions();
 
             for (const relationship of relationships) {
-                if (allowedRelationships.indexOf(relationship.resourceName) === -1) {
+                if (!allowedRelationships.includes(relationship.resourceName)) {
                     errors.push(new RelationshipTypeNotAllowedException(relationships.indexOf(relationship)));
                 }
             }
 
-            if (errors.length) {
-                throw errors;
+            if (!$isEmpty(errors)) {
+                throw errors; // eslint-disable-line @typescript-eslint/no-throw-literal
             }
         });
     };

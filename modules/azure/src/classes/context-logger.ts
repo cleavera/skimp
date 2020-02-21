@@ -2,7 +2,7 @@ import { Context } from '@azure/functions';
 import { ILogger } from '@skimp/debug';
 
 export class ContextLogger implements ILogger {
-    private _context: Context;
+    private readonly _context: Context;
 
     constructor(context: Context) {
         this._context = context;

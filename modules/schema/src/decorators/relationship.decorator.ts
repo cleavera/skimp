@@ -1,4 +1,4 @@
-import { $isNull, Maybe } from '@cleavera/utils';
+import { $isEmpty, $isNull, Maybe } from '@cleavera/utils';
 import { DB_REGISTER, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
@@ -30,8 +30,8 @@ export function Relationship(schema: ISchema, limit: Maybe<number> = null): Clas
                 }
             }
 
-            if (errors.length) {
-                throw errors;
+            if (!$isEmpty(errors)) {
+                throw errors; // eslint-disable-line @typescript-eslint/no-throw-literal
             }
         });
     };

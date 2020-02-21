@@ -3,13 +3,12 @@ import { IJsonApi } from '@skimp/json-api';
 import { AsyncSetup, AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestFixture } from 'alsatian';
 import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
+import * as uuid from 'uuid';
 
 import { TestServer } from './classes/test-server';
 import * as DATA_PATH from './data/path';
 import { $request } from './helpers/request.helper';
 import { SCHEMAS } from './schemas';
-
-import uuid = require('uuid');
 
 @TestFixture('Update')
 export class UpdateSpec {
@@ -54,7 +53,7 @@ export class UpdateSpec {
         };
 
         const postResponse: Response = await $request('/job', postOptions);
-        const location: string = postResponse.headers.location || '';
+        const location: string = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
             data: {
@@ -190,7 +189,7 @@ export class UpdateSpec {
         };
 
         const postResponse: Response = await $request('/person', postOptions);
-        this.location = postResponse.headers.location || '';
+        this.location = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
             data: {
