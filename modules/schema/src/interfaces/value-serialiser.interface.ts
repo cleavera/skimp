@@ -1,5 +1,5 @@
 import { IJsonValue, Maybe } from '@cleavera/utils';
 
-export interface IValueSerialiser {
-    (value: unknown): Maybe<IJsonValue>;
+export interface IValueSerialiser<T = unknown> {
+    (value: T): Maybe<IJsonValue>;
 }

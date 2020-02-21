@@ -625,7 +625,7 @@ export class GetSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(405);
+            Expect(e.statusCode).toEqual(400);
         }
 
         Expect(success).toBe(false);
