@@ -3,14 +3,14 @@ import { FieldCannotBeSymbolException, FieldType, ISchema, SCHEMA_REGISTER } fro
 
 import { ValidationFieldInvalidIntegerException } from '../exceptions/validation-field-invalid-integer.exception';
 
-export const IntegerType: PropertyDecorator = (target: any, propertyKey: string | symbol): void => { // tslint:disable-line no-any
+export const IntegerType: PropertyDecorator = (target: any, propertyKey: string | symbol): void => { // eslint-disable-line
     if ($isSymbol(propertyKey)) {
         throw new FieldCannotBeSymbolException(propertyKey);
     }
 
     const schema: ISchema = target.constructor;
 
-    SCHEMA_REGISTER.addValidation(schema, (model: any) => { // tslint:disable-line no-any
+    SCHEMA_REGISTER.addValidation(schema, (model: any) => { // eslint-disable-line
         if ((!$isNumber(model[propertyKey]) || !Number.isInteger(model[propertyKey])) && !$isNull(model[propertyKey])) {
             throw new ValidationFieldInvalidIntegerException(propertyKey, model);
         }

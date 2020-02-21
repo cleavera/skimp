@@ -104,7 +104,7 @@ export class Docs implements IApi {
                                 } as ISchemaTerminatingValue;
 
                                 if (!$isNull(options)) {
-                                    (result[mappedField] as ISchemaTerminatingValue).enum = options as any; // tslint:disable-line no-any
+                                    (result[mappedField] as ISchemaTerminatingValue).enum = options as any; // eslint-disable-line
                                 }
 
                                 return result;

@@ -26,7 +26,7 @@ export class TestServer {
 
     public static async create(port: number, dataPath: string, _schemas: Array<ISchema>, cors: boolean | string | Array<string> = false, version: string = 'UNVERSIONED', authenticator: Maybe<IAuthenticator> = null, loggerClass: ILogger = new ConsoleLogger()): Promise<TestServer> {
         const fileSystem: FileSystem = FileSystem.create(dataPath);
-        const server: Server = await init(port, fileSystem.path, _schemas, cors, version, authenticator, loggerClass, fileSystem) as any;
+        const server: Server = await init(port, fileSystem.path, _schemas, cors, version, authenticator, loggerClass, fileSystem) as any; // eslint-disable-line
 
         return new TestServer(server, fileSystem);
     }

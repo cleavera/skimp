@@ -7,7 +7,7 @@ export class ModelPointer {
     public readonly property: string;
     public readonly field: string;
 
-    constructor(model: any, property: string) { // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+    constructor(model: any, property: string) { // eslint-disable-line
         const field: Maybe<string> = SCHEMA_REGISTER.mapToField(model.constructor, property);
 
         if ($isNull(field)) {

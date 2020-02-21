@@ -74,7 +74,7 @@ export class Entity implements IEntity {
         });
     }
 
-    public async readJSON(): Promise<any> { // tslint:disable-line no-any
+    public async readJSON(): Promise<any> { // eslint-disable-line
         const content: string = await this.readContent();
 
         try {
