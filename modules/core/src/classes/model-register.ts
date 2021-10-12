@@ -1,5 +1,3 @@
-import { Maybe } from '@cleavera/utils';
-
 import * as MetaKey from '../constants/meta-field-names.constant';
 import { IMeta } from '../interfaces/meta.interface';
 import { ResourceLocation } from './resource-location';
@@ -15,7 +13,7 @@ export class ModelRegister {
         this._meta.set(model, MetaKey.CREATED, created);
     }
 
-    public getCreatedDate(model: object): Maybe<Date> {
+    public getCreatedDate(model: object): Date | null {
         return this._meta.get(model, MetaKey.CREATED);
     }
 
@@ -23,7 +21,7 @@ export class ModelRegister {
         this._meta.set(model, MetaKey.LOCATION, location);
     }
 
-    public getLocation(model: object): Maybe<ResourceLocation> {
+    public getLocation(model: object): ResourceLocation | null {
         return this._meta.get(model, MetaKey.LOCATION);
     }
 

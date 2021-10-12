@@ -1,11 +1,11 @@
-import { $isNull, $isUndefined, IDict, Maybe } from '@cleavera/utils';
+import { isNull, isUndefined } from '@cleavera/utils';
 import { v4 as uuid } from 'uuid';
 
 import { IMeta } from '../interfaces/meta.interface';
 
 export class MetaData implements IMeta {
-    private readonly _objects: IDict<unknown>;
-    private readonly _metaData: IDict<IDict<unknown>>;
+    private readonly _objects: Record<string, unknown>;
+    private readonly _metaData: Record<string, Record<string, unknown>>;
 
     constructor() {
         this._objects = {};
@@ -15,17 +15,17 @@ export class MetaData implements IMeta {
     public set(object: unknown, metaKey: string, value: unknown): void {
         const objectId: string = this._getObjectId(object);
 
-        if ($isNull(this._metaData[objectId]) || $isUndefined(this._metaData[objectId])) {
+        if (isNull(this._metaData[objectId]) || isUndefined(this._metaData[objectId])) {
             this._metaData[objectId] = {};
         }
 
         this._metaData[objectId][metaKey] = value;
     }
 
-    public get<T = unknown>(object: unknown, metaKey: string): Maybe<T> {
+    public get<T = unknown>(object: unknown, metaKey: string): T | null {
         const objectId: string = this._getObjectId(object);
 
-        if ($isNull(this._metaData[objectId]) || $isUndefined(this._metaData[objectId])) {
+        if (isNull(this._metaData[objectId]) || isUndefined(this._metaData[objectId])) {
             this._metaData[objectId] = {};
         }
 
