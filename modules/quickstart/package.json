@@ -8,7 +8,7 @@
     "build": "tsc",
     "clean": "git clean -X -f -d --exclude=\"!node_modules\"",
     "example": "ts-node ./example/run",
-    "lint": "exit 0 && tslint --project ./tsconfig.json",
+    "lint": "npx eslint ./src/**/*.ts --config=../../.eslintrc.json",
     "test": "echo \"Tests are run in the testing module\" && exit 1",
     "prepack": "npm run clean && npm run lint && npm run build"
   },
@@ -27,7 +27,6 @@
   "license": "ISC",
   "devDependencies": {
     "ts-node": "^7.0.1",
-    "tslint": "^5.18.0",
     "typescript": "^3.5.3"
   },
   "dependencies": {

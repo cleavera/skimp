@@ -1,3 +1,10 @@
+interface IBaseResponse {
+    headers: {
+        [headerKey: string]: unknown;
+    };
+    status: number;
+}
+
 interface IJSONResponse extends IBaseResponse {
     body: {
         [prop: string]: unknown;
@@ -8,13 +15,6 @@ interface IJSONResponse extends IBaseResponse {
 interface IRawResponse extends IBaseResponse {
     body: string;
     isRaw: true;
-}
-
-interface IBaseResponse {
-    headers: {
-        [headerKey: string]: unknown;
-    };
-    status: number;
 }
 
 export type IResponse = IJSONResponse | IRawResponse;

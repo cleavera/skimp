@@ -3,19 +3,19 @@
   "version": "1.0.0",
   "description": "Build tasks for skimp",
   "scripts": {
-    "lint": "npx eslint ./modules/**/*.ts"
+    "lint": "npm run with-modules -- \"npm run lint\"",
+    "with-modules": "node ./scripts/with-modules.js"
   },
   "private": true,
   "author": "Anthony Cleaver",
   "license": "ISC",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.20.0",
-    "@typescript-eslint/parser": "^2.20.0",
-    "eslint": "^6.8.0",
-    "eslint-plugin-import": "^2.20.1",
-    "glob": "^7.1.4"
-  },
-  "dependencies": {
-    "typescript": "^3.8.2"
+    "@cleavera/config": "^2.8.2",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.0.0",
+    "eslint-plugin-import": "^2.25.1",
+    "glob": "^7.1.4",
+    "typescript": "^4.4.3"
   }
 }

@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc -p \"./tsconfig.json\"",
     "clean": "del-cli \"./.test/**/*.*\" && del-cli \"./.artifacts/**/*.*\"",
-    "lint": "tslint --project ./tsconfig.json",
+    "lint": "npx eslint ./src/**/*.ts --config=../../.eslintrc.json",
     "postinstall": "npm run sync",
     "sync": "node ./scripts/install",
     "test": "npm run clean && npm run sync && npm run test-run",
@@ -24,7 +24,6 @@
     "glob": "^7.1.4",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
-    "tslint": "^5.18.0",
     "typescript": "^3.8.2",
     "uuid": "3.3.2"
   },

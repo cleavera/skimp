@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "git clean -X -f -d --exclude=\"!node_modules\"",
-    "lint": "tslint --project ./tsconfig.json",
+    "lint": "npx eslint ./src/**/*.ts --config=../../.eslintrc.json",
     "prepack": "npm run lint && npm run build"
   },
   "author": "Anthony Cleaver",
@@ -17,9 +17,8 @@
     "@skimp/http": "^4.0.0",
     "@skimp/router": "^2.0.0",
     "@skimp/schema": "^2.5.0",
-    "@types/node": "^12.0.8",
-    "tslint": "^5.17.0",
-    "typescript": "^3.5.2"
+    "@types/node": "^13.7.4",
+    "typescript": "^3.8.2"
   },
   "peerDependencies": {
     "@skimp/core": "^3.0.0",

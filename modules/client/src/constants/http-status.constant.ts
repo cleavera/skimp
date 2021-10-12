@@ -1,3 +1,3 @@
-export enum HttpStatus {
+export enum HttpStatusCode {
     NOT_FOUND = 404
 }
