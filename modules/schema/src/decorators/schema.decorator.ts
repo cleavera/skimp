@@ -1,4 +1,4 @@
-import { $isEmpty } from '@cleavera/utils';
+import { isEmpty } from '@cleavera/utils';
 import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
@@ -7,7 +7,7 @@ import { ValidationExceptions } from '../exceptions/validation.exceptions';
 import { ISchema } from '../interfaces/schema.interface';
 
 export function Schema(resourceName: string): ClassDecorator {
-    return (target: any): void => { // eslint-disable-line
+    return (target: any): void => { // eslint-disable-line @typescript-eslint/no-explicit-any
         SCHEMA_REGISTER.register(target, resourceName);
 
         SCHEMA_REGISTER.addValidation(target, (model: object) => {
@@ -25,7 +25,7 @@ export function Schema(resourceName: string): ClassDecorator {
                 }
             }
 
-            if (!$isEmpty(errors)) {
+            if (!isEmpty(errors)) {
                 throw errors; // eslint-disable-line @typescript-eslint/no-throw-literal
             }
         });

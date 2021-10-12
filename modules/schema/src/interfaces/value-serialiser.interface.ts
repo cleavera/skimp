@@ -1,5 +1,5 @@
-import { IJsonValue, Maybe } from '@cleavera/utils';
+import { JsonPrimitive } from 'type-fest';
 
 export interface IValueSerialiser<T = unknown> {
-    (value: T): Maybe<IJsonValue>;
+    (value: T): JsonPrimitive;
 }

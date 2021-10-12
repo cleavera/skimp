@@ -1,4 +1,4 @@
-import { $isEmpty, $isNull, Maybe } from '@cleavera/utils';
+import { isEmpty, isNull } from '@cleavera/utils';
 import { DB_REGISTER, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 
 import { SCHEMA_REGISTER } from '../constants/schema-register.constant';
@@ -7,8 +7,8 @@ import { RelationshipNotFoundException } from '../exceptions/relationship-not-fo
 import { ValidationExceptions } from '../exceptions/validation.exceptions';
 import { ISchema } from '../interfaces/schema.interface';
 
-export function Relationship(schema: ISchema, limit: Maybe<number> = null): ClassDecorator {
-    return (target: any): void => { // eslint-disable-line
+export function Relationship(schema: ISchema, limit: number | null = null): ClassDecorator {
+    return (target: any): void => { // eslint-disable-line @typescript-eslint/no-explicit-any
         SCHEMA_REGISTER.addSchemaRelationship(target, schema);
         SCHEMA_REGISTER.addSchemaRelationship(schema, target);
 
@@ -20,7 +20,7 @@ export function Relationship(schema: ISchema, limit: Maybe<number> = null): Clas
 
             const errors: ValidationExceptions = new ValidationExceptions();
 
-            if (!$isNull(limit) && relationships.length > limit) {
+            if (!isNull(limit) && relationships.length > limit) {
                 errors.push(new RelationshipCountExceedsLimitException(allRelationships.indexOf(relationships[relationships.length - 1])));
             }
 
@@ -30,7 +30,7 @@ export function Relationship(schema: ISchema, limit: Maybe<number> = null): Clas
                 }
             }
 
-            if (!$isEmpty(errors)) {
+            if (!isEmpty(errors)) {
                 throw errors; // eslint-disable-line @typescript-eslint/no-throw-literal
             }
         });

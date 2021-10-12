@@ -1,6 +1,7 @@
-import { $isNull, $isUndefined, IDict, IJsonValue, Maybe } from '@cleavera/utils';
+import { isNull, isUndefined } from '@cleavera/utils';
 import { IMeta, MetaKey } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
+import { JsonPrimitive } from 'type-fest';
 
 import { FieldType } from '../constants/field.type';
 import { DuplicateResourceNameException } from '../exceptions/duplicate-resource-name.exception';
@@ -14,7 +15,7 @@ import { IValueDeserialiser } from '../interfaces/value-deserialiser.interface';
 import { IValueSerialiser } from '../interfaces/value-serialiser.interface';
 
 export class SchemaRegister {
-    private readonly _schemas: IDict<ISchema>;
+    private readonly _schemas: Record<string, ISchema>;
     private readonly _meta: IMeta;
 
     constructor(meta: IMeta) {
@@ -29,7 +30,7 @@ export class SchemaRegister {
     }
 
     public register(schema: ISchema, resourceName: string, isPrivate: boolean = false): void {
-        if (!($isNull(this._schemas[resourceName]) || $isUndefined(this._schemas[resourceName])) && !isPrivate) {
+        if (!(isNull(this._schemas[resourceName]) || isUndefined(this._schemas[resourceName])) && !isPrivate) {
             throw new DuplicateResourceNameException(resourceName);
         }
 
@@ -40,7 +41,7 @@ export class SchemaRegister {
         this._meta.set(schema, MetaKey.RESOURCE_NAME, resourceName);
     }
 
-    public getSchema(resourceName: string): Maybe<ISchema> {
+    public getSchema(resourceName: string): ISchema | null {
         return this._schemas[resourceName] ?? null;
     }
 
@@ -56,17 +57,17 @@ export class SchemaRegister {
     public serialise(schema: ISchema, field: string, value: unknown): unknown {
         const fieldMeta: IFieldMeta = this.getFieldMeta(schema, field);
 
-        if ($isUndefined(fieldMeta.serialiser)) {
+        if (isUndefined(fieldMeta.serialiser)) {
             return value;
         }
 
         return fieldMeta.serialiser(value);
     }
 
-    public deserialise(schema: ISchema, field: string, value: Maybe<IJsonValue>): unknown {
+    public deserialise(schema: ISchema, field: string, value: JsonPrimitive | null): unknown {
         const fieldMeta: IFieldMeta = this.getFieldMeta(schema, field);
 
-        if ($isUndefined(fieldMeta.deserialiser)) {
+        if (isUndefined(fieldMeta.deserialiser)) {
             return value ?? null;
         }
 
@@ -112,7 +113,7 @@ export class SchemaRegister {
         this._meta.set(schema, MetaKey.SCHEMA_RELATIONSHIPS, relationships);
     }
 
-    public getSchemaRelationships(schema: ISchema): Maybe<Array<ISchema>> {
+    public getSchemaRelationships(schema: ISchema): Array<ISchema> | null {
         return this._meta.get(schema, MetaKey.SCHEMA_RELATIONSHIPS);
     }
 
@@ -140,7 +141,7 @@ export class SchemaRegister {
         this.setFieldMeta(schema, propertyName, field);
     }
 
-    public getFieldOptions(schema: ISchema, propertyName: string): Maybe<IOptions> {
+    public getFieldOptions(schema: ISchema, propertyName: string): IOptions | null {
         const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
 
         return field.options ?? null;
@@ -160,7 +161,7 @@ export class SchemaRegister {
         return field.isRequired ?? false;
     }
 
-    public getFieldType(schema: ISchema, propertyName: string): Maybe<FieldType> {
+    public getFieldType(schema: ISchema, propertyName: string): FieldType | null {
         const field: IFieldMeta = this.getFieldMeta(schema, propertyName);
 
         if (!('type' in field)) {
@@ -171,36 +172,36 @@ export class SchemaRegister {
     }
 
     public getFieldMeta(schema: ISchema, fieldName: string): IFieldMeta {
-        const fields: IDict<IFieldMeta> = this._meta.get(schema, MetaKey.FIELDS) ?? {};
+        const fields: Record<string, IFieldMeta> = this._meta.get(schema, MetaKey.FIELDS) ?? {};
 
         return fields[fieldName] ?? {};
     }
 
     public setFieldMeta(schema: ISchema, fieldName: string, meta: IFieldMeta): void {
-        const fields: IDict<IFieldMeta> = this._meta.get(schema, MetaKey.FIELDS) ?? {};
+        const fields: Record<string, IFieldMeta> = this._meta.get(schema, MetaKey.FIELDS) ?? {};
 
         fields[fieldName] = meta;
 
         this._meta.set(schema, MetaKey.FIELDS, fields);
     }
 
-    public getFields(schema: ISchema): Maybe<Array<string>> {
-        const fields: Maybe<IDict<IFieldMeta>> = this._meta.get(schema, MetaKey.FIELDS);
+    public getFields(schema: ISchema): Array<string> | null {
+        const fields: Record<string, IFieldMeta> | null = this._meta.get(schema, MetaKey.FIELDS);
 
-        if ($isNull(fields)) {
+        if (isNull(fields)) {
             return null;
         }
 
         return Object.keys(fields);
     }
 
-    public mapToField(schema: ISchema, property: string): Maybe<string> {
+    public mapToField(schema: ISchema, property: string): string | null {
         const field: IFieldMeta = this.getFieldMeta(schema, property);
 
         return field?.mappedName ?? null;
     }
 
-    public getSchemaResourceName(schema: ISchema): Maybe<string> {
+    public getSchemaResourceName(schema: ISchema): string | null {
         return this._meta.get(schema, MetaKey.RESOURCE_NAME);
     }
 }
