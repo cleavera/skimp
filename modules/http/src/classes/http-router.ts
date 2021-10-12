@@ -1,4 +1,4 @@
-import { $isNull, Maybe } from '@cleavera/utils';
+import { isNull } from '@cleavera/utils';
 import { API_REGISTER, ContentTypeNotSupportedException, IApi, IResponse, ResourceDoesNotExistException, ResourceLocation, ResponseCode } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
 import { ActionNotAllowedException, Router } from '@skimp/router';
@@ -12,11 +12,11 @@ import { IHttpResponse } from '../interfaces/http-response.interface';
 import { HttpRequest } from './http-request';
 
 export class HttpRouter {
-    public authenticator: Maybe<IAuthenticator>;
+    public authenticator: IAuthenticator | null;
     private readonly _coreRouter: Router;
     private readonly _cors: string | boolean | Array<string>;
 
-    constructor(version: string, authenticator: Maybe<IAuthenticator> = null, cors: string | boolean | Array<string> = false) {
+    constructor(version: string, authenticator: IAuthenticator | null = null, cors: string | boolean | Array<string> = false) {
         this.authenticator = authenticator;
         this._coreRouter = new Router(version);
         this._cors = cors;
@@ -32,15 +32,15 @@ export class HttpRouter {
             return;
         }
 
-        const api: Maybe<IApi> = HttpRouter._getApi(request.type);
+        const api: IApi | null = HttpRouter._getApi(request.type);
 
-        if ($isNull(api)) {
+        if (isNull(api)) {
             HttpRouter._writeError(response, ResponseCode.NOT_ACCEPTABLE);
 
             return;
         }
 
-        if ($isNull(request.location)) {
+        if (isNull(request.location)) {
             await this._coreRouter.root(response, api);
 
             return;
@@ -59,7 +59,7 @@ export class HttpRouter {
         }
 
         if (request.isPost) {
-            if ($isNull(request.content)) {
+            if (isNull(request.content)) {
                 HttpRouter._missingBody(response);
 
                 return;
@@ -75,7 +75,7 @@ export class HttpRouter {
         }
 
         if (request.isPut) {
-            if ($isNull(request.content)) {
+            if (isNull(request.content)) {
                 HttpRouter._missingBody(response);
 
                 return;
@@ -101,9 +101,9 @@ export class HttpRouter {
     }
 
     private _options(location: ResourceLocation, response: IResponse): void {
-        const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
+        const schema: ISchema | null = SCHEMA_REGISTER.getSchema(location.resourceName);
 
-        if ($isNull(schema)) {
+        if (isNull(schema)) {
             LOGGER.warn(new ResourceDoesNotExistException(location));
             HttpRouter._writeError(response, ResponseCode.NOT_FOUND);
 
@@ -155,7 +155,7 @@ export class HttpRouter {
     }
 
     private async _authenticate(request: HttpRequest): Promise<boolean> {
-        if ($isNull(this.authenticator)) {
+        if (isNull(this.authenticator)) {
             return true;
         }
 
@@ -169,7 +169,7 @@ export class HttpRouter {
         HttpRouter._writeError(response, ResponseCode.BAD_REQUEST, [e]);
     }
 
-    private static _handleError(e: Error, response: IResponse): void {
+    private static _handleError(e: unknown, response: IResponse): void {
         if (e instanceof ResourceDoesNotExistException) {
             LOGGER.warn(e);
             HttpRouter._writeError(response, ResponseCode.NOT_FOUND);
@@ -191,11 +191,11 @@ export class HttpRouter {
         }
     }
 
-    private static _writeError(response: IResponse, code: number, e: Maybe<Array<Error>> = null): void {
+    private static _writeError(response: IResponse, code: number, e: Array<Error> | null = null): void {
         API_REGISTER.get().error(response, code, e);
     }
 
-    private static _getApi(type: Maybe<string>): Maybe<IApi> {
+    private static _getApi(type: string | null): IApi | null {
         try {
             return API_REGISTER.get(type);
         } catch (e) {

@@ -2,3 +2,4 @@ src
 tsconfig.json
 *.js.map
 *.tgz
+.eslintrc.json
