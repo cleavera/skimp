@@ -1,16 +1,16 @@
-import { $isEmpty, $isNull, Maybe } from '@cleavera/utils';
+import { isEmpty, isNull } from '@cleavera/utils';
 import { IContent, ResourceLocation } from '@skimp/core';
 
 import { RequestMethod } from '../constants/request-method.constant';
 
 export class HttpRequest {
-    public location: Maybe<ResourceLocation>;
-    public content: Maybe<IContent>;
-    public readonly method: Maybe<string>;
-    public readonly origin: Maybe<string | Array<string>>;
-    public readonly type: Maybe<string>;
+    public location: ResourceLocation | null;
+    public content: IContent | null;
+    public readonly method: string | null;
+    public readonly origin: string | Array<string> | null;
+    public readonly type: string | null;
 
-    constructor(location: Maybe<ResourceLocation>, method: Maybe<string> = null, content: Maybe<IContent> = null, origin: Maybe<string | Array<string>> = null, type: Maybe<string> = null) {
+    constructor(location: ResourceLocation | null, method: string | null = null, content: IContent | null = null, origin: string | Array<string> | null = null, type: string | null = null) {
         this.content = content;
         this.method = method;
         this.origin = origin;
@@ -20,7 +20,7 @@ export class HttpRequest {
     }
 
     public get isGet(): boolean {
-        if ($isNull(this.method) || $isEmpty(this.method)) {
+        if (isNull(this.method) || isEmpty(this.method)) {
             return true;
         }
 
@@ -28,7 +28,7 @@ export class HttpRequest {
     }
 
     public get isPut(): boolean {
-        if ($isNull(this.method) || $isEmpty(this.method)) {
+        if (isNull(this.method) || isEmpty(this.method)) {
             return false;
         }
 
@@ -36,7 +36,7 @@ export class HttpRequest {
     }
 
     public get isPost(): boolean {
-        if ($isNull(this.method) || $isEmpty(this.method)) {
+        if (isNull(this.method) || isEmpty(this.method)) {
             return false;
         }
 
@@ -44,7 +44,7 @@ export class HttpRequest {
     }
 
     public get isDelete(): boolean {
-        if ($isNull(this.method) || $isEmpty(this.method)) {
+        if (isNull(this.method) || isEmpty(this.method)) {
             return false;
         }
 
@@ -52,7 +52,7 @@ export class HttpRequest {
     }
 
     public get isOptions(): boolean {
-        if ($isNull(this.method) || $isEmpty(this.method)) {
+        if (isNull(this.method) || isEmpty(this.method)) {
             return false;
         }
 
