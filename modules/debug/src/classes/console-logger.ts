@@ -1,7 +1,7 @@
 import { ILogger } from '../interfaces/logger.interface';
 
 export class ConsoleLogger implements ILogger {
-    public debug(...messages: Array<any>): void {  // eslint-disable-line
+    public debug(...messages: Array<any>): void { // eslint-disable-line @typescript-eslint/no-explicit-any
         console.log(...messages); // eslint-disable-line no-console
     }
 

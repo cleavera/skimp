@@ -1,11 +1,11 @@
-import { $isNull, Maybe } from '@cleavera/utils';
+import { isNull } from '@cleavera/utils';
 
 import { LogLevel } from '../constants/log-level.constant';
 import { NoLoggerException } from '../exceptions/no-logger.exception';
 import { ILogger } from '../interfaces/logger.interface';
 
 export class Logger implements ILogger {
-    private _logger: Maybe<ILogger> = null;
+    private _logger: ILogger | null = null;
     private _logLevel: LogLevel;
 
     constructor() {
@@ -21,7 +21,7 @@ export class Logger implements ILogger {
     }
 
     public debug(...messages: Array<unknown>): void {
-        if ($isNull(this._logger)) {
+        if (isNull(this._logger)) {
             throw new NoLoggerException();
         }
 
@@ -33,7 +33,7 @@ export class Logger implements ILogger {
     }
 
     public warn(...exceptions: Array<Error>): void {
-        if ($isNull(this._logger)) {
+        if (isNull(this._logger)) {
             throw new NoLoggerException();
         }
 
@@ -45,7 +45,7 @@ export class Logger implements ILogger {
     }
 
     public error(...exception: Array<Error>): void {
-        if ($isNull(this._logger)) {
+        if (isNull(this._logger)) {
             throw new NoLoggerException();
         }
 
