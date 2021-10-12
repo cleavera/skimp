@@ -1,7 +1,7 @@
-import { $isEmpty, $isNull, Maybe } from '@cleavera/utils';
+import { isEmpty, isNull } from '@cleavera/utils';
 import { API_REGISTER, DB_REGISTER, IApi, IContent, IDb, IResponse, MODEL_REGISTER, ResourceDoesNotExistException, ResourceLocation } from '@skimp/core';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationExceptions } from '@skimp/schema';
-import * as $uuid from 'uuid/v4'; // eslint-disable-line import/no-internal-modules
+import { v4 as uuid } from 'uuid';
 
 import { Action } from '../constants/action.contant';
 import { ActionNotAllowedException } from '../exceptions/action-not-allowed.exception';
@@ -43,7 +43,7 @@ export class Router {
             }
         }
 
-        const createdLocation: ResourceLocation = new ResourceLocation(location.resourceName, $uuid());
+        const createdLocation: ResourceLocation = new ResourceLocation(location.resourceName, uuid());
 
         await this._db.set(createdLocation, model);
         await this._updateRelationships(createdLocation, model);
@@ -62,7 +62,7 @@ export class Router {
 
         const isCreate: boolean = !await this._db.exists(location);
 
-        let oldModel: Maybe<object> = null;
+        let oldModel: object | null = null;
 
         if (!isCreate) {
             oldModel = await this._db.get(location);
@@ -100,9 +100,9 @@ export class Router {
         MODEL_REGISTER.setLocation(model, location);
 
         SCHEMA_REGISTER.schemas.forEach((schema: ISchema) => {
-            const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
+            const resourceName: string | null = SCHEMA_REGISTER.getSchemaResourceName(schema);
 
-            if ($isNull(resourceName)) {
+            if (isNull(resourceName)) {
                 throw new SchemaNotRegisteredException(schema);
             }
 
@@ -112,9 +112,9 @@ export class Router {
         api.respond(response, model, location);
     }
 
-    private async _updateRelationships(location: ResourceLocation, model: Maybe<object> = null, previousModel: Maybe<object> = null): Promise<void> {
-        const newRelationships: Array<ResourceLocation> = $isNull(model) ? [] : MODEL_REGISTER.getRelationships(model);
-        const oldRelationships: Array<ResourceLocation> = $isNull(previousModel) ? [] : MODEL_REGISTER.getRelationships(previousModel);
+    private async _updateRelationships(location: ResourceLocation, model: object | null = null, previousModel: object | null = null): Promise<void> {
+        const newRelationships: Array<ResourceLocation> = isNull(model) ? [] : MODEL_REGISTER.getRelationships(model);
+        const oldRelationships: Array<ResourceLocation> = isNull(previousModel) ? [] : MODEL_REGISTER.getRelationships(previousModel);
         const added: Array<ResourceLocation> = newRelationships.filter((item: ResourceLocation) => {
             return !oldRelationships.includes(item);
         });
@@ -140,8 +140,8 @@ export class Router {
         }
     }
 
-    private async _parseModel(content: IContent, location: Maybe<ResourceLocation>): Promise<object> {
-        if ($isNull(location)) {
+    private async _parseModel(content: IContent, location: ResourceLocation | null): Promise<object> {
+        if (isNull(location)) {
             throw new CannotParseModelWithNoLocationException();
         }
 
@@ -149,7 +149,7 @@ export class Router {
 
         const validationIssues: ValidationExceptions = await SCHEMA_REGISTER.validate(model);
 
-        if (!$isEmpty(validationIssues)) {
+        if (!isEmpty(validationIssues)) {
             throw validationIssues; // eslint-disable-line @typescript-eslint/no-throw-literal
         }
 
@@ -157,9 +157,9 @@ export class Router {
     }
 
     private _assertExists(location: ResourceLocation): void {
-        const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
+        const schema: ISchema | null = SCHEMA_REGISTER.getSchema(location.resourceName);
 
-        if ($isNull(schema)) {
+        if (isNull(schema)) {
             throw new ResourceDoesNotExistException(location);
         }
     }

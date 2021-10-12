@@ -1,6 +1,6 @@
 {
   "name": "@skimp/router",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "The router module for the skimp domain modelling framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,19 +25,19 @@
   "author": "Anthony Cleaver",
   "license": "ISC",
   "devDependencies": {
-    "@skimp/core": "^3.0.0",
-    "@skimp/debug": "^1.3.0",
-    "@skimp/schema": "^2.5.0",
-    "@types/uuid": "^3.4.5",
-    "typescript": "^3.5.3"
+    "@skimp/core": "^3.1.0",
+    "@skimp/debug": "^1.4.0",
+    "@skimp/schema": "^2.7.0",
+    "@types/uuid": "^8.3.1",
+    "typescript": "^4.4.3"
   },
   "peerDependencies": {
-    "@skimp/core": "^3.0.0",
-    "@skimp/debug": "^1.3.0",
-    "@skimp/schema": "^2.5.0"
+    "@skimp/core": "^3.1.0",
+    "@skimp/debug": "^1.4.0",
+    "@skimp/schema": "^2.7.0"
   },
   "dependencies": {
-    "@cleavera/utils": "^3.6.1",
-    "uuid": "^3.3.2"
+    "@cleavera/utils": "^4.2.1",
+    "uuid": "^8.3.2"
   }
 }
