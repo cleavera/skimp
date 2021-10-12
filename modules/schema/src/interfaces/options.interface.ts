@@ -1,3 +1,3 @@
-import { IJsonValue } from '@cleavera/utils';
+import { JsonPrimitive } from 'type-fest';
 
-export interface IOptions<T extends IJsonValue = IJsonValue> extends Array<T> { } // eslint-disable-line @typescript-eslint/no-empty-interface
+export interface IOptions<T extends JsonPrimitive = JsonPrimitive> extends Array<T> { } // eslint-disable-line @typescript-eslint/no-empty-interface

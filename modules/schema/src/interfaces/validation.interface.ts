@@ -1,5 +1,5 @@
-import { Asyncable } from '@cleavera/utils';
+import { Promisable } from 'type-fest';
 
 export interface IValidation {
-    (model: object): Asyncable<void>;
+    (model: object): Promisable<void>;
 }
