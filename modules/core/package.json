@@ -1,13 +1,13 @@
 {
   "name": "@skimp/core",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "The core module for the skimp domain modelling framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "clean": "git clean -X -f -d --exclude=\"!node_modules\"",
-    "lint": "npx eslint ./src/**/*.ts --config=../../.eslintrc.json",
+    "lint": "npx eslint ./src/**/*.ts --config=./.eslintrc.json",
     "test": "echo \"Tests are run in the testing module\" && exit 1",
     "prepack": "npm run clean && npm run lint && npm run build"
   },
@@ -25,11 +25,11 @@
   "author": "Anthony Cleaver",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^3.8.2"
+    "@types/uuid": "^8.3.1",
+    "typescript": "^4.4.3"
   },
   "dependencies": {
-    "@cleavera/utils": "^3.6.1",
-    "@types/uuid": "^3.4.5",
-    "uuid": "^3.3.2"
+    "@cleavera/utils": "^4.2.1",
+    "uuid": "^8.3.2"
   }
 }

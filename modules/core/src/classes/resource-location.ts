@@ -1,18 +1,18 @@
-import { $isNull, Maybe } from '@cleavera/utils';
+import { isNull } from '@cleavera/utils';
 
 import { InvalidLocationException } from '../exceptions/invalid-location.exception';
 
 export class ResourceLocation {
     public readonly resourceName: string;
-    public readonly resourceId: Maybe<string>;
+    public readonly resourceId: string | null;
 
-    constructor(resourceName: string, resourceId: Maybe<string> = null) {
+    constructor(resourceName: string, resourceId: string | null = null) {
         this.resourceName = resourceName;
         this.resourceId = resourceId;
     }
 
     public toString(): string {
-        if ($isNull(this.resourceId)) {
+        if (isNull(this.resourceId)) {
             return `/${this.resourceName}`;
         }
 
@@ -20,11 +20,11 @@ export class ResourceLocation {
     }
 
     public isResource(): boolean {
-        return !$isNull(this.resourceName) && $isNull(this.resourceId);
+        return !isNull(this.resourceName) && isNull(this.resourceId);
     }
 
     public isEntity(): boolean {
-        return !$isNull(this.resourceName) && !$isNull(this.resourceId);
+        return !isNull(this.resourceName) && !isNull(this.resourceId);
     }
 
     public static FromString(str: string): ResourceLocation {
