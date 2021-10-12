@@ -7,7 +7,7 @@
   "scripts": {
     "build": "webpack --config ./webpack.config.ts",
     "clean": "git clean -X -f -d --exclude=\"!node_modules\"",
-    "lint": "exit 0 && tslint --project ./tsconfig.json",
+    "lint": "npx eslint ./src/**/*.ts --config=../../.eslintrc.json",
     "prepack": "npm run clean && npm run lint && npm run build"
   },
   "author": "Anthony Cleaver",
@@ -23,7 +23,6 @@
     "@types/webpack": "^4.4.35",
     "ts-loader": "^6.0.4",
     "ts-node": "^8.3.0",
-    "tslint": "^5.18.0",
     "typescript": "^3.5.3",
     "webpack": "^4.35.3",
     "webpack-cli": "^3.3.6"

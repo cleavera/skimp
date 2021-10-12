@@ -43,11 +43,12 @@ export class FileSystem {
 
             const resourcePath: string = join(this.path, resourceName);
 
-            await new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector<NodeJS.ErrnoException>): void => {
+            await new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
                 mkdir(resourcePath, {
                     recursive: true
-                }, (err: Maybe<NodeJS.ErrnoException>): void => {
-                    if (!$isNull(err) && err.code !== 'EEXIST') {
+                }, (err: Maybe<Error>): void => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    if (!$isNull(err) && (err as any).code !== 'EEXIST') {
                         reject(err);
 
                         return;

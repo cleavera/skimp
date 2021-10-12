@@ -1,10 +1,10 @@
-import { HttpStatus } from '../constants/http-status.constant';
+import { HttpStatusCode } from '../constants/http-status.constant';
 
 export class HttpError extends Error {
-    public status: HttpStatus;
+    public status: HttpStatusCode;
     public url: string;
 
-    constructor(status: HttpStatus, url: string) {
+    constructor(status: HttpStatusCode, url: string) {
         super();
 
         this.status = status;

@@ -42,7 +42,10 @@ export class Entity implements IEntity {
 
     public async write(content: string): Promise<void> {
         return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
-            writeFile(this.path, content, 'utf-8', async(writeError: Maybe<NodeJS.ErrnoException>): Promise<void> => {
+            writeFile(this.path, content, {
+                encoding: 'utf-8',
+                flag: 'w'
+            }, async(writeError: Maybe<Error>): Promise<void> => {
                 if (!$isNull(writeError)) {
                     reject(writeError);
 
@@ -62,7 +65,7 @@ export class Entity implements IEntity {
         this.assertExists();
 
         return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
-            unlink(this.path, (error: Maybe<NodeJS.ErrnoException>): void => {
+            unlink(this.path, (error: Maybe<Error>): void => {
                 if (!$isNull(error)) {
                     reject(error);
 
@@ -92,7 +95,7 @@ export class Entity implements IEntity {
         }
 
         return new Promise((resolve: IPromiseResolver<string>, reject: IPromiseRejector): void => {
-            readFile(this.path, 'utf-8', (err: Maybe<NodeJS.ErrnoException>, data: string): void => {
+            readFile(this.path, 'utf-8', (err: Maybe<Error>, data: string): void => {
                 if (!$isNull(err)) {
                     reject(err);
                 }
@@ -110,7 +113,7 @@ export class Entity implements IEntity {
         }
 
         return new Promise((resolve: IPromiseResolver<Array<string>>, reject: IPromiseRejector): void => {
-            readdir(this.path, (err: Maybe<NodeJS.ErrnoException>, files: Array<string>): void => {
+            readdir(this.path, (err: Maybe<Error>, files: Array<string>): void => {
                 if (!$isNull(err)) {
                     reject(err);
                 }
@@ -160,7 +163,7 @@ export class Entity implements IEntity {
 
     private static async getStats(path: string): Promise<Stats> {
         return new Promise((resolve: IPromiseResolver<Stats>, reject: IPromiseRejector): void => {
-            lstat(path, (err: Maybe<NodeJS.ErrnoException>, stats: Stats): void => {
+            lstat(path, (err: Maybe<Error>, stats: Stats): void => {
                 if (!$isNull(err)) {
                     reject(err);
 
