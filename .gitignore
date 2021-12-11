@@ -1,9 +1,9 @@
 .idea
 node_modules
-modules/*/dist
-modules/*/.artifacts
-modules/*/.test
-modules/*/node_modules
-modules/quickstart/example/data
-!modules/quickstart/example/data/path.ts
+packages/*/dist
+packages/*/.artifacts
+packages/*/.test
+packages/*/node_modules
+packages/quickstart/example/data
+!packages/quickstart/example/data/path.ts
 *.tgz
