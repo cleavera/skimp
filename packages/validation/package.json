@@ -29,13 +29,13 @@
     "@skimp/http": "^4.1.0",
     "@skimp/schema": "^2.7.1",
     "@types/node": "^16.11.12",
-    "type-fest": "^2.8.0",
     "typescript": "^4.5.3"
   },
   "peerDependencies": {
     "@skimp/schema": "^2.7.1"
   },
   "dependencies": {
-    "@cleavera/utils": "^4.2.1"
+    "@cleavera/utils": "^4.2.1",
+    "type-fest": "^2.8.0"
   }
 }

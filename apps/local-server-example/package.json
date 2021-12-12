@@ -1,0 +1,71 @@
+{
+  "name": "@skimp/local-server-example",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p \"./tsconfig.json\"",
+    "clean": "npx del-cli \"./.dist/**/*.*\"",
+    "lint": "npx eslint ./src/**/*.ts --config=../../.eslintrc.json",
+    "postinstall": "npm run sync",
+    "sync": "npx subrosa update --prefix=\"skimp\" --root=\"../../\"",
+    "start": "npm run sync && npm run build && node ./dist/index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anthony Cleaver",
+  "license": "ISC",
+  "peerDependencies": {
+    "@skimp/core": "*",
+    "@skimp/debug": "*",
+    "@skimp/file-system": "*",
+    "@skimp/http": "*",
+    "@skimp/json-api": "*",
+    "@skimp/json-file": "*",
+    "@skimp/quickstart": "*",
+    "@skimp/router": "*",
+    "@skimp/schema": "*",
+    "@skimp/server": "*",
+    "@skimp/validation": "*"
+  },
+  "peerDependenciesMeta": {
+    "@skimp/core": {
+      "optional": true
+    },
+    "@skimp/debug": {
+      "optional": true
+    },
+    "@skimp/file-system": {
+      "optional": true
+    },
+    "@skimp/http": {
+      "optional": true
+    },
+    "@skimp/json-api": {
+      "optional": true
+    },
+    "@skimp/json-file": {
+      "optional": true
+    },
+    "@skimp/quickstart": {
+      "optional": true
+    },
+    "@skimp/router": {
+      "optional": true
+    },
+    "@skimp/schema": {
+      "optional": true
+    },
+    "@skimp/server": {
+      "optional": true
+    },
+    "@skimp/validation": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.12",
+    "del-cli": "^4.0.1",
+    "subrosa": "^0.1.0",
+    "typescript": "^4.5.3"
+  }
+}
