@@ -1,4 +1,3 @@
-import { IPromiseResolver } from '@cleavera/utils';
 import { HttpRequest, HttpRouter } from '@skimp/http';
 import { createServer, IncomingMessage, Server as HttpServer, ServerResponse } from 'http';
 
@@ -20,7 +19,7 @@ export class Server {
             try {
                 await router.route(request, response);
             } catch (e) {
-                response.error(e);
+                response.error(e as Error);
             }
         });
 
@@ -28,7 +27,7 @@ export class Server {
     }
 
     public async close(): Promise<void> {
-        await new Promise<void>((resolve: IPromiseResolver<void>): void => {
+        await new Promise<void>((resolve: () => void): void => {
             this._server.close(() => {
                 resolve();
             });

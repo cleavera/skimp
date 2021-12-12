@@ -28,8 +28,8 @@
     "@skimp/core": "^3.1.0",
     "@skimp/debug": "^1.4.0",
     "@skimp/schema": "^2.7.1",
-    "@types/uuid": "^8.3.1",
-    "typescript": "^4.4.3"
+    "@types/uuid": "^8.3.3",
+    "typescript": "^4.5.3"
   },
   "peerDependencies": {
     "@skimp/core": "^3.1.0",

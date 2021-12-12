@@ -1,16 +1,15 @@
 import { HttpRequest as AzureRequest } from '@azure/functions';
-import { Maybe } from '@cleavera/utils';
 import { ResourceLocation } from '@skimp/core';
 import { HttpRequest } from '@skimp/http';
 
 import { Content } from './content';
 
 export class RequestFactory {
-    public static FromRequest(location: Maybe<ResourceLocation>, request: AzureRequest): HttpRequest {
-        const content: Maybe<Content> = Content.FromRequest(request);
-        const origin: Maybe<string> = request.headers.origin ?? null;
-        const type: Maybe<string> = request.headers.accept ?? null;
-        const method: Maybe<string> = (request.method ?? '').toUpperCase();
+    public static FromRequest(location: ResourceLocation | null, request: AzureRequest): HttpRequest {
+        const content: Content | null = Content.FromRequest(request);
+        const origin: string | null = request.headers.origin ?? null;
+        const type: string | null = request.headers.accept ?? null;
+        const method: string | null = (request.method ?? '').toUpperCase();
 
         return new HttpRequest(location, method, content, origin, type);
     }

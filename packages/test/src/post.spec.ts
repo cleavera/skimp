@@ -298,8 +298,8 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(400);
-            Expect(e.error).toEqual({
+            Expect((e as Response).statusCode).toEqual(400);
+            Expect((e as any).error).toEqual({
                 errors: [
                     {
                         code: ValidationExceptionCode.INVALID_JSON_DATA,
@@ -346,8 +346,8 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(400);
-            Expect(e.error).toEqual({
+            Expect((e as Response).statusCode).toEqual(400);
+            Expect((e as any).error).toEqual({
                 errors: [
                     {
                         code: ValidationExceptionCode.REQUIRED,
@@ -396,8 +396,8 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(400);
-            Expect(e.error).toEqual({
+            Expect((e as Response).statusCode).toEqual(400);
+            Expect((e as any).error).toEqual({
                 errors: [
                     {
                         code: ValidationExceptionCode.INVALID_STRING,
@@ -447,8 +447,8 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(400);
-            Expect(e.error).toEqual({
+            Expect((e as Response).statusCode).toEqual(400);
+            Expect((e as any).error).toEqual({
                 errors: [
                     {
                         code: ValidationExceptionCode.INVALID_NUMBER,
@@ -499,8 +499,8 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(400);
-            Expect(e.error).toEqual({
+            Expect((e as Response).statusCode).toEqual(400);
+            Expect((e as any).error).toEqual({
                 errors: [
                     {
                         code: ValidationExceptionCode.INVALID_INTEGER,
@@ -550,8 +550,8 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(400);
-            Expect(e.error).toEqual({
+            Expect((e as Response).statusCode).toEqual(400);
+            Expect((e as any).error).toEqual({
                 errors: [
                     {
                         code: ValidationExceptionCode.INVALID_BOOLEAN,
@@ -601,8 +601,8 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(400);
-            Expect(e.error).toEqual({
+            Expect((e as Response).statusCode).toEqual(400);
+            Expect((e as any).error).toEqual({
                 errors: [
                     {
                         code: ValidationExceptionCode.INVALID_OPTION,
@@ -671,8 +671,8 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(400);
-            Expect(e.error).toEqual({
+            Expect((e as Response).statusCode).toEqual(400);
+            Expect((e as any).error).toEqual({
                 errors: [
                     {
                         code: ValidationExceptionCode.INVALID_DATE,
@@ -719,7 +719,7 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(404);
+            Expect((e as Response).statusCode).toEqual(404);
         }
 
         Expect(success).toBe(false);
@@ -757,7 +757,7 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(404);
+            Expect((e as Response).statusCode).toEqual(404);
         }
 
         Expect(success).toBe(false);
@@ -797,7 +797,7 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(405);
+            Expect((e as Response).statusCode).toEqual(405);
         }
 
         Expect(success).toBe(false);
@@ -1126,8 +1126,8 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(400);
-            Expect(e.error).toEqual({
+            Expect((e as Response).statusCode).toEqual(400);
+            Expect((e as any).error).toEqual({
                 errors: [
                     {
                         code: ValidationExceptionCode.RELATIONSHIP_INVALID_JSON,
@@ -1179,8 +1179,8 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(400);
-            Expect(e.error).toEqual({
+            Expect((e as Response).statusCode).toEqual(400);
+            Expect((e as any).error).toEqual({
                 errors: [
                     {
                         code: ValidationExceptionCode.RELATIONSHIP_NOT_FOUND,
@@ -1237,8 +1237,8 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(400);
-            Expect(e.error).toEqual({
+            Expect((e as Response).statusCode).toEqual(400);
+            Expect((e as any).error).toEqual({
                 errors: [
                     {
                         code: ValidationExceptionCode.RELATIONSHIP_TYPE_NOT_ALLOWED,
@@ -1302,8 +1302,8 @@ export class PostSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(400);
-            Expect(e.error).toEqual({
+            Expect((e as Response).statusCode).toEqual(400);
+            Expect((e as any).error).toEqual({
                 errors: [
                     {
                         code: ValidationExceptionCode.RELATIONSHIP_LIMIT_REACHED,

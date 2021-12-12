@@ -7,7 +7,7 @@
     "clean": "del-cli \"./.test/**/*.*\" && del-cli \"./.artifacts/**/*.*\"",
     "lint": "npx eslint ./src/**/*.ts --config=../../.eslintrc.json",
     "postinstall": "npm run sync",
-    "sync": "node ./scripts/install",
+    "sync": "subrosa update --prefix=\"skimp\" --root=\"../../\"",
     "test": "npm run clean && npm run sync && npm run test-run",
     "test-run": "npm run build && alsatian ./.test/**/*.spec.js --tap"
   },
@@ -15,17 +15,17 @@
   "license": "ISC",
   "private": true,
   "devDependencies": {
-    "@types/node": "^13.7.4",
-    "@types/request": "2.47.1",
-    "@types/request-promise-native": "1.0.15",
-    "@types/uuid": "3.4.3",
-    "alsatian": "^3.0.0",
-    "del-cli": "^2.0.0",
-    "glob": "^7.1.4",
+    "@types/node": "^16.11.12",
+    "@types/request": "2.48.7",
+    "@types/request-promise-native": "1.0.18",
+    "@types/uuid": "8.3.3",
+    "alsatian": "^3.2.1",
+    "del-cli": "^4.0.1",
+    "glob": "^7.2.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
-    "typescript": "^3.8.2",
-    "uuid": "3.3.2"
+    "typescript": "^4.5.3",
+    "uuid": "8.3.2"
   },
   "peerDependencies": {
     "@skimp/core": "*",
@@ -41,6 +41,6 @@
     "@skimp/validation": "*"
   },
   "dependencies": {
-    "@cleavera/utils": "^3.6.1"
+    "@cleavera/utils": "^4.2.1"
   }
 }

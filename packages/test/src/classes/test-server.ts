@@ -1,4 +1,3 @@
-import { Maybe } from '@cleavera/utils';
 import { ConsoleLogger, ILogger } from '@skimp/debug';
 import { FileSystem } from '@skimp/file-system';
 import { IAuthenticator } from '@skimp/http';
@@ -24,7 +23,7 @@ export class TestServer {
         await this.clearData();
     }
 
-    public static async create(port: number, dataPath: string, _schemas: Array<ISchema>, cors: boolean | string | Array<string> = false, version: string = 'UNVERSIONED', authenticator: Maybe<IAuthenticator> = null, loggerClass: ILogger = new ConsoleLogger()): Promise<TestServer> {
+    public static async create(port: number, dataPath: string, _schemas: Array<ISchema>, cors: boolean | string | Array<string> = false, version: string = 'UNVERSIONED', authenticator: IAuthenticator | null = null, loggerClass: ILogger = new ConsoleLogger()): Promise<TestServer> {
         const fileSystem: FileSystem = FileSystem.create(dataPath);
         const server: Server = await init(port, fileSystem.path, _schemas, cors, version, authenticator, loggerClass, fileSystem) as any; // eslint-disable-line
 

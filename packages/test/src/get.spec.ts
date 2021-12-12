@@ -276,7 +276,7 @@ export class GetSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(404);
+            Expect((e as Response).statusCode).toEqual(404);
         }
 
         Expect(success).toBe(false);
@@ -557,7 +557,7 @@ export class GetSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(406);
+            Expect((e as Response).statusCode).toEqual(406);
         }
 
         Expect(success).toBe(false);
@@ -603,7 +603,7 @@ export class GetSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(404);
+            Expect((e as Response).statusCode).toEqual(404);
         }
 
         Expect(success).toBe(false);
@@ -625,7 +625,7 @@ export class GetSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(400);
+            Expect((e as Response).statusCode).toEqual(400);
         }
 
         Expect(success).toBe(false);

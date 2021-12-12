@@ -1,7 +1,7 @@
-import { $isNull, IPromiseRejector, IPromiseResolver, Maybe } from '@cleavera/utils';
+import { isNull } from '@cleavera/utils';
 import { Db } from '@skimp/json-file';
 import { InvalidSchemaResourceNameException, SCHEMA_REGISTER } from '@skimp/schema';
-import { mkdir } from 'fs';
+import { promises as fs } from 'fs';
 import { join } from 'path';
 
 import { EntityFactory } from './entity-factory';
@@ -35,27 +35,16 @@ export class FileSystem {
 
     public async _initialise(): Promise<void> {
         for (const schema of SCHEMA_REGISTER.schemas) {
-            const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
+            const resourceName: string | null = SCHEMA_REGISTER.getSchemaResourceName(schema);
 
-            if ($isNull(resourceName)) {
+            if (isNull(resourceName)) {
                 throw new InvalidSchemaResourceNameException(schema);
             }
 
             const resourcePath: string = join(this.path, resourceName);
 
-            await new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
-                mkdir(resourcePath, {
-                    recursive: true
-                }, (err: Maybe<Error>): void => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    if (!$isNull(err) && (err as any).code !== 'EEXIST') {
-                        reject(err);
-
-                        return;
-                    }
-
-                    resolve();
-                });
+            await fs.mkdir(resourcePath, {
+                recursive: true
             });
         }
     }

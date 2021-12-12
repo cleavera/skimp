@@ -1,5 +1,5 @@
 import { Context } from '@azure/functions';
-import { $isUndefined } from '@cleavera/utils';
+import { isUndefined } from '@cleavera/utils';
 import { ResponseCode } from '@skimp/core';
 import { LOGGER } from '@skimp/debug';
 import { IHttpResponse, ResponseType } from '@skimp/http';
@@ -87,7 +87,7 @@ export class Response implements IHttpResponse {
     }
 
     public static FromContext(context: Context): Response {
-        if ($isUndefined(context.res)) {
+        if (isUndefined(context.res)) {
             throw new RequestNotHttpTriggerException();
         }
 
