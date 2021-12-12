@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest as AzureHttpRequest } from '@azure/functions';
-import { $isUndefined, Maybe } from '@cleavera/utils';
+import { isUndefined } from '@cleavera/utils';
 import { ContextLogger, RequestFactory, Response } from '@skimp/azure';
 import { API_REGISTER, DB_REGISTER, ResourceLocation } from '@skimp/core';
 import { ILogger, LOGGER } from '@skimp/debug';
@@ -21,9 +21,9 @@ const httpTrigger: AzureFunction = async(context: Context, req: AzureHttpRequest
     API_REGISTER.configure(new Docs(), 'documentation/json');
 
     const router: HttpRouter = new HttpRouter('1.0', null, true);
-    let location: Maybe<ResourceLocation> = null;
+    let location: ResourceLocation | null = null;
 
-    if (!$isUndefined(req.params.resource)) {
+    if (!isUndefined(req.params.resource)) {
         location = new ResourceLocation(req.params.resource, req.params.id);
     }
 

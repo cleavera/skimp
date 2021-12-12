@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../../packages/azure/tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist"
   },

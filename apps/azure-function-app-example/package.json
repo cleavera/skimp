@@ -1,0 +1,64 @@
+{
+  "name": "@skimp/azure-example",
+  "private": true,
+  "version": "",
+  "scripts": {
+    "build": "tsc",
+    "build:production": "npm run prestart && npm prune --production",
+    "watch": "tsc --w",
+    "prestart": "npm run sync && npm run build && func extensions install",
+    "start:host": "func start",
+    "start": "npm-run-all --parallel start:host watch",
+    "sync": "npx subrosa update --prefix=\"skimp\" --root=\"../../\""
+  },
+  "description": "",
+  "devDependencies": {
+    "@azure/functions": "^3.0.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.5.3"
+  },
+  "peerDependencies": {
+    "@skimp/azure": "*",
+    "@skimp/core": "*",
+    "@skimp/debug": "*",
+    "@skimp/file-system": "*",
+    "@skimp/http": "*",
+    "@skimp/json-api": "*",
+    "@skimp/json-file": "*",
+    "@skimp/router": "*",
+    "@skimp/schema": "*",
+    "@skimp/validation": "*"
+  },
+  "peerDependenciesMeta": {
+    "@skimp/azure": {
+      "optional": true
+    },
+    "@skimp/core": {
+      "optional": true
+    },
+    "@skimp/debug": {
+      "optional": true
+    },
+    "@skimp/file-system": {
+      "optional": true
+    },
+    "@skimp/http": {
+      "optional": true
+    },
+    "@skimp/json-api": {
+      "optional": true
+    },
+    "@skimp/json-file": {
+      "optional": true
+    },
+    "@skimp/router": {
+      "optional": true
+    },
+    "@skimp/schema": {
+      "optional": true
+    },
+    "@skimp/validation": {
+      "optional": true
+    }
+  }
+}
