@@ -7,7 +7,7 @@ import * as uuid from 'uuid';
 
 import { TestServer } from './classes/test-server';
 import * as DATA_PATH from './data/path';
-import { $request } from './helpers/request.helper';
+import { makeRequest } from './helpers/request.helper';
 import { SCHEMAS } from './schemas';
 
 @TestFixture('Update')
@@ -52,7 +52,7 @@ export class UpdateSpec {
             } as IJsonApi
         };
 
-        const postResponse: Response = await $request('/job', postOptions);
+        const postResponse: Response = await makeRequest('/job', postOptions);
         const location: string = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
@@ -79,7 +79,7 @@ export class UpdateSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await $request('/job', baseOptions);
+        const getResponse: Response = await makeRequest('/job', baseOptions);
 
         Expect(getResponse.body).toEqual([
             {
@@ -107,7 +107,7 @@ export class UpdateSpec {
             } as IJsonApi
         ]);
 
-        const getSingleResponse: Response = await $request(location, baseOptions);
+        const getSingleResponse: Response = await makeRequest(location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
@@ -133,7 +133,7 @@ export class UpdateSpec {
             }
         } as IJsonApi);
 
-        const getSinglePersonResponse: Response = await $request(this.location, baseOptions);
+        const getSinglePersonResponse: Response = await makeRequest(this.location, baseOptions);
 
         Expect(getSinglePersonResponse.body).toEqual({
             data: {
@@ -188,7 +188,7 @@ export class UpdateSpec {
             } as IJsonApi
         };
 
-        const postResponse: Response = await $request('/person', postOptions);
+        const postResponse: Response = await makeRequest('/person', postOptions);
         this.location = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
@@ -206,7 +206,7 @@ export class UpdateSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await $request('/person', baseOptions);
+        const getResponse: Response = await makeRequest('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([
             {
@@ -239,7 +239,7 @@ export class UpdateSpec {
             resolveWithFullResponse: true
         };
 
-        await $request(this.location, baseOptions);
+        await makeRequest(this.location, baseOptions);
 
         const putOptions: RequestPromiseOptions = {
             ...baseOptions,
@@ -255,7 +255,7 @@ export class UpdateSpec {
             } as IJsonApi
         };
 
-        const putResponse: Response = await $request(this.location, putOptions);
+        const putResponse: Response = await makeRequest(this.location, putOptions);
 
         Expect(putResponse.body).toEqual({
             data: {
@@ -274,7 +274,7 @@ export class UpdateSpec {
 
         Expect(putResponse.statusCode).toBe(200);
 
-        const getSingleResponse: Response = await $request(this.location, baseOptions);
+        const getSingleResponse: Response = await makeRequest(this.location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
@@ -291,7 +291,7 @@ export class UpdateSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await $request('/person', baseOptions);
+        const getResponse: Response = await makeRequest('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([
             {
@@ -323,7 +323,7 @@ export class UpdateSpec {
         const location: string = `/person/${uuid.v4()}`;
 
         try {
-            await $request(location, baseOptions);
+            await makeRequest(location, baseOptions);
 
             success = true;
         } catch (e) {
@@ -345,7 +345,7 @@ export class UpdateSpec {
             } as IJsonApi
         };
 
-        const putResponse: Response = await $request(location, putOptions);
+        const putResponse: Response = await makeRequest(location, putOptions);
 
         Expect(putResponse.body).toEqual({
             data: {
@@ -364,7 +364,7 @@ export class UpdateSpec {
 
         Expect(putResponse.statusCode).toBe(201);
 
-        const getSingleResponse: Response = await $request(location, baseOptions);
+        const getSingleResponse: Response = await makeRequest(location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
@@ -381,7 +381,7 @@ export class UpdateSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await $request('/person', baseOptions);
+        const getResponse: Response = await makeRequest('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([
             {
@@ -439,7 +439,7 @@ export class UpdateSpec {
             } as IJsonApi
         };
 
-        const putResponse: Response = await $request(location, putOptions);
+        const putResponse: Response = await makeRequest(location, putOptions);
 
         Expect(putResponse.body).toEqual({
             data: {
@@ -458,7 +458,7 @@ export class UpdateSpec {
 
         Expect(putResponse.statusCode).toBe(201);
 
-        const getSingleResponse: Response = await $request(location, baseOptions);
+        const getSingleResponse: Response = await makeRequest(location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
@@ -475,7 +475,7 @@ export class UpdateSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await $request('/person', baseOptions);
+        const getResponse: Response = await makeRequest('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([
             {
@@ -534,7 +534,7 @@ export class UpdateSpec {
         let success: boolean = false;
 
         try {
-            await $request(location, postOptions);
+            await makeRequest(location, postOptions);
 
             success = true;
         } catch (e) {
@@ -543,7 +543,7 @@ export class UpdateSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await $request('/person', baseOptions);
+        const getResponse: Response = await makeRequest('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([
             {
@@ -588,7 +588,7 @@ export class UpdateSpec {
         let success: boolean = false;
 
         try {
-            await $request(location, postOptions);
+            await makeRequest(location, postOptions);
 
             success = true;
         } catch (e) {
@@ -597,7 +597,7 @@ export class UpdateSpec {
 
         Expect(success).toBe(false);
 
-        const getResponse: Response = await $request('/person', baseOptions);
+        const getResponse: Response = await makeRequest('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([
             {
@@ -626,7 +626,7 @@ export class UpdateSpec {
             resolveWithFullResponse: true
         };
 
-        await $request(this.location, baseOptions);
+        await makeRequest(this.location, baseOptions);
 
         const putOptions: RequestPromiseOptions = {
             ...baseOptions,
@@ -642,7 +642,7 @@ export class UpdateSpec {
             } as IJsonApi
         };
 
-        const putResponse: Response = await $request(this.location, putOptions);
+        const putResponse: Response = await makeRequest(this.location, putOptions);
 
         Expect(putResponse.body).toEqual({
             data: {
@@ -661,7 +661,7 @@ export class UpdateSpec {
 
         Expect(putResponse.statusCode).toBe(200);
 
-        const getSingleResponse: Response = await $request(this.location, baseOptions);
+        const getSingleResponse: Response = await makeRequest(this.location, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
@@ -678,7 +678,7 @@ export class UpdateSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await $request('/person', baseOptions);
+        const getResponse: Response = await makeRequest('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([
             {
@@ -697,7 +697,7 @@ export class UpdateSpec {
             } as IJsonApi
         ]);
 
-        const getJobResponse: Response = await $request('/job', baseOptions);
+        const getJobResponse: Response = await makeRequest('/job', baseOptions);
 
         Expect(getJobResponse.body).toEqual([
             {
@@ -711,7 +711,7 @@ export class UpdateSpec {
             }
         ]);
 
-        const getSingleJobResponse: Response = await $request(jobLocation, baseOptions);
+        const getSingleJobResponse: Response = await makeRequest(jobLocation, baseOptions);
 
         Expect(getSingleJobResponse.body).toEqual({
             data: {

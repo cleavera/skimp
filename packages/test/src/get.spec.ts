@@ -7,7 +7,7 @@ import { RequestPromiseOptions } from 'request-promise-native';
 import { TestServer } from './classes/test-server';
 import { Gender } from './constants/genders.constant';
 import * as DATA_PATH from './data/path';
-import { $request } from './helpers/request.helper';
+import { makeRequest } from './helpers/request.helper';
 import { SCHEMAS } from './schemas';
 
 @TestFixture('Get')
@@ -53,7 +53,7 @@ export class GetSpec {
             } as IJsonApi
         };
 
-        const postResponse: Response = await $request('/job', postOptions);
+        const postResponse: Response = await makeRequest('/job', postOptions);
         this.jobLocation = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
@@ -80,7 +80,7 @@ export class GetSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await $request('/job', baseOptions);
+        const getResponse: Response = await makeRequest('/job', baseOptions);
 
         Expect(getResponse.body).toEqual([
             {
@@ -108,7 +108,7 @@ export class GetSpec {
             } as IJsonApi
         ]);
 
-        const getSingleResponse: Response = await $request(this.jobLocation, baseOptions);
+        const getSingleResponse: Response = await makeRequest(this.jobLocation, baseOptions);
 
         Expect(getSingleResponse.body).toEqual({
             data: {
@@ -134,7 +134,7 @@ export class GetSpec {
             }
         } as IJsonApi);
 
-        const getSinglePersonResponse: Response = await $request(this.personLocation, baseOptions);
+        const getSinglePersonResponse: Response = await makeRequest(this.personLocation, baseOptions);
 
         Expect(getSinglePersonResponse.body).toEqual({
             data: {
@@ -186,7 +186,7 @@ export class GetSpec {
             } as IJsonApi
         };
 
-        const postResponse: Response = await $request('/person', postOptions);
+        const postResponse: Response = await makeRequest('/person', postOptions);
         this.personLocation = postResponse.headers.location ?? '';
 
         Expect(postResponse.body).toEqual({
@@ -204,7 +204,7 @@ export class GetSpec {
             }
         } as IJsonApi);
 
-        const getResponse: Response = await $request('/person', baseOptions);
+        const getResponse: Response = await makeRequest('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([
             {
@@ -243,7 +243,7 @@ export class GetSpec {
             resolveWithFullResponse: true
         };
 
-        const getResponse: Response = await $request('/', baseOptions);
+        const getResponse: Response = await makeRequest('/', baseOptions);
 
         Expect(getResponse.body).toEqual({
             data: {
@@ -272,7 +272,7 @@ export class GetSpec {
         let success: boolean = false;
 
         try {
-            await $request('/ROOT', baseOptions);
+            await makeRequest('/ROOT', baseOptions);
 
             success = true;
         } catch (e) {
@@ -290,7 +290,7 @@ export class GetSpec {
             resolveWithFullResponse: true
         };
 
-        const getResponse: Response = await $request(this.personLocation, baseOptions);
+        const getResponse: Response = await makeRequest(this.personLocation, baseOptions);
 
         Expect(getResponse.body).toEqual({
             data: {
@@ -335,7 +335,7 @@ export class GetSpec {
             resolveWithFullResponse: true
         };
 
-        const getResponse: Response = await $request(this.personLocation, baseOptions);
+        const getResponse: Response = await makeRequest(this.personLocation, baseOptions);
 
         Expect(getResponse.body).toEqual({
             $schema: 'http://json-schema.org/draft-04/schema#',
@@ -503,7 +503,7 @@ export class GetSpec {
             resolveWithFullResponse: true
         };
 
-        const getResponse: Response = await $request('/person', baseOptions);
+        const getResponse: Response = await makeRequest('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([
             {
@@ -553,7 +553,7 @@ export class GetSpec {
         let success: boolean = false;
 
         try {
-            await $request('/person', baseOptions);
+            await makeRequest('/person', baseOptions);
 
             success = true;
         } catch (e) {
@@ -575,7 +575,7 @@ export class GetSpec {
             }
         };
 
-        const optionsRequest: Response = await $request('/person', baseOptions);
+        const optionsRequest: Response = await makeRequest('/person', baseOptions);
 
         Expect(optionsRequest.body).not.toBeDefined();
         Expect(optionsRequest.headers['access-control-allow-origin']).toEqual('http://localhost');
@@ -599,7 +599,7 @@ export class GetSpec {
         let success: boolean = false;
 
         try {
-            await $request('/invalid', baseOptions);
+            await makeRequest('/invalid', baseOptions);
 
             success = true;
         } catch (e) {
@@ -621,7 +621,7 @@ export class GetSpec {
         let success: boolean = false;
 
         try {
-            await $request('/person', baseOptions);
+            await makeRequest('/person', baseOptions);
 
             success = true;
         } catch (e) {
