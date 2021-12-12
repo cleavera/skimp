@@ -19,6 +19,6 @@
     "strictNullChecks": true
   },
   "include": [
-    "modules/**/*"
+    "packages/**/*"
   ]
 }
