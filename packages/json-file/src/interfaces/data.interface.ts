@@ -1,5 +1,5 @@
-import { IJsonValue } from '@cleavera/utils';
+import { JsonPrimitive } from 'type-fest';
 
 export interface IData {
-    [attribute: string]: IJsonValue;
+    [attribute: string]: JsonPrimitive;
 }

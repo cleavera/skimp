@@ -260,7 +260,7 @@ export class DeleteSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.statusCode).toEqual(404);
+            Expect((e as Response).statusCode).toEqual(404);
         }
 
         Expect(success).toBe(false);
@@ -298,8 +298,8 @@ export class DeleteSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.body).not.toBeDefined();
-            Expect(e.statusCode).toBe(405);
+            Expect((e as Response).body).not.toBeDefined();
+            Expect((e as Response).statusCode).toBe(405);
         }
 
         Expect(success).toBe(false);
@@ -344,8 +344,8 @@ export class DeleteSpec {
 
             success = true;
         } catch (e) {
-            Expect(e.body).not.toBeDefined();
-            Expect(e.statusCode).toBe(404);
+            Expect((e as Response).body).not.toBeDefined();
+            Expect((e as Response).statusCode).toBe(404);
         }
 
         Expect(success).toBe(false);

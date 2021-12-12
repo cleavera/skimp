@@ -1,4 +1,4 @@
-import { $isNull, Maybe } from '@cleavera/utils';
+import { isNull } from '@cleavera/utils';
 import { MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 import { IJsonData, Serialiser } from '@skimp/json-api';
 import { ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '@skimp/schema';
@@ -24,9 +24,9 @@ export class Api {
     }
 
     public async list<T extends object>(schema: ISchema<T>): Promise<Array<T>> {
-        const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
+        const resourceName: string | null = SCHEMA_REGISTER.getSchemaResourceName(schema);
 
-        if ($isNull(resourceName)) {
+        if (isNull(resourceName)) {
             throw new SchemaNotRegisteredException(schema);
         }
 
@@ -46,16 +46,16 @@ export class Api {
 
     public async save<T extends object>(model: T): Promise<T> {
         const schema: ISchema<T> = model.constructor as ISchema<T>;
-        let location: Maybe<ResourceLocation> = MODEL_REGISTER.getLocation(model);
-        const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
+        let location: ResourceLocation | null = MODEL_REGISTER.getLocation(model);
+        const resourceName: string | null = SCHEMA_REGISTER.getSchemaResourceName(schema);
 
-        if ($isNull(resourceName)) {
+        if (isNull(resourceName)) {
             throw new SchemaNotRegisteredException(schema);
         }
 
-        let json: Maybe<IJsonData> = null;
+        let json: IJsonData | null = null;
 
-        if ($isNull(location)) {
+        if (isNull(location)) {
             json = await HttpRequest.post<IJsonData>(this._constructUrl(new ResourceLocation(resourceName)), JSON.parse(this._serialiser.serialiseModel(model)));
             location = ResourceLocation.FromString(json.data.id as string);
         } else {

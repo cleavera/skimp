@@ -1,7 +1,6 @@
-import { IDict } from '@cleavera/utils';
 import { FieldType } from '@skimp/schema';
 
-export const FieldTypeMapping: IDict<'number' | 'string' | 'boolean'> = {
+export const FieldTypeMapping: Record<string, 'number' | 'string' | 'boolean'> = {
     [FieldType.INTEGER]: 'number',
     [FieldType.NUMBER]: 'number',
     [FieldType.STRING]: 'string',

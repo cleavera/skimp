@@ -1,4 +1,4 @@
-import { $isEmpty, $isNull, $isString, $isUndefined, Maybe } from '@cleavera/utils';
+import { isEmpty, isNull, isString, isUndefined } from '@cleavera/utils';
 import { MissingCreatedDateException, MODEL_REGISTER, ResourceLocation } from '@skimp/core';
 import { NoLocationRegisteredException } from '@skimp/router';
 import { FieldNotConfiguredException, ISchema, ModelPointer, RelationshipPointer, RelationshipValidationException, ResourceNotRegisteredException, SCHEMA_REGISTER, SchemaNotRegisteredException, ValidationException } from '@skimp/schema';
@@ -17,22 +17,22 @@ export class Serialiser {
         const out: IJsonErrors = {
             errors: errors.reduce((acc: Array<IJsonError>, exception: ValidationException) => {
                 if (exception instanceof ModelValidationException) {
-                    return acc.concat((exception.fields).map((pointer: Maybe<ModelPointer> = null): IJsonError => {
+                    return acc.concat((exception.fields).map((pointer: ModelPointer | null = null): IJsonError => {
                         return {
                             code: exception.code,
                             source: {
-                                pointer: $isNull(pointer) ? '' : `/data/attributes/${pointer.field}`
+                                pointer: isNull(pointer) ? '' : `/data/attributes/${pointer.field}`
                             }
                         };
                     }));
                 }
 
                 if (exception instanceof RelationshipValidationException) {
-                    return acc.concat((exception.relationships).map((pointer: Maybe<RelationshipPointer> = null): IJsonError => {
+                    return acc.concat((exception.relationships).map((pointer: RelationshipPointer | null = null): IJsonError => {
                         return {
                             code: exception.code,
                             source: {
-                                pointer: $isNull(pointer) ? '' : `/data/relationships/${pointer.toString()}`
+                                pointer: isNull(pointer) ? '' : `/data/relationships/${pointer.toString()}`
                             }
                         };
                     }));
@@ -52,20 +52,20 @@ export class Serialiser {
         return JSON.stringify(out);
     }
 
-    public serialiseModel(model: object, location: Maybe<ResourceLocation> = null): string {
+    public serialiseModel(model: object, location: ResourceLocation | null = null): string {
         return JSON.stringify(this._mapToModel(model, location));
     }
 
     public serialiseList(model: Array<object>): string {
         return JSON.stringify(model.sort((a: object, b: object): number => {
-            const aCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(a);
-            const bCreated: Maybe<Date> = MODEL_REGISTER.getCreatedDate(b);
+            const aCreated: Date | null = MODEL_REGISTER.getCreatedDate(a);
+            const bCreated: Date | null = MODEL_REGISTER.getCreatedDate(b);
 
-            if ($isNull(aCreated)) {
+            if (isNull(aCreated)) {
                 throw new MissingCreatedDateException(a);
             }
 
-            if ($isNull(bCreated)) {
+            if (isNull(bCreated)) {
                 throw new MissingCreatedDateException(b);
             }
 
@@ -79,9 +79,9 @@ export class Serialiser {
 
             return 0;
         }).map((item: object) => {
-            const location: Maybe<ResourceLocation> = MODEL_REGISTER.getLocation(item);
+            const location: ResourceLocation | null = MODEL_REGISTER.getLocation(item);
 
-            if ($isNull(location)) {
+            if (isNull(location)) {
                 throw new NoLocationRegisteredException(item);
             }
 
@@ -90,33 +90,33 @@ export class Serialiser {
     }
 
     public deserialise(json: IJsonData): object {
-        const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(json.data.type);
+        const schema: ISchema | null = SCHEMA_REGISTER.getSchema(json.data.type);
 
-        if ($isNull(schema)) {
+        if (isNull(schema)) {
             throw new ResourceNotRegisteredException(json.data.type);
         }
 
-        let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
+        let fields: Array<string> | null = SCHEMA_REGISTER.getFields(schema);
 
-        if ($isNull(fields)) {
+        if (isNull(fields)) {
             fields = [];
         }
 
         const model: object = new schema();
 
         fields.forEach((field: string) => {
-            const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
+            const mappedField: string | null = SCHEMA_REGISTER.mapToField(schema, field);
 
-            if ($isNull(mappedField)) {
+            if (isNull(mappedField)) {
                 throw new FieldNotConfiguredException(schema, field);
             }
 
             (model as any)[field] = SCHEMA_REGISTER.deserialise(schema, field, json.data.attributes[mappedField]); // eslint-disable-line
         });
 
-        if (!$isUndefined(json.data.relationships)) {
+        if (!isUndefined(json.data.relationships)) {
             json.data.relationships.forEach((relationship: IRelationship, index: number) => {
-                if ($isUndefined(relationship.href) || !$isString(relationship.href)) {
+                if (isUndefined(relationship.href) || !isString(relationship.href)) {
                     throw new InvalidJSONRelationship(index);
                 }
 
@@ -127,18 +127,18 @@ export class Serialiser {
         return model;
     }
 
-    private _mapToModel(model: any, location: Maybe<ResourceLocation> = null): IJsonData { // eslint-disable-line
+    private _mapToModel(model: any, location: ResourceLocation | null = null): IJsonData { // eslint-disable-line
         const schema: ISchema = model.constructor;
-        let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
-        const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
-        const relationships: Maybe<Array<ResourceLocation>> = MODEL_REGISTER.getRelationships(model);
-        const links: Maybe<Array<ResourceLocation>> = MODEL_REGISTER.getLinks(model);
+        let fields: Array<string> | null = SCHEMA_REGISTER.getFields(schema);
+        const type: string | null = SCHEMA_REGISTER.getSchemaResourceName(schema);
+        const relationships: Array<ResourceLocation> | null = MODEL_REGISTER.getRelationships(model);
+        const links: Array<ResourceLocation> | null = MODEL_REGISTER.getLinks(model);
 
-        if ($isNull(type)) {
+        if (isNull(type)) {
             throw new SchemaNotRegisteredException(schema);
         }
 
-        if ($isNull(fields)) {
+        if (isNull(fields)) {
             fields = [];
         }
 
@@ -146,9 +146,9 @@ export class Serialiser {
             data: {
                 type,
                 attributes: fields.reduce<IAttributes>((result: IAttributes, field: string): IAttributes => {
-                    const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
+                    const mappedField: string | null = SCHEMA_REGISTER.mapToField(schema, field);
 
-                    if ($isNull(mappedField)) {
+                    if (isNull(mappedField)) {
                         throw new FieldNotConfiguredException(schema, field);
                     }
 
@@ -159,11 +159,11 @@ export class Serialiser {
             }
         };
 
-        if (!$isNull(location)) {
+        if (!isNull(location)) {
             out.data.id = location.toString();
         }
 
-        if (!$isEmpty(relationships ?? null)) {
+        if (!isEmpty(relationships ?? null)) {
             out.data.relationships = relationships.map((relationship: ResourceLocation): IRelationship => {
                 return {
                     href: relationship.toString(),
@@ -180,7 +180,7 @@ export class Serialiser {
             });
         }
 
-        if (!$isEmpty(links ?? null)) {
+        if (!isEmpty(links ?? null)) {
             out.data.links = links.reduce<ILinks>((acc: ILinks, relationship: ResourceLocation): ILinks => {
                 acc[relationship.resourceName] = relationship.toString();
 

@@ -1,4 +1,4 @@
-import { $isNull, Maybe } from '@cleavera/utils';
+import { isNull } from '@cleavera/utils';
 
 import { HttpStatusCode } from '../constants/http-status.constant';
 import { HttpRequestMethod } from '../constants/request-method.constant';
@@ -52,7 +52,7 @@ export class HttpRequest {
         }
     }
 
-    private static _getConfig(method: HttpRequestMethod, body: Maybe<unknown> = null): RequestInit {
+    private static _getConfig(method: HttpRequestMethod, body: unknown | null = null): RequestInit {
         const config: RequestInit = {
             method,
             mode: 'cors',
@@ -62,7 +62,7 @@ export class HttpRequest {
             }
         };
 
-        if (!$isNull(body)) {
+        if (!isNull(body)) {
             config.body = JSON.stringify(body);
         }
 

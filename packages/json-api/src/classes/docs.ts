@@ -1,4 +1,4 @@
-import { $isEmpty, $isNull, IDict, Maybe, OneOrMany } from '@cleavera/utils';
+import { isEmpty, isNull } from '@cleavera/utils';
 import { IApi, IResponse, ResourceDoesNotExistException, ResourceLocation, ResponseCode } from '@skimp/core';
 import { RequestBodyNotAllowedException } from '@skimp/router';
 import { FieldNotConfiguredException, FieldType, IOptions, ISchema, SCHEMA_REGISTER, SchemaNotRegisteredException } from '@skimp/schema';
@@ -17,10 +17,10 @@ export class Docs implements IApi {
         this._jsonAPI = new Api();
     }
 
-    public respond(response: IResponse, _model: OneOrMany<object>, location: ResourceLocation): void {
-        const schema: Maybe<ISchema> = SCHEMA_REGISTER.getSchema(location.resourceName);
+    public respond(response: IResponse, _model: object | Array<object>, location: ResourceLocation): void {
+        const schema: ISchema | null = SCHEMA_REGISTER.getSchema(location.resourceName);
 
-        if ($isNull(schema)) {
+        if (isNull(schema)) {
             throw new ResourceDoesNotExistException(location);
         }
 
@@ -33,20 +33,20 @@ export class Docs implements IApi {
         throw new RequestBodyNotAllowedException();
     }
 
-    public error(response: IResponse, code: ResponseCode, errors: Maybe<Array<Error>> = null): void {
+    public error(response: IResponse, code: ResponseCode, errors: Array<Error> | null = null): void {
         this._jsonAPI.error(response, code, errors);
     }
 
     private _documentSchema(schema: ISchema): ISchemaRoot<ISchemaObject> {
-        const type: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(schema);
-        let fields: Maybe<Array<string>> = SCHEMA_REGISTER.getFields(schema);
-        const relationships: Maybe<Array<ISchema>> = SCHEMA_REGISTER.getSchemaRelationships(schema);
+        const type: string | null = SCHEMA_REGISTER.getSchemaResourceName(schema);
+        let fields: Array<string> | null = SCHEMA_REGISTER.getFields(schema);
+        const relationships: Array<ISchema> | null = SCHEMA_REGISTER.getSchemaRelationships(schema);
 
-        if ($isNull(type)) {
+        if (isNull(type)) {
             throw new SchemaNotRegisteredException(schema);
         }
 
-        if ($isNull(fields)) {
+        if (isNull(fields)) {
             fields = [];
         }
 
@@ -73,10 +73,10 @@ export class Docs implements IApi {
                         attributes: {
                             type: 'object',
                             required: fields.reduce<Array<string>>((acc: Array<string>, field: string) => {
-                                const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
+                                const mappedField: string | null = SCHEMA_REGISTER.mapToField(schema, field);
                                 const isRequired: boolean = SCHEMA_REGISTER.getFieldRequired(schema, field);
 
-                                if ($isNull(mappedField)) {
+                                if (isNull(mappedField)) {
                                     throw new FieldNotConfiguredException(schema, field);
                                 }
 
@@ -86,13 +86,13 @@ export class Docs implements IApi {
 
                                 return acc;
                             }, []),
-                            properties: fields.reduce<IDict<ISchemaValue>>((result: IDict<ISchemaValue>, field: string): IDict<ISchemaValue> => {
-                                const mappedField: Maybe<string> = SCHEMA_REGISTER.mapToField(schema, field);
-                                const fieldType: Maybe<FieldType> = SCHEMA_REGISTER.getFieldType(schema, field);
+                            properties: fields.reduce<Record<string, ISchemaValue>>((result: Record<string, ISchemaValue>, field: string): Record<string, ISchemaValue> => {
+                                const mappedField: string | null = SCHEMA_REGISTER.mapToField(schema, field);
+                                const fieldType: FieldType | null = SCHEMA_REGISTER.getFieldType(schema, field);
                                 const isRequired: boolean = SCHEMA_REGISTER.getFieldRequired(schema, field);
-                                const options: Maybe<IOptions> = SCHEMA_REGISTER.getFieldOptions(schema, field);
+                                const options: IOptions | null = SCHEMA_REGISTER.getFieldOptions(schema, field);
 
-                                if ($isNull(mappedField) || $isNull(fieldType)) {
+                                if (isNull(mappedField) || isNull(fieldType)) {
                                     throw new FieldNotConfiguredException(schema, field);
                                 }
 
@@ -103,7 +103,7 @@ export class Docs implements IApi {
                                     ]
                                 } as ISchemaTerminatingValue;
 
-                                if (!$isNull(options)) {
+                                if (!isNull(options)) {
                                     (result[mappedField] as ISchemaTerminatingValue).enum = options as any; // eslint-disable-line
                                 }
 
@@ -115,13 +115,13 @@ export class Docs implements IApi {
             }
         };
 
-        if (!$isNull(relationships) && !$isEmpty(relationships)) {
+        if (!isNull(relationships) && !isEmpty(relationships)) {
             (out.properties.data as ISchemaObject).properties.relationships = {
                 type: 'array',
                 items: relationships.map((relationship: ISchema): ISchemaObject => {
-                    const resourceName: Maybe<string> = SCHEMA_REGISTER.getSchemaResourceName(relationship);
+                    const resourceName: string | null = SCHEMA_REGISTER.getSchemaResourceName(relationship);
 
-                    if ($isNull(resourceName)) {
+                    if (isNull(resourceName)) {
                         throw new SchemaNotRegisteredException(relationship);
                     }
 

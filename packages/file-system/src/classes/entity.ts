@@ -1,6 +1,6 @@
-import { $isNull, IPromiseRejector, IPromiseResolver, Maybe } from '@cleavera/utils';
+import { isNull } from '@cleavera/utils';
 import { IEntity } from '@skimp/json-file';
-import { createReadStream, lstat, readdir, readFile, ReadStream, Stats, unlink, writeFile } from 'fs';
+import { createReadStream, promises as fs, ReadStream, Stats } from 'fs';
 import { join } from 'path';
 import { Writable } from 'stream';
 
@@ -11,15 +11,15 @@ import { EntityNotValidJsonException } from '../exceptions/entity-not-valid-json
 
 export class Entity implements IEntity {
     public readonly path: string;
-    private _stats: Maybe<Stats>;
+    private _stats: Stats | null;
 
-    private constructor(path: string, stats: Maybe<Stats> = null) {
+    private constructor(path: string, stats: Stats | null = null) {
         this.path = path;
         this._stats = stats;
     }
 
     public exists(): boolean {
-        return !$isNull(this._stats);
+        return !isNull(this._stats);
     }
 
     public isDirectory(): boolean {
@@ -41,43 +41,23 @@ export class Entity implements IEntity {
     }
 
     public async write(content: string): Promise<void> {
-        return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
-            writeFile(this.path, content, {
-                encoding: 'utf-8',
-                flag: 'w'
-            }, async(writeError: Maybe<Error>): Promise<void> => {
-                if (!$isNull(writeError)) {
-                    reject(writeError);
-
-                    return;
-                }
-
-                if (!this.exists()) {
-                    this._stats = await Entity.getStats(this.path);
-                }
-
-                resolve();
-            });
+        await fs.writeFile(this.path, content, {
+            encoding: 'utf-8',
+            flag: 'w'
         });
+
+        if (!this.exists()) {
+            this._stats = await Entity.getStats(this.path);
+        }
     }
 
     public async delete(): Promise<void> {
         this.assertExists();
 
-        return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
-            unlink(this.path, (error: Maybe<Error>): void => {
-                if (!$isNull(error)) {
-                    reject(error);
-
-                    return;
-                }
-
-                resolve();
-            });
-        });
+        await fs.unlink(this.path);
     }
 
-    public async readJSON(): Promise<any> { // eslint-disable-line
+    public async readJSON(): Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
         const content: string = await this.readContent();
 
         try {
@@ -94,15 +74,7 @@ export class Entity implements IEntity {
             throw new EntityNotAFileException(this.path);
         }
 
-        return new Promise((resolve: IPromiseResolver<string>, reject: IPromiseRejector): void => {
-            readFile(this.path, 'utf-8', (err: Maybe<Error>, data: string): void => {
-                if (!$isNull(err)) {
-                    reject(err);
-                }
-
-                resolve(data);
-            });
-        });
+        return fs.readFile(this.path, 'utf-8');
     }
 
     public async listChildren(): Promise<Array<string>> {
@@ -112,25 +84,19 @@ export class Entity implements IEntity {
             throw new EntityNotADirectoryException(this.path);
         }
 
-        return new Promise((resolve: IPromiseResolver<Array<string>>, reject: IPromiseRejector): void => {
-            readdir(this.path, (err: Maybe<Error>, files: Array<string>): void => {
-                if (!$isNull(err)) {
-                    reject(err);
-                }
+        const files: Array<string> = await fs.readdir(this.path);
 
-                resolve(files.filter((filePath: string) => {
-                    return filePath.indexOf('.json') === filePath.length - 5;
-                }).map((filePath: string): string => {
-                    return join(this.path, filePath);
-                }));
-            });
+        return files.filter((filePath: string) => {
+            return filePath.indexOf('.json') === filePath.length - 5;
+        }).map((filePath: string): string => {
+            return join(this.path, filePath);
         });
     }
 
     public async streamTo(stream: Writable): Promise<void> {
         this.assertExists();
 
-        return new Promise<void>((resolve: IPromiseResolver<void>, reject: IPromiseRejector): void => {
+        return new Promise<void>((resolve: () => void, reject: (error: Error) => void): void => {
             const readStream: ReadStream = createReadStream(this.path);
 
             readStream.on('open', () => {
@@ -162,16 +128,6 @@ export class Entity implements IEntity {
     }
 
     private static async getStats(path: string): Promise<Stats> {
-        return new Promise((resolve: IPromiseResolver<Stats>, reject: IPromiseRejector): void => {
-            lstat(path, (err: Maybe<Error>, stats: Stats): void => {
-                if (!$isNull(err)) {
-                    reject(err);
-
-                    return;
-                }
-
-                resolve(stats);
-            });
-        });
+        return await fs.lstat(path);
     }
 }

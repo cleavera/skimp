@@ -1,5 +1,5 @@
-import { IJsonValue, Maybe } from '@cleavera/utils';
+import { JsonPrimitive } from 'type-fest';
 
 export interface IAttributes {
-    [attribute: string]: Maybe<IJsonValue>;
+    [attribute: string]: JsonPrimitive | null;
 }

@@ -1,12 +1,11 @@
 import { HttpRequest } from '@azure/functions';
-import { Maybe } from '@cleavera/utils';
 import { IContent } from '@skimp/core';
 
 export class Content implements IContent {
     public readonly raw: string;
-    public readonly type: Maybe<string>;
+    public readonly type: string | null;
 
-    constructor(raw: string, type: Maybe<string> = null) {
+    constructor(raw: string, type: string | null = null) {
         this.raw = raw;
         this.type = type;
     }

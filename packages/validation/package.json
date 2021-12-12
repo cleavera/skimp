@@ -26,11 +26,11 @@
   "license": "ISC",
   "devDependencies": {
     "@skimp/core": "^3.1.0",
-    "@skimp/http": "^4.0.0",
+    "@skimp/http": "^4.1.0",
     "@skimp/schema": "^2.7.1",
-    "@types/node": "^14.17.21",
-    "type-fest": "^2.5.0",
-    "typescript": "^4.4.3"
+    "@types/node": "^16.11.12",
+    "type-fest": "^2.8.0",
+    "typescript": "^4.5.3"
   },
   "peerDependencies": {
     "@skimp/schema": "^2.7.1"
