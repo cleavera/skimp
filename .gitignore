@@ -1,8 +1,9 @@
 .idea
 node_modules
 packages/*/dist
-packages/*/.artifacts
-packages/*/.test
+apps/*/dist
+apps/*/.test
+apps/*/node_modules
 packages/*/node_modules
 packages/quickstart/example/data
 !packages/quickstart/example/data/path.ts
