@@ -1,6 +1,6 @@
 {
   "name": "@skimp/file-system",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "The file-system module for the skimp domain modelling framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,13 +27,13 @@
   "devDependencies": {
     "@skimp/core": "^3.1.0",
     "@skimp/debug": "^1.4.0",
-    "@skimp/json-file": "^3.2.0",
+    "@skimp/json-file": "^4.0.0",
     "@skimp/schema": "^2.7.1",
     "typescript": "^4.5.3"
   },
   "peerDependencies": {
     "@skimp/core": "^3.1.0",
-    "@skimp/json-file": "^3.2.0",
+    "@skimp/json-file": "^4.0.0",
     "@skimp/schema": "^2.7.1"
   },
   "dependencies": {

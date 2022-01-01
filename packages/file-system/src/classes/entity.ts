@@ -18,24 +18,24 @@ export class Entity implements IEntity {
         this._stats = stats;
     }
 
-    public exists(): boolean {
+    public async exists(): Promise<boolean> {
         return !isNull(this._stats);
     }
 
-    public isDirectory(): boolean {
-        this.assertExists();
+    public async isDirectory(): Promise<boolean> {
+        await this.assertExists();
 
         return (this._stats as Stats).isDirectory();
     }
 
-    public createdDate(): Date {
-        this.assertExists();
+    public async createdDate(): Promise<Date> {
+        await this.assertExists();
 
         return (this._stats as Stats).birthtime;
     }
 
-    public isFile(): boolean {
-        this.assertExists();
+    public async isFile(): Promise<boolean> {
+        await this.assertExists();
 
         return (this._stats as Stats).isFile();
     }
@@ -46,13 +46,13 @@ export class Entity implements IEntity {
             flag: 'w'
         });
 
-        if (!this.exists()) {
+        if (!(await this.exists())) {
             this._stats = await Entity.getStats(this.path);
         }
     }
 
     public async delete(): Promise<void> {
-        this.assertExists();
+        await this.assertExists();
 
         await fs.unlink(this.path);
     }
@@ -68,9 +68,9 @@ export class Entity implements IEntity {
     }
 
     public async readContent(): Promise<string> {
-        this.assertExists();
+        await this.assertExists();
 
-        if (!this.isFile()) {
+        if (!(await this.isFile())) {
             throw new EntityNotAFileException(this.path);
         }
 
@@ -78,9 +78,9 @@ export class Entity implements IEntity {
     }
 
     public async listChildren(): Promise<Array<string>> {
-        this.assertExists();
+        await this.assertExists();
 
-        if (!this.isDirectory()) {
+        if (!(await this.isDirectory())) {
             throw new EntityNotADirectoryException(this.path);
         }
 
@@ -94,7 +94,7 @@ export class Entity implements IEntity {
     }
 
     public async streamTo(stream: Writable): Promise<void> {
-        this.assertExists();
+        await this.assertExists();
 
         return new Promise<void>((resolve: () => void, reject: (error: Error) => void): void => {
             const readStream: ReadStream = createReadStream(this.path);
@@ -113,8 +113,8 @@ export class Entity implements IEntity {
         });
     }
 
-    private assertExists(): void {
-        if (!this.exists()) {
+    private async assertExists(): Promise<void> {
+        if (!(await this.exists())) {
             throw new EntityDoesNotExistException(this.path);
         }
     }
