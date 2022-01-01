@@ -24,14 +24,14 @@ export class Db implements IDb {
         const filePath: string = this._getFilePath(location);
         const file: IEntity = await this.entityFactory.fromPath(filePath);
 
-        if (!file.exists()) {
+        if (!(await file.exists())) {
             throw new ResourceDoesNotExistException(location);
         }
 
         const model: object = this.serialiser.deserialise(await file.readContent());
 
         MODEL_REGISTER.setLocation(model, location);
-        MODEL_REGISTER.setCreatedDate(model, file.createdDate());
+        MODEL_REGISTER.setCreatedDate(model, await file.createdDate());
 
         return model;
     }
@@ -49,7 +49,7 @@ export class Db implements IDb {
         const filePath: string = this._getFilePath(location);
         const file: IEntity = await this.entityFactory.fromPath(filePath);
 
-        if (!file.exists()) {
+        if (!(await file.exists())) {
             throw new ResourceDoesNotExistException(location);
         }
 
