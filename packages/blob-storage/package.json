@@ -1,0 +1,32 @@
+{
+  "name": "@skimp/blob-storage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "clean": "git clean -X -f -d --exclude=\"!node_modules\"",
+    "lint": "npx eslint ./src/**/*.ts --config=../../.eslintrc.json",
+    "prepack": "npm run lint && npm run build"
+  },
+  "author": "Anthony Cleaver",
+  "license": "ISC",
+  "devDependencies": {
+    "@skimp/core": "^3.1.0",
+    "@skimp/debug": "^1.4.0",
+    "@skimp/json-file": "^4.0.0",
+    "@skimp/schema": "^2.7.1",
+    "@types/node": "^17.0.6",
+    "typescript": "^4.5.3"
+  },
+  "peerDependencies": {
+    "@skimp/core": "^3.1.0",
+    "@skimp/json-file": "^4.0.0",
+    "@skimp/schema": "^2.7.1"
+  },
+  "dependencies": {
+    "@azure/core-paging": "^1.2.0",
+    "@azure/storage-blob": "^12.8.0",
+    "@cleavera/utils": "^4.2.1"
+  }
+}
