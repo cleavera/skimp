@@ -1,6 +1,6 @@
 import { LOGGER, LogLevel } from '@skimp/debug';
 import { IJsonApi } from '@skimp/json-api';
-import { AsyncSetup, AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestFixture } from 'alsatian';
+import { Expect, Setup, SetupFixture, Teardown, TeardownFixture, Test, TestFixture } from 'alsatian';
 import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
 import * as uuid from 'uuid';
@@ -15,13 +15,13 @@ export class UpdateSpec {
     public location!: string;
     private _server!: TestServer;
 
-    @AsyncSetupFixture
+    @SetupFixture
     public async setup(): Promise<void> {
         this._server = await TestServer.create(1338, DATA_PATH, SCHEMAS);
         LOGGER.setLogLevel(LogLevel.ERROR);
     }
 
-    @AsyncTeardownFixture
+    @TeardownFixture
     public async teardown(): Promise<void> {
         await this._server.close();
     }
@@ -167,7 +167,7 @@ export class UpdateSpec {
         return location;
     }
 
-    @AsyncSetup
+    @Setup
     public async create(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -226,12 +226,12 @@ export class UpdateSpec {
         ]);
     }
 
-    @AsyncTeardown
+    @Teardown
     public async clear(): Promise<void> {
         await this._server.clearData();
     }
 
-    @AsyncTest('When putting an existing resource')
+    @Test('When putting an existing resource')
     public async existingResource(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -311,7 +311,7 @@ export class UpdateSpec {
         ]);
     }
 
-    @AsyncTest('When putting a new resource')
+    @Test('When putting a new resource')
     public async happyPath(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -415,7 +415,7 @@ export class UpdateSpec {
         ]);
     }
 
-    @AsyncTest('When putting a resource with unknown fields')
+    @Test('When putting a resource with unknown fields')
     public async unknownFields(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -509,7 +509,7 @@ export class UpdateSpec {
         ]);
     }
 
-    @AsyncTest('When putting a model missing required fields')
+    @Test('When putting a model missing required fields')
     public async modelMissingRequiredFields(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -563,7 +563,7 @@ export class UpdateSpec {
         ]);
     }
 
-    @AsyncTest('When putting to a schema that does not exist')
+    @Test('When putting to a schema that does not exist')
     public async schemaDoesNotExist(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -617,7 +617,7 @@ export class UpdateSpec {
         ]);
     }
 
-    @AsyncTest('When removing the relationship between two resources')
+    @Test('When removing the relationship between two resources')
     public async removeRelationship(): Promise<void> {
         const jobLocation: string = await this.createJob();
         const baseOptions: RequestPromiseOptions = {

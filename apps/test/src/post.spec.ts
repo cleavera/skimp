@@ -1,7 +1,7 @@
 import { LOGGER, LogLevel } from '@skimp/debug';
 import { IJsonApi } from '@skimp/json-api';
 import { ValidationExceptionCode } from '@skimp/schema';
-import { AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestCase, TestFixture } from 'alsatian';
+import { Expect, SetupFixture, Teardown, TeardownFixture, Test, TestCase, TestFixture } from 'alsatian';
 import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
 
@@ -16,18 +16,18 @@ export class PostSpec {
     public location!: string;
     private _server!: TestServer;
 
-    @AsyncSetupFixture
+    @SetupFixture
     public async setup(): Promise<void> {
         this._server = await TestServer.create(1338, DATA_PATH, SCHEMAS);
         LOGGER.setLogLevel(LogLevel.ERROR);
     }
 
-    @AsyncTeardownFixture
+    @TeardownFixture
     public async teardown(): Promise<void> {
         await this._server.close();
     }
 
-    @AsyncTeardown
+    @Teardown
     public async clear(): Promise<void> {
         await this._server.clearData();
     }
@@ -270,12 +270,12 @@ export class PostSpec {
         } as IJsonApi);
     }
 
-    @AsyncTest('Happy path')
+    @Test('Happy path')
     public async happyPath(): Promise<void> {
         await this.create();
     }
 
-    @AsyncTest('When sending invalid json data')
+    @Test('When sending invalid json data')
     public async invalidJsonData(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -318,7 +318,7 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([]);
     }
 
-    @AsyncTest('When omitting a required field')
+    @Test('When omitting a required field')
     public async missingRequiredField(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -368,7 +368,7 @@ export class PostSpec {
 
     @TestCase(3)
     @TestCase(true)
-    @AsyncTest('When sending an invalid string value')
+    @Test('When sending an invalid string value')
     public async invalidString(value: unknown): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -418,7 +418,7 @@ export class PostSpec {
 
     @TestCase('abc')
     @TestCase(true)
-    @AsyncTest('When sending an invalid number value')
+    @Test('When sending an invalid number value')
     public async invalidNumber(value: unknown): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -470,7 +470,7 @@ export class PostSpec {
     @TestCase('abc')
     @TestCase(true)
     @TestCase(12.5)
-    @AsyncTest('When sending an invalid integer value')
+    @Test('When sending an invalid integer value')
     public async invalidInteger(value: unknown): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -521,7 +521,7 @@ export class PostSpec {
 
     @TestCase('abc')
     @TestCase(12)
-    @AsyncTest('When sending an invalid boolean value')
+    @Test('When sending an invalid boolean value')
     public async invalidBoolean(value: unknown): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -572,7 +572,7 @@ export class PostSpec {
 
     @TestCase('Gender.MALES')
     @TestCase('MALE')
-    @AsyncTest('When sending an invalid option value')
+    @Test('When sending an invalid option value')
     public async invalidOption(value: unknown): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -642,7 +642,7 @@ export class PostSpec {
     @TestCase('1990-10-32')
     @TestCase('1990-11-31')
     @TestCase('1990-12-32')
-    @AsyncTest('When sending an invalid date')
+    @Test('When sending an invalid date')
     public async invalidDate(date: unknown): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -691,7 +691,7 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([]);
     }
 
-    @AsyncTest('When posting to a schema that does not exist')
+    @Test('When posting to a schema that does not exist')
     public async schemaDoesNotExist(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -729,7 +729,7 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([]);
     }
 
-    @AsyncTest('When posting to a resource that does not exist')
+    @Test('When posting to a resource that does not exist')
     public async postToNonExistentResource(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -767,7 +767,7 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([]);
     }
 
-    @AsyncTest('When posting to a resource that exists')
+    @Test('When posting to a resource that exists')
     public async postToExistingResource(): Promise<void> {
         await this.create();
 
@@ -822,7 +822,7 @@ export class PostSpec {
         ]);
     }
 
-    @AsyncTest('When adding a relationship')
+    @Test('When adding a relationship')
     public async addRelationship(): Promise<void> {
         await this.create();
 
@@ -963,7 +963,7 @@ export class PostSpec {
         } as IJsonApi);
     }
 
-    @AsyncTest('When adding an implicit relationship')
+    @Test('When adding an implicit relationship')
     public async addImplicitRelationship(): Promise<void> {
         const jobLocation: string = await this.createJob();
 
@@ -1093,7 +1093,7 @@ export class PostSpec {
         } as IJsonApi);
     }
 
-    @AsyncTest('When adding a relationship with invalid structure')
+    @Test('When adding a relationship with invalid structure')
     public async addInvalidStructureRelationship(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -1146,7 +1146,7 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([]);
     }
 
-    @AsyncTest('When adding a relationship that does not exist')
+    @Test('When adding a relationship that does not exist')
     public async addNonExistingRelationship(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -1199,7 +1199,7 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([]);
     }
 
-    @AsyncTest('When adding a relationship that has not been specified')
+    @Test('When adding a relationship that has not been specified')
     public async addNonSpecifiedRelationship(): Promise<void> {
         const jobLocation: string = await this.createJob();
 
@@ -1263,7 +1263,7 @@ export class PostSpec {
         Expect(getResponse.body).toEqual([]);
     }
 
-    @AsyncTest('When adding a relationships above limit')
+    @Test('When adding a relationships above limit')
     public async addTooManyRelationship(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -1318,6 +1318,69 @@ export class PostSpec {
         Expect(success).toBe(false);
 
         const getResponse: Response = await makeRequest('/job', baseOptions);
+
+        Expect(getResponse.body).toEqual([]);
+    }
+
+    @Test('When adding a duplicate relationship')
+    public async addDuplicateRelationship(): Promise<void> {
+        const jobLocation: string = await this.createJob();
+
+        const baseOptions: RequestPromiseOptions = {
+            baseUrl: 'http://localhost:1338',
+            json: true,
+            resolveWithFullResponse: true
+        };
+
+        const postOptions: RequestPromiseOptions = {
+            ...baseOptions,
+            method: 'POST',
+            body: {
+                data: {
+                    attributes: {
+                        fullName: 'Anthony Cleaver',
+                        dateOfBirth: '1990-05-04',
+                        height: 180,
+                        weight: 78,
+                        employed: true,
+                        gender: Gender.FEMALE
+                    },
+                    type: 'person',
+                    relationships: [
+                        {
+                            href: jobLocation
+                        },
+                        {
+                            href: jobLocation
+                        }
+                    ]
+                }
+            } as IJsonApi
+        };
+
+        let success: boolean = false;
+
+        try {
+            await makeRequest('/job', postOptions);
+
+            success = true;
+        } catch (e) {
+            Expect((e as Response).statusCode).toEqual(400);
+            Expect((e as any).error).toEqual({
+                errors: [
+                    {
+                        code: ValidationExceptionCode.RELATIONSHIP_DUPLICATE,
+                        source: {
+                            pointer: '/data/relationships/1'
+                        }
+                    }
+                ]
+            });
+        }
+
+        Expect(success).toBe(false);
+
+        const getResponse: Response = await makeRequest('/person', baseOptions);
 
         Expect(getResponse.body).toEqual([]);
     }

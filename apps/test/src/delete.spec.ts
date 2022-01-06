@@ -1,6 +1,6 @@
 import { LOGGER, LogLevel } from '@skimp/debug';
 import { IJsonApi } from '@skimp/json-api';
-import { AsyncSetup, AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestFixture } from 'alsatian';
+import { Expect, Setup, SetupFixture, Teardown, TeardownFixture, Test, TestFixture } from 'alsatian';
 import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
 
@@ -14,13 +14,13 @@ export class DeleteSpec {
     public location!: string;
     private _server!: TestServer;
 
-    @AsyncSetupFixture
+    @SetupFixture
     public async setup(): Promise<void> {
         this._server = await TestServer.create(1338, DATA_PATH, SCHEMAS);
         LOGGER.setLogLevel(LogLevel.ERROR);
     }
 
-    @AsyncTeardownFixture
+    @TeardownFixture
     public async teardown(): Promise<void> {
         await this._server.close();
     }
@@ -166,7 +166,7 @@ export class DeleteSpec {
         return location;
     }
 
-    @AsyncSetup
+    @Setup
     public async create(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -225,12 +225,12 @@ export class DeleteSpec {
         ]);
     }
 
-    @AsyncTeardown
+    @Teardown
     public async clear(): Promise<void> {
         await this._server.clearData();
     }
 
-    @AsyncTest('Happy path')
+    @Test('Happy path')
     public async happyPath(): Promise<void> {
         const jobLocation: string = await this.createJob();
         const baseOptions: RequestPromiseOptions = {
@@ -278,7 +278,7 @@ export class DeleteSpec {
         });
     }
 
-    @AsyncTest('When trying to delete a directory should 405')
+    @Test('When trying to delete a directory should 405')
     public async deleteADirectory(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -324,7 +324,7 @@ export class DeleteSpec {
         ]);
     }
 
-    @AsyncTest('When trying to delete a resource that does not exist should 404')
+    @Test('When trying to delete a resource that does not exist should 404')
     public async deleteAMissingFile(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',

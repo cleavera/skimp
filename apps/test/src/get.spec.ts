@@ -1,6 +1,6 @@
 import { LOGGER, LogLevel } from '@skimp/debug';
 import { IJsonApi, ISchemaObject, ISchemaRoot } from '@skimp/json-api';
-import { AsyncSetup, AsyncSetupFixture, AsyncTeardown, AsyncTeardownFixture, AsyncTest, Expect, TestFixture } from 'alsatian';
+import { Expect, Setup, SetupFixture, Teardown, TeardownFixture, Test, TestFixture } from 'alsatian';
 import { Response } from 'request';
 import { RequestPromiseOptions } from 'request-promise-native';
 
@@ -16,13 +16,13 @@ export class GetSpec {
     public jobLocation!: string;
     private _server!: TestServer;
 
-    @AsyncSetupFixture
+    @SetupFixture
     public async setup(): Promise<void> {
         this._server = await TestServer.create(1338, DATA_PATH, SCHEMAS, true);
         LOGGER.setLogLevel(LogLevel.ERROR);
     }
 
-    @AsyncTeardownFixture
+    @TeardownFixture
     public async teardown(): Promise<void> {
         await this._server.close();
     }
@@ -224,18 +224,18 @@ export class GetSpec {
         ]);
     }
 
-    @AsyncSetup
+    @Setup
     public async setupTests(): Promise<void> {
         await this.createPerson();
         await this.createJob();
     }
 
-    @AsyncTeardown
+    @Teardown
     public async clear(): Promise<void> {
         await this._server.clearData();
     }
 
-    @AsyncTest('When getting the root resource')
+    @Test('When getting the root resource')
     public async getRootResource(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -261,7 +261,7 @@ export class GetSpec {
         } as IJsonApi);
     }
 
-    @AsyncTest('When getting the root resource at /ROOT')
+    @Test('When getting the root resource at /ROOT')
     public async getRootResourceAtAlias(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -282,7 +282,7 @@ export class GetSpec {
         Expect(success).toBe(false);
     }
 
-    @AsyncTest('When getting a single resource')
+    @Test('When getting a single resource')
     public async getSingleResource(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -324,7 +324,7 @@ export class GetSpec {
         Expect(getResponse.headers.allow).toEqual('GET, PUT, DELETE');
     }
 
-    @AsyncTest('When getting the documentation for single resource')
+    @Test('When getting the documentation for single resource')
     public async getDocumentationSingleResource(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -495,7 +495,7 @@ export class GetSpec {
         Expect(getResponse.headers.allow).toEqual('GET');
     }
 
-    @AsyncTest('When getting the a multiple resource')
+    @Test('When getting the a multiple resource')
     public async getMultipleResource(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -539,7 +539,7 @@ export class GetSpec {
         Expect(getResponse.headers.allow).toEqual('GET, POST');
     }
 
-    @AsyncTest('When getting a resource with an invalid accept content type')
+    @Test('When getting a resource with an invalid accept content type')
     public async getResourceInvalidAcceptContentType(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -563,7 +563,7 @@ export class GetSpec {
         Expect(success).toBe(false);
     }
 
-    @AsyncTest('When sending an options request to an existing resource')
+    @Test('When sending an options request to an existing resource')
     public async getWithOptionsRequest(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -587,7 +587,7 @@ export class GetSpec {
         Expect(optionsRequest.statusCode).toBe(204);
     }
 
-    @AsyncTest('When sending an options request to an missing resource')
+    @Test('When sending an options request to an missing resource')
     public async optionsRequestMissingResource(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
@@ -609,7 +609,7 @@ export class GetSpec {
         Expect(success).toBe(false);
     }
 
-    @AsyncTest('When using an unknown method')
+    @Test('When using an unknown method')
     public async unknownMethod(): Promise<void> {
         const baseOptions: RequestPromiseOptions = {
             baseUrl: 'http://localhost:1338',
