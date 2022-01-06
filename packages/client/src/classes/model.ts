@@ -8,6 +8,10 @@ export class Model {
         return MODEL_REGISTER.getLocation(model);
     }
 
+    public static setLocation(model: object, location: ResourceLocation): void {
+        MODEL_REGISTER.setLocation(model, location);
+    }
+
     public static getRelationships(model: object): Array<ResourceLocation> | null {
         return MODEL_REGISTER.getRelationships(model);
     }
@@ -36,6 +40,35 @@ export class Model {
             throw new NoLocationRegisteredException(model2);
         }
 
+        const relationships: Array<ResourceLocation> = this.getRelationships(model1) ?? [];
+        // eslint-disable-next-line no-console
+        console.log(model1, model2, location, relationships);
+
+        for (const relationship of relationships) {
+            // eslint-disable-next-line no-console
+            console.log(relationship.toString(), location.toString());
+
+            if (relationship.toString() === location.toString()) {
+                return;
+            }
+        }
+
         MODEL_REGISTER.addRelationship(model1, location);
+    }
+
+    public static removeRelationship(model1: object, model2: object | ResourceLocation): void {
+        let location: ResourceLocation | null = null;
+
+        if (model2 instanceof ResourceLocation) {
+            location = model2;
+        } else {
+            location = this.getLocation(model2);
+        }
+
+        if (isNull(location)) {
+            throw new NoLocationRegisteredException(model2);
+        }
+
+        MODEL_REGISTER.removeRelationship(model1, location);
     }
 }

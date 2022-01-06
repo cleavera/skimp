@@ -12,6 +12,8 @@ const config: Configuration = {
         libraryTarget: 'commonjs'
     },
 
+    devtool: 'source-map',
+
     module: {
         rules: [
             {

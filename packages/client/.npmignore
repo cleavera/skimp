@@ -1,5 +1,4 @@
 src
 tsconfig.json
-*.js.map
 webpack.config.ts
 *.tgz
