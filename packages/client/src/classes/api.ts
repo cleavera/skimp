@@ -8,14 +8,16 @@ import { HttpRequest } from './http-request';
 export class Api {
     public basePath: string;
     private readonly _serialiser: Serialiser;
+    private readonly _httpRequest: HttpRequest;
 
     constructor(basePath: string) {
         this.basePath = basePath;
         this._serialiser = new Serialiser();
+        this._httpRequest = new HttpRequest();
     }
 
     public async get<T extends object>(_schema: ISchema<T>, location: ResourceLocation): Promise<T> {
-        const json: IJsonData = await HttpRequest.get<IJsonData>(this._constructUrl(location));
+        const json: IJsonData = await this._httpRequest.get<IJsonData>(this._constructUrl(location));
         const model: T = this._serialiser.deserialise(json) as T;
 
         MODEL_REGISTER.setLocation(model, location);
@@ -31,7 +33,7 @@ export class Api {
         }
 
         const location: ResourceLocation = new ResourceLocation(resourceName);
-        const json: Array<IJsonData> = await HttpRequest.get<Array<IJsonData>>(this._constructUrl(location));
+        const json: Array<IJsonData> = await this._httpRequest.get<Array<IJsonData>>(this._constructUrl(location));
 
         return json.map<T>((data: IJsonData) => {
             const model: T = this._serialiser.deserialise(data) as T;
@@ -56,10 +58,10 @@ export class Api {
         let json: IJsonData | null = null;
 
         if (isNull(location)) {
-            json = await HttpRequest.post<IJsonData>(this._constructUrl(new ResourceLocation(resourceName)), JSON.parse(this._serialiser.serialiseModel(model)));
+            json = await this._httpRequest.post<IJsonData>(this._constructUrl(new ResourceLocation(resourceName)), JSON.parse(this._serialiser.serialiseModel(model)));
             location = ResourceLocation.FromString(json.data.id as string);
         } else {
-            json = await HttpRequest.put<IJsonData>(this._constructUrl(location), JSON.parse(this._serialiser.serialiseModel(model)));
+            json = await this._httpRequest.put<IJsonData>(this._constructUrl(location), JSON.parse(this._serialiser.serialiseModel(model)));
         }
 
         const savedModel: T = this._serialiser.deserialise(json) as T;
@@ -70,7 +72,11 @@ export class Api {
     }
 
     public async remove(location: ResourceLocation): Promise<void> {
-        await HttpRequest.delete(this._constructUrl(location));
+        await this._httpRequest.delete(this._constructUrl(location));
+    }
+
+    public setAuthorisationHeader(authorisationHeader: string): void {
+        this._httpRequest.setAuthorisationHeader(authorisationHeader);
     }
 
     private _constructUrl(resourceLocation: ResourceLocation): string {

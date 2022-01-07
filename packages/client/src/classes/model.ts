@@ -41,13 +41,8 @@ export class Model {
         }
 
         const relationships: Array<ResourceLocation> = this.getRelationships(model1) ?? [];
-        // eslint-disable-next-line no-console
-        console.log(model1, model2, location, relationships);
 
         for (const relationship of relationships) {
-            // eslint-disable-next-line no-console
-            console.log(relationship.toString(), location.toString());
-
             if (relationship.toString() === location.toString()) {
                 return;
             }

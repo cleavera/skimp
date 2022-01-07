@@ -6,7 +6,13 @@ import { HttpError } from '../errors/http.error';
 import { Request404Error } from '../errors/request-404.error';
 
 export class HttpRequest {
-    public static async get<T>(url: string): Promise<T> {
+    private _authorisationHeader: string | null = null;
+
+    public setAuthorisationHeader(header: string): void {
+        this._authorisationHeader = header;
+    }
+
+    public async get<T>(url: string): Promise<T> {
         const response: Response = await fetch(url, this._getConfig(HttpRequestMethod.GET));
 
         if (!response.ok) {
@@ -16,7 +22,7 @@ export class HttpRequest {
         return response.json();
     }
 
-    public static async delete(url: string): Promise<void> {
+    public async delete(url: string): Promise<void> {
         const response: Response = await fetch(url, this._getConfig(HttpRequestMethod.DELETE));
 
         if (!response.ok) {
@@ -24,7 +30,7 @@ export class HttpRequest {
         }
     }
 
-    public static async put<T>(url: string, body: T): Promise<T> {
+    public async put<T>(url: string, body: T): Promise<T> {
         const response: Response = await fetch(url, this._getConfig(HttpRequestMethod.PUT, body));
 
         if (!response.ok) {
@@ -34,7 +40,7 @@ export class HttpRequest {
         return response.json();
     }
 
-    public static async post<T>(url: string, body: T): Promise<T> {
+    public async post<T>(url: string, body: T): Promise<T> {
         const response: Response = await fetch(url, this._getConfig(HttpRequestMethod.POST, body));
 
         if (!response.ok) {
@@ -44,7 +50,7 @@ export class HttpRequest {
         return response.json();
     }
 
-    private static _handleError(response: Response): void {
+    private _handleError(response: Response): void {
         if (response.status === HttpStatusCode.NOT_FOUND) {
             throw new Request404Error(response.url);
         } else {
@@ -52,7 +58,7 @@ export class HttpRequest {
         }
     }
 
-    private static _getConfig(method: HttpRequestMethod, body: unknown | null = null): RequestInit {
+    private _getConfig(method: HttpRequestMethod, body: unknown | null = null): RequestInit {
         const config: RequestInit = {
             method,
             mode: 'cors',
@@ -61,6 +67,10 @@ export class HttpRequest {
                 'Content-Type': 'application/json'
             }
         };
+
+        if (this._authorisationHeader !== null) {
+            (config.headers as Record<string, string>).Authorization = this._authorisationHeader;
+        }
 
         if (!isNull(body)) {
             config.body = JSON.stringify(body);
