@@ -9,14 +9,16 @@ export class HttpRequest {
     public readonly method: string | null;
     public readonly origin: string | Array<string> | null;
     public readonly type: string | null;
+    public authorisation: string | null;
 
-    constructor(location: ResourceLocation | null, method: string | null = null, content: IContent | null = null, origin: string | Array<string> | null = null, type: string | null = null) {
+    constructor(location: ResourceLocation | null, method: string | null = null, content: IContent | null = null, origin: string | Array<string> | null = null, type: string | null = null, authorisation: string | null = null) {
         this.content = content;
         this.method = method;
         this.origin = origin;
         this.type = type;
 
         this.location = location;
+        this.authorisation = authorisation;
     }
 
     public get isGet(): boolean {
