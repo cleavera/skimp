@@ -9,8 +9,9 @@ export class RequestFactory {
         const content: Content | null = Content.FromRequest(request);
         const origin: string | null = request.headers.origin ?? null;
         const type: string | null = request.headers.accept ?? null;
+        const authorisation: string | null = request.headers.authorization ?? null;
         const method: string | null = (request.method ?? '').toUpperCase();
 
-        return new HttpRequest(location, method, content, origin, type);
+        return new HttpRequest(location, method, content, origin, type, authorisation);
     }
 }
